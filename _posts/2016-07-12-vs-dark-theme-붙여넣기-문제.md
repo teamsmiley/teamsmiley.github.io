@@ -1,10 +1,21 @@
+---
+layout: post
+title: 'vs dark theme 붙여넣기 문제'
+author: teamsmiley 
+date: 2016-07-12 00:00
+tags: [vs]
+image: /files/covers/blog.jpg
+category: {program}
+---
+
+
 개인적으로 프로그램을 하면서 동시에 기록하는걸 좋아한다.
 
 구글 문서를 사용하면 이미지도 한꺼번에 넣을수 잇어서 메모장이나 마크다운에디터보다 좋아한다.
 
 그런데 visual studio dark  theme을 사용하면 복사하여 구글문서에 붙여넣기를 하면 다음처럼 보인다.
 
-![http://teamsmiley.xgridcolo.com/wp-content/uploads/2016/07/bad_paste.png]
+![]({{ site.baseurl }}/bad_paste.png)
 
 매번 노트패드에 복사해서 다시 복사하곤 했다.
 
