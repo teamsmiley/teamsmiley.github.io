@@ -20,7 +20,7 @@ krandown:
 gems:
   - jekyll-paginate
 
-paginate: 5
+paginate: 10
 paginate_path: '/page/:num/'
 
 collections:
@@ -48,17 +48,17 @@ exclude: [README.md, Gemfile, Gemfile.lock]
 keep_files: [assets, files]
 
 # iolo's custom
-author: teamsmiley@gmail.com
-image: '/assets/images/default_blog_cover.jpg'
-asset_url: /assets
+# author: teamsmiley@gmail.com
+# image: '/assets/images/default_blog_cover.jpg'
+# asset_url: /assets
 # google_analytics:
 #   ua: 'UA-teamsmiley-1'
 # facebook:
 #   app_id: '1030557850293450'
 #   username: teamsmiley
-twitter:
-  username: teamsmiley
-google_plus:
-  username: teamsmiley
-github:
-  username: teamsmiley
+# twitter:
+#   username: teamsmiley
+# google_plus:
+#   username: teamsmiley
+# github:
+#   username: teamsmiley
