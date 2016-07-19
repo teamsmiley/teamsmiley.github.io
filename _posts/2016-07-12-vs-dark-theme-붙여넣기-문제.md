@@ -31,7 +31,7 @@ https://visualstudiogallery.msdn.microsoft.com/34ebc6a2-2777-421d-8914-e29c1dfa7
 
 다음 메뉴를 찾는다.
 
-productive_menu
+![]({{ site.baseurl }}/assets/productive_menu.png) 
 
 다음처럼 설정을 바꾼다.
 
@@ -42,22 +42,25 @@ Check EmitSpanStyle : True
 BeforeCodeSnippet
 
 기본
-
+```html
 <pre style=”{font-family}{font-size}{font-weight}{font-style}{color}{background}”>
+```
 
 수정후
-
+```html
 <style type=”text/css”>.identifier {color:black !important;}</style><pre style=”{font-family}{font-size}{font-weight}{font-style}”>
-
+'''
 완성후
 
  
+![]({{ site.baseurl }}/assets/productive_menu_2.png) 
 
-productive_menu_2
 
 ok 를 누르고 다시 복사를 해보자…
 
-after_remove_background
+
+
+![]({{ site.baseurl }}/assets/after_remove_background.png) 
 
 복사가 잘된다…
 
@@ -66,7 +69,3 @@ after_remove_background
 적당히 위 옵션을 바꿔서 사용하면된다.
 
  
-
- 
-
-Category: programming Edit
