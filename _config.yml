@@ -1,12 +1,11 @@
-title: kakao 기술 블로그
-email: opensource@kakaocorp.com
-description: |
-  Connect Everything 새로운 연결, 새로운 세상.
-  연결의 혁신으로 세상은 더욱 가깝고 새로워진다고 카카오는 믿습니다.
-baseurl: ''
-url: 'http://tech.kakao.com'
+title: teamsmiley 블로그
 
-repository: kakao/kakao.github.io
+description: |
+  개인적인 경험을 공유하는 곳입니다. 여러분께 아주 조그만 도움이라도 되었으면 합니다.
+baseurl: ''
+url: 'http://teamsmiley.github.io'
+
+repository: teamsmiley/teamsmiley.github.io
 
 permalink: /:year/:month/:day/:title/
 
@@ -49,19 +48,17 @@ exclude: [README.md, Gemfile, Gemfile.lock]
 keep_files: [assets, files]
 
 # iolo's custom
-author: opensource@kakaocorp.com
+author: teamsmiley@gmail.com
 image: '/assets/images/default_blog_cover.jpg'
 asset_url: /assets
-#asset_url: //meta-kage.kakaocdn.net/dn/osa/blog/assets
-#asset_url: //t1.daumcdn.net/osa/blog/assets
-google_analytics:
-  ua: 'UA-72007721-1'
-facebook:
-  app_id: '1030557850293450'
-  username: daumkakaoglobal
+# google_analytics:
+#   ua: 'UA-teamsmiley-1'
+# facebook:
+#   app_id: '1030557850293450'
+#   username: teamsmiley
 twitter:
-  username: kakaodev
+  username: teamsmiley
 google_plus:
-  username: kakaodev
+  username: teamsmiley
 github:
-  username: kakao
+  username: teamsmiley
