@@ -52,15 +52,12 @@ BeforeCodeSnippet
 ```html
 <style type=”text/css”>.identifier {color:black !important;}</style><pre style=”{font-family}{font-size}{font-weight}{font-style}”>
 ```
+
 완성후
 
- 
 ![]({{ site.baseurl }}/assets/productive_menu_2.png) 
 
-
 ok 를 누르고 다시 복사를 해보자…
-
-
 
 ![]({{ site.baseurl }}/assets/after_remove_background.png) 
 
