@@ -41,33 +41,15 @@ Check EmitSpanStyle : True
 
 BeforeCodeSnippet
 
-```java
-// ItemApiController.java
-import ...
-
-@RestController
-@RequestMapping("/api/items")
-public class ItemApiController {
-    @Autowired
-    RestTemplate restTemplate;
-
-    @RequestMapping(value = "/{id}", produces = MediaType.APPLICATION_JSON_VALUE)
-    public ItemDto getItem(@PathVariable Long id) {
-        // 응답이 올때 까지 thread는 대기하게 된다.
-        return restTemplate.getForObject("http://remote/fetch/item/" + id, ItemDto.class);
-    }
-}
-```
-
 기본
 
-```java
+```html
 <pre style=”{font-family}{font-size}{font-weight}{font-style}{color}{background}”>
 ```
 
 수정후
 
-```xml
+```html
 <style type=”text/css”>.identifier {color:black !important;}</style><pre style=”{font-family}{font-size}{font-weight}{font-style}”>
 ```
 완성후
@@ -87,5 +69,3 @@ ok 를 누르고 다시 복사를 해보자…
 컬러가 필요가 없다고 생각하시는분은…
 
 적당히 위 옵션을 바꿔서 사용하면된다.
-
- 
