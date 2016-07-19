@@ -1,3 +1,7 @@
+tech.kakao.com
+==============
+
+> 주의: [http://github.com/kakao/kakao.github.io](http://github.com/kakao/kakao.github.io) 저장소(private)에 권한이 필요함.
 
 > 주의: [GitHub Pages]와 [Jekyll]에 대해서 충분히 숙지할 것.
 
@@ -30,6 +34,7 @@
  - 참고: 최종적으로 사용자 포스트 목록 페이지의 url은 http://tech.kakao.com/authors/lastname.firstname/
 2. 파일 상단에 [front matter] 작성
  - layout: author # 레이아웃(필수)
+ - name: `lastname.firstname` # post의 author와 매칭(필수). 왠만하면 회사 아이디(예: iolo.fitzowen) 사용. 왠만하면 특수문자없이 영소문자,숫자,-(하이픈),.(점)...만 사용.
  - title: ... # 왠만하면 한글이름 사용( 필수)
  - image: http://... # 프로필 이미지(필수)
  - cover: http://... # 작성자 커버 이미지(선택)
