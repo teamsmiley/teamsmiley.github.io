@@ -51,11 +51,11 @@ keep_files: [assets, files]
 author: teamsmiley@gmail.com
 image: '/assets/images/default_blog_cover.jpg'
 asset_url: /assets
-google_analytics:
-  ua: 'UA-teamsmiley-1'
-facebook:
-  app_id: '1030557850293450'
-  username: teamsmiley
+# google_analytics:
+#   ua: 'UA-teamsmiley-1'
+# facebook:
+#   app_id: '1030557850293450'
+#   username: teamsmiley
 twitter:
   username: teamsmiley
 google_plus:
