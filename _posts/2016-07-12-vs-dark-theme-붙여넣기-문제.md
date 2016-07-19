@@ -38,8 +38,8 @@ https://visualstudiogallery.msdn.microsoft.com/34ebc6a2-2777-421d-8914-e29c1dfa7
 Change EmitSpanClass : True
 
 Check EmitSpanStyle : True
-![]({{ site.baseurl }}/assets/BeforeCodeSnippet.png) 
 
+BeforeCodeSnippet
 
 ```java
 // ItemApiController.java
@@ -60,12 +60,12 @@ public class ItemApiController {
 ```
 
 기본
-```
+```java
 <pre style=”{font-family}{font-size}{font-weight}{font-style}{color}{background}”>
 ```
 
 수정후
-```
+```xml
 <style type=”text/css”>.identifier {color:black !important;}</style><pre style=”{font-family}{font-size}{font-weight}{font-style}”>
 ```
 완성후
