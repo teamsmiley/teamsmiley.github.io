@@ -38,18 +38,36 @@ https://visualstudiogallery.msdn.microsoft.com/34ebc6a2-2777-421d-8914-e29c1dfa7
 Change EmitSpanClass : True
 
 Check EmitSpanStyle : True
+![]({{ site.baseurl }}/assets/BeforeCodeSnippet.png) 
 
-BeforeCodeSnippet
+
+```java
+// ItemApiController.java
+import ...
+
+@RestController
+@RequestMapping("/api/items")
+public class ItemApiController {
+    @Autowired
+    RestTemplate restTemplate;
+
+    @RequestMapping(value = "/{id}", produces = MediaType.APPLICATION_JSON_VALUE)
+    public ItemDto getItem(@PathVariable Long id) {
+        // 응답이 올때 까지 thread는 대기하게 된다.
+        return restTemplate.getForObject("http://remote/fetch/item/" + id, ItemDto.class);
+    }
+}
+```
 
 기본
-```html
+```
 <pre style=”{font-family}{font-size}{font-weight}{font-style}{color}{background}”>
 ```
 
 수정후
-```html
+```
 <style type=”text/css”>.identifier {color:black !important;}</style><pre style=”{font-family}{font-size}{font-weight}{font-style}”>
-'''
+```
 완성후
 
  
