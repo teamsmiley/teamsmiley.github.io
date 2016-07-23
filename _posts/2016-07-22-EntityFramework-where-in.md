@@ -24,7 +24,7 @@ public IEnumerable<Job> GetAbleToKillingJob(List<int> jobIds)
         ableJob.Add(temp);
     }
 
-    ableJob = ableJob.Where(j => j.Status == (int)JobHelper.Status.JOB_WAITING || j.Status == (int)JobHelper.Status.JOB_RUNNING).ToList();
+    ableJob = ableJob.Where(j => j.Status == (int)JobHelper.Status.JOB_PAUSE).ToList();
 
     return ableJob;
 }
