@@ -67,9 +67,13 @@ move vimrc .vimrc
 
 이제 파일이 생겼다.
 
+또는 
+
 ### cmd에서 처리 
 
 copy /b NUL C:\Users\Administrator\.vimrc
+
+### 파일 수정 
 
 이제 메모장으로 파일을 열어서 다음처럼 작성한다.
 
@@ -78,6 +82,8 @@ copy /b NUL C:\Users\Administrator\.vimrc
 ![]({{ site.baseurl }}/assets/vim-ignorecase.png)
 
 vs를 재시작
+
+참고로 기타 vi 설정을 넣으면 대부분 동작하는듯.
 
 완료 
 
