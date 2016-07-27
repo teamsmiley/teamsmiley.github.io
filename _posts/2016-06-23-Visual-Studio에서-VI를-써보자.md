@@ -16,7 +16,7 @@ category: {programe}
 
 ## vsvim extension 설치
 
-[vsvim_link] 에서 설치한다.
+[VIM emulation layer for Visual Studio](https://visualstudiogallery.msdn.microsoft.com/59ca71b3-a4a3-46ca-8fe1-0e90e3f79329) 에서 설치한다.
 
 ## enable/disable
 enable/disable을 하고 싶으면 ctrl+shift+f12 이다.
@@ -35,7 +35,7 @@ vsvim 은 / 로 검색을 할때 붙여넣기가 안되서 불편하다.
 
 그럴때는 /  다음에 home키를 한번 누른후 ctrl + v를 하면 복사가 가능하다.
 
- ## 검색시 대소문자 구분 하지 않는다.
+## 검색시 대소문자 구분 하지 않는다.
 
 vim에서 검색시 대소문자를 구분하고 싶지 않다.
 
@@ -80,6 +80,4 @@ copy /b NUL C:\Users\Administrator\.vimrc
 vs를 재시작
 
 완료 
-
-[vsvim_link]: https://visualstudiogallery.msdn.microsoft.com/59ca71b3-a4a3-46ca-8fe1-0e90e3f79329 "VS VIM EXTENTION"
 
