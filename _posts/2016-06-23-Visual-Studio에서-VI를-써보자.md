@@ -16,7 +16,7 @@ category: {programe}
 
 ## vsvim extension 설치
 
-<https://visualstudiogallery.msdn.microsoft.com/59ca71b3-a4a3-46ca-8fe1-0e90e3f79329> 에서 설치한다.
+[vsvim_link] 에서 설치한다.
 
 ## enable/disable
 enable/disable을 하고 싶으면 ctrl+shift+f12 이다.
@@ -81,4 +81,5 @@ vs를 재시작
 
 완료 
 
+[vsvim_link]: https://visualstudiogallery.msdn.microsoft.com/59ca71b3-a4a3-46ca-8fe1-0e90e3f79329 "VS VIM EXTENTION"
 
