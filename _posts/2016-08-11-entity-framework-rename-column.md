@@ -3,7 +3,7 @@ layout: post
 title: 'Entity Framework Rename Column' 
 author: teamsmiley 
 date: 2016-08-11
-tags: [IIS]
+tags: [Entity Framework]
 image: /files/covers/blog.jpg
 category: {entity framework}
 ---
