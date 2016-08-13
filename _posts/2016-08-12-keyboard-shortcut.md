@@ -18,6 +18,9 @@ category: {programe}
     * Open Spotlight to start a search -> Command + Space bar
     * close eclipse -> Command + Q 
 
+* Monosnap - 이미지 캡쳐 프로그램 
+    * 특정 영역 스샷 -  command + alt + 5
+    * 전체 화면 스샷 -  command + alt + 6  
 
 ## Windows
     
