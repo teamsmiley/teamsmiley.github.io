@@ -26,6 +26,7 @@ category: {programe}
     
 * visual studio 
     * package manager console -> alt + / , alt + . ( 이건 내가 매핑함 )
+    * Next Error -> F8
 
 * resharper    
     * resharper open file -> ctrl + T 
