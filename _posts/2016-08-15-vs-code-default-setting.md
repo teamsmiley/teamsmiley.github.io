@@ -20,6 +20,14 @@ Default.Setting는 수정이 안된다. 수정을 하고 싶은 부분이 잇으
 
 json 형태이므로 꼭 설정 끝에 ,로 구분하고 마지막 라인에는 ,를 빼줘야한다.
 
+참고로 기본 파일은 다음경로에 있다.
+
+```
+Windows %APPDATA%\Code\User\settings.json
+Mac ~/Library/Application Support/Code/User/settings.json
+Linux ~/.config/Code/User/settings.json
+```
+
 수정해 보자.
 
 ## 마우스 휠로 폰트 변경 
