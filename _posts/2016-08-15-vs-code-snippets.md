@@ -1,6 +1,6 @@
 ---
 layout: post
-title: 'VS Code Snippets 추가' 
+title: 'VS Code Custom Snippets 추가' 
 author: teamsmiley 
 date: 2016-08-15
 tags: [program]
