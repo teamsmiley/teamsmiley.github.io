@@ -19,19 +19,20 @@ category: {programe}
     * close eclipse -> &#8984; + Q 
 
 * Monosnap - 이미지 캡쳐 프로그램 
-    * 특정 영역 스샷 -  command + alt + 5
-    * 전체 화면 스샷 -  command + alt + 6  
+    * 특정 영역 스샷 -  &#8984 + alt + 5
+    * 전체 화면 스샷 -  &#8984 + alt + 6  
 
 ## Windows
     
 * visual studio 
     * package manager console -> alt + / , alt + . ( 이건 내가 매핑함 )
     * Next Error -> F8
+    * Close All Windows >> alt + w + l
 
 * resharper    
     * resharper open file -> ctrl + T 
     * resharper open type  -> crtl + shift + T  
-    * locate file in solution explorer -> shift + alt + l => 
+    * locate file in solution explorer -> shift + alt + l 
 
 ## Linux
 
