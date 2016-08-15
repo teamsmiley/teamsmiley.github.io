@@ -67,7 +67,10 @@ VS Code를 재시작후 문서를 로딩한 후   Ctrl + 마우스 휠 을 올�
 옵션이 있다...오..~~ms 많이 좋아진듯..
 
 ```
-"window.restoreFullscreen":true 
+    "window.restoreFullscreen":true,
+    "window.openFilesInNewWindow": false,
+    "editor.fontSize": 14,
+    "editor.mouseWheelZoom": true 
 ```
 
 꼭 전체화면으로 해두고 난 후 프로그램을 종료시켜야한다. 
