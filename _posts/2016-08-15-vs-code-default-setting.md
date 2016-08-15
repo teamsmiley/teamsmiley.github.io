@@ -10,7 +10,7 @@ category: {program}
 # VS Code Default Setting 변경 
 
 VS Code를 실행후 메뉴 >> Code >> Preference >> User Settings를 클릭하자.
-단축키는 command + , 
+단축키는 &#8984; + , 
 
 에티터 화면에서 default Setting과 setting.json이 보인다. 
 
@@ -74,7 +74,7 @@ VS Code를 재시작후 문서를 로딩한 후   Ctrl + 마우스 휠 을 올�
 ```
 
 꼭 전체화면으로 해두고 난 후 프로그램을 종료시켜야한다. 
-단축키 command + Q 
+단축키 &#8984; + Q 
 
 
 일단 여기까지 하자. 

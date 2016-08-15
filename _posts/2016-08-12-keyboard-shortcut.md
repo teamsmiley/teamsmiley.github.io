@@ -15,8 +15,8 @@ category: {programe}
 ## Macosx
 
 * OS 
-    * Open Spotlight to start a search -> Command + Space bar
-    * close eclipse -> Command + Q 
+    * Open Spotlight to start a search -> &#8984;  + Space bar
+    * close eclipse -> &#8984; + Q 
 
 * Monosnap - 이미지 캡쳐 프로그램 
     * 특정 영역 스샷 -  command + alt + 5
