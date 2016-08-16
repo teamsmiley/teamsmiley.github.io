@@ -16,13 +16,18 @@ category: {programe}
 
 * OS 
     * Open Spotlight to start a search -> &#8984;  + Space bar
-    * close eclipse -> &#8984; + Q 
+    * close application -> &#8984; + Q 
+    * 전체화면 스샷 -> &#8984; + shift + 3 
+    * 프로그램 전환 -> &#8984; + tab 
 
 * Monosnap - 이미지 캡쳐 프로그램 
     * 특정 영역 스샷 -  &#8984 + alt + 5
     * 전체 화면 스샷 -  &#8984 + alt + 6  
 
 ## Windows
+
+* OS   
+    * 프로그램 전환 -> alt + tab
     
 * visual studio 
     * package manager console -> alt + / , alt + . ( 이건 내가 매핑함 )
