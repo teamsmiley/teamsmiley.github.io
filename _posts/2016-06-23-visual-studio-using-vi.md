@@ -54,7 +54,7 @@ vimrcpaths=”C:\Users\Administrator;C:\Users\Administrator\vimfiles;C:\Users\Ad
 이런 결과가 나온다. 
 이중에 하나에 .vimrc라는 파일을 만들고 세팅을 넣어주면 vs가 자동 로딩한다는 이야기 
 
-나는 C:\Users\Administrator\.vimrc 이경로를 사용
+나는 C:\Users\Administrator 이경로를 사용
 
 ### 탐색기 이용 
 탐색기에서 C:\Users\Administrator 폴더에 vimrc파일을 만든다. 
