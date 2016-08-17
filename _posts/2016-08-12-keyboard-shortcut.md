@@ -19,7 +19,8 @@ category: {programe}
     * close application -> &#8984; + Q 
     * 전체화면 스샷 -> &#8984; + shift + 3 
     * 프로그램 전환 -> &#8984; + tab 
-
+    * deletes the selected file(s) -> &#8984; + Backspace 
+    
 * Monosnap - 이미지 캡쳐 프로그램 
     * 특정 영역 스샷 -  &#8984 + alt + 5
     * 전체 화면 스샷 -  &#8984 + alt + 6  
