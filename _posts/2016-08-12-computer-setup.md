@@ -64,7 +64,7 @@ Macosx를 써보기로 했으므로 기준은 Macosx로 하고 pc는 visual stud
         * markdown을 지원해서 사용 
         * 기존 서브라임 텍스트를 대체
         * extension 
-            * vim
+            * vim 
             * auto open markdown
             * c# 
 
@@ -106,6 +106,7 @@ System Preferences > Keyboard > Shortcuts > Services > Files and Folders >  New 
         * resharper
     * 단축키 설정 
         * package management ==> 메뉴 >> tools >> option >> Keyboard >> view.packagemanagementConsole 클릭후 alt + / , alt + . 하고 Assign
+    * vim 기본 세팅 : <https://teamsmiley.github.io/2016/06/23/visual-studio-using-vi/>
 
 * node.js  설치 
 * npm install 
