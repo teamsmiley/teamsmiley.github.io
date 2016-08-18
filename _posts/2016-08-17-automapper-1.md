@@ -1,8 +1,8 @@
 ---
 layout: post
-title: 'VS Code Custom Snippets 추가' 
+title: 'Automapper에서 매핑하기' 
 author: teamsmiley 
-date: 2016-08-15
+date: 2016-08-17
 tags: [AutoMapper]
 image: /files/covers/blog.jpg
 category: {program}
