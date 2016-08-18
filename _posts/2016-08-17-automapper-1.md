@@ -26,9 +26,11 @@ class Plugin
 	public Version Version;
 }
 ```
+
 추가 설명을 하면 plugin  이 version을 가지고 있고 versoin이 app을 가지고 있는 구조이다.
 
 이와 같을때 뷰모델 
+
 ```c#
 public class ViewModel 
 {
