@@ -16,6 +16,7 @@ AutoMapper에서 매핑하는 두가지 방법이 있다.
 ```c#
 Mapper.CreateMap<SourceType, DestType>().ForMember(d => d.DestPropX, o => o.ResolveUsing(s => s.SourcePropY));
 ```
+
 ## MapFrom
 
 ```c#
