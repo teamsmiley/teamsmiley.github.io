@@ -32,6 +32,7 @@ Mapper.CreateMap<SourceType, DestType>().ForMember(d => d.DestPropX, o => o.MapF
 MapFrom은 null 체크를 한다. 
 
 예를 들면 
+
 ```c#
 ForMember(d => d.DestPropX, o => o.MapFrom(s => s.Person.Address.State));
 ```
