@@ -22,8 +22,13 @@ category: {programe}
     * deletes the selected file(s) -> &#8984; + Backspace 
     
 * Monosnap - 이미지 캡쳐 프로그램 
-    * 특정 영역 스샷 -  &#8984 + alt + 5
-    * 전체 화면 스샷 -  &#8984 + alt + 6  
+    * 특정 영역 스샷 -  &#8984; + alt + 5
+    * 전체 화면 스샷 -  &#8984; + alt + 6  
+
+* VS Code 
+    * Markdown Preview -> &#8984; + K V  
+    * 명령창 열기 -> &#8984; + Shift+ P 
+
 
 ## Windows
 
