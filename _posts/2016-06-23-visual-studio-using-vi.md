@@ -87,3 +87,12 @@ vs를 재시작
 
 완료 
 
+## RelativeLineNumbers
+
+vsvim을 사용중인데 relative Line Number가 되면 좋겟다. 
+
+extension에서 RelativeLineNumbers 를 검색해서 설치하면 된다. 
+
+
+
+
