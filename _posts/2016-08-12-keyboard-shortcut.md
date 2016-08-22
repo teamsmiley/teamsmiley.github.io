@@ -28,6 +28,10 @@ category: {programe}
 * VS Code 
     * Markdown Preview -> &#8984; + K V  
     * 명령창 열기 -> &#8984; + Shift+ P 
+    * git 화면 열기 -> Ctrl + Shift + G	
+    * Toggle Full Screen -> Ctrl + &#8984; + F
+    * &#8984; =	Zoom in	    
+    * &#8984; -	Zoom out	
 
 
 ## Windows
