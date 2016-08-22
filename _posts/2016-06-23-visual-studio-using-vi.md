@@ -97,5 +97,3 @@ extension에서 RelativeLineNumbers 를 검색해서 설치하면 된다.
 
 
 
-
-
