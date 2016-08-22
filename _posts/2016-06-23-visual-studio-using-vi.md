@@ -93,6 +93,9 @@ vsvim을 사용중인데 relative Line Number가 되면 좋겟다.
 
 extension에서 RelativeLineNumbers 를 검색해서 설치하면 된다. 
 
+<https://visualstudiogallery.msdn.microsoft.com/74d68e2b-ff64-4c51-a2ed-d8b164eee858>
+
+
 
 
 
