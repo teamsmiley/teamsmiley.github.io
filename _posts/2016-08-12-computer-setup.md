@@ -54,6 +54,10 @@ Macosx를 써보기로 했으므로 기준은 Macosx로 하고 pc는 visual stud
     * JDK 1.8 
     * eclipse 
     * chrome
+    * nodejs <https://nodejs.org/en/>
+        * for Frisby Test : sudo npm install -g jasmine-node
+        * gulp : sudo npm install -g gulp 
+        * bower : sudo npm install -g bower 
     * GitHub Desktop <https://desktop.github.com>
 
     * vmware 설치 
