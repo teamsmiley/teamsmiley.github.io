@@ -34,7 +34,8 @@ category: {programe}
     * Show Search -> Shift + &#8984; + F
     * &#8984; =	Zoom in	    
     * &#8984; -	Zoom out	
-
+    * close tab -> &#8984; + w 
+    * close all tab -> &#8984; + k , &#8984; + w
 
 ## Windows
 

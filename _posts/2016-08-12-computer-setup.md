@@ -71,6 +71,10 @@ Macosx를 써보기로 했으므로 기준은 Macosx로 하고 pc는 visual stud
             * vim 
             * auto open markdown
             * c# 
+            * relative line number => ⌘+P : ext install vscode-relative-line-numbers
+
+
+
 
 * ssh key 생성 
     * ssh-keygen -t rsa
