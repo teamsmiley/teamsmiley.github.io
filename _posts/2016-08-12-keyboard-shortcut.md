@@ -51,6 +51,7 @@ category: {programe}
     * resharper open file -> ctrl + T 
     * resharper open type  -> crtl + shift + T  
     * locate file in solution explorer -> shift + alt + l 
+    * 증분 선택 / 해제 ->   Ctrl+Alt+Right / Ctrl+Alt+Left 
 
 ## Linux
 

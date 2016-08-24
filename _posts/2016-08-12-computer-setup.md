@@ -115,6 +115,7 @@ System Preferences > Keyboard > Shortcuts > Services > Files and Folders >  New 
     * 단축키 설정 
         * package management ==> 메뉴 >> tools >> option >> Keyboard >> view.packagemanagementConsole 클릭후 alt + / , alt + . 하고 Assign
     * vim 기본 세팅 : <https://teamsmiley.github.io/2016/06/23/visual-studio-using-vi/>
+    * iis express 세팅 : <https://teamsmiley.github.io/2016/08/23/iis-bad-request-error/>
 
 * node.js  설치 
 * npm install 
