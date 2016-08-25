@@ -21,7 +21,7 @@ category: {programe}
     * 프로그램 전환 -> &#8984; + tab 
     * deletes the selected file(s) -> &#8984; + Backspace 
     * Full Screen ctrl + command + F (toggle)
-    
+    * 바탕화면 보기 -> F11 또는 트랙패드에서 4손가락 올리고 펼쳐보자.  
 * Monosnap - 이미지 캡쳐 프로그램 
     * 특정 영역 스샷 -  &#8984; + alt + 5
     * 전체 화면 스샷 -  &#8984; + alt + 6  
