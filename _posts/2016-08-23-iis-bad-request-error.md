@@ -44,6 +44,18 @@ ProjectFolder\.vs\applicationhost.config
 
 이제 접속이 잘 된다. 
 
+VS를 재시작후 다시 확인해보면 설정파일에 설정이 하나 더 생겻음을 알수 있다.
+계속 생긴다...
+
+원인은 localhost가 없으면 계속 만드는 듯 싶다. 
+그래서 꼭 아래처럼 2줄을 해줘야 새로 만들지 않는다.
+
+
+```xml
+ <binding protocol="http" bindingInformation="*:50823:localhost" />
+ <binding protocol="http" bindingInformation="*:50823:*" />
+```
+
 * 참고 사항 
 
 방화벽때문에 접속이 안될수도 있다 꼭 방화벽 세팅을 체크하기 바란다. 
