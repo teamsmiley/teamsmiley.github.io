@@ -3,7 +3,7 @@ layout: post
 title: 'C# - Gmail Sender' 
 author: teamsmiley 
 date: 2016-08-29
-tags: [iis]
+tags: [program, c#]
 image: /files/covers/blog.jpg
 category: {program}
 ---
