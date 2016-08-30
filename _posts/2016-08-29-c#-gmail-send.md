@@ -57,7 +57,7 @@ web.conf에 다음을 추가한다.
 이제 실제 코드는 다음처럼 변경된다. 
 
 ```cs
-SmtpClient client = new SmtpClient();
+
 
 MailAddress from = new MailAddress("FromEmailAddress","FromName",System.Text.Encoding.UTF8);
 MailAddress to = new MailAddress("ToEmailAddress");
@@ -69,6 +69,7 @@ message.BodyEncoding = System.Text.Encoding.UTF8;
 message.Subject = "subject " ;
 message.SubjectEncoding = System.Text.Encoding.UTF8;
 
+SmtpClient client = new SmtpClient();
 client.Send(message);
 
 ```
