@@ -70,7 +70,6 @@ Macosx를 써보기로 했으므로 기준은 Macosx로 하고 pc는 visual stud
         * extension 
             * vim 
             * auto open markdown
-            * c# 
             * relative line number => ⌘+P : ext install vscode-relative-line-numbers
 
 

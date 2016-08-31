@@ -36,7 +36,10 @@ category: {programe}
     * &#8984; -	Zoom out	
     * close tab -> &#8984; + w 
     * close all tab -> &#8984; + k , &#8984; + w
-
+    * &#8984; + z -> undo 
+    * &#8984; + shift + z -> redo 
+    * &#8984; + y -> redo (이건 내가 매핑한것)
+    
 ## Windows
 
 * OS   

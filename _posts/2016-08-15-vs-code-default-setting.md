@@ -86,6 +86,19 @@ VS Code를 재시작후 문서를 로딩한 후   Ctrl + 마우스 휠 을 올�
 단축키 &#8984; + Q 
 
 
+## Keyboard 단축키 변경 
+
+&#8984; + z ==> undo 
+
+&#8984; + shift + z ==> redo 
+
+윈도우 처럼 &#8984;+ y로 사용하려면 키보드 설정에 다음을 넣는다.  
+
+
+```
+{ "key": "cmd+y", "command": "redo", "when": "editorTextFocus" }
+```
+
 일단 여기까지 하자. 
 
 
