@@ -137,10 +137,11 @@ HomeAddressCity  는 Customer.HomeAddress.City 를 매핑..
 
 Customer가 address클래스를 참조하고 있고 거기에 City라는 프로퍼티가 잇으므로 저렇게 자동 매핑이 가능하다..
 
-AutoMapperi - 1
-AutoMapperi - 2 
-AutoMapperi - 3
-AutoMapperi - 4
+관련 글 
+AutoMapper - 1 <https://teamsmiley.github.io/2016/12/22/automapper-1>
+AutoMapper - 2 <https://teamsmiley.github.io/2016/12/23/automapper-2> 
+AutoMapper - 3 <https://teamsmiley.github.io/2016/12/23/automapper-3>
+AutoMapper - 4 <https://teamsmiley.github.io/2016/12/23/automapper-4>
 
 
 
