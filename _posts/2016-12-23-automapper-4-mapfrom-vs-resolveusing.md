@@ -1,13 +1,13 @@
 ---
 layout: post
-title: 'Automapper Mapfrom Vs Resolveusing' 
+title: 'Automapper - Mapfrom Vs ResolveUsing' 
 author: teamsmiley 
-date: 2016-08-17
+date: 2016-12-23
 tags: [AutoMapper]
 image: /files/covers/blog.jpg
-category: {program}
+category: {automapper}
 ---
-# Automapper에서 Mapfrom Vs Resolveusing 
+# Automapper에서 Mapfrom Vs ResolveUsing 
 
 AutoMapper에서 매핑하는 두가지 방법이 있다.
 
