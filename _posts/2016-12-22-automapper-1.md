@@ -135,17 +135,21 @@ public string GetFullName  에서 Get을 지우고 매핑한다.
 
 HomeAddressCity  는 Customer.HomeAddress.City 를 매핑..
 
-Customer가 address클래스를 참조하고 있고 거기에 City라는 프로퍼티가 잇으므로 저렇게 자동 매핑이 가능하다..
+Customer가 address클래스를 참조하고 있고 거기에 City라는 프로퍼티가 잇으므로 저렇게 자동 매핑이 가능하다.
+
+혹시 잘못된부분이 있으면 teamsmiley@gmail.com으로 이메일 부탁 드립니다.
 
 관련 글 
+
 AutoMapper - 1 <https://teamsmiley.github.io/2016/12/22/automapper-1>
+
 AutoMapper - 2 <https://teamsmiley.github.io/2016/12/23/automapper-2> 
+
 AutoMapper - 3 <https://teamsmiley.github.io/2016/12/23/automapper-3>
+
 AutoMapper - 4 <https://teamsmiley.github.io/2016/12/23/automapper-4>
 
 
-
-혹시 잘못된부분이 있으면 teamsmiley@gmail.com으로 이메일 부탁 드립니다.
 
 ## 동영상 강의
 
