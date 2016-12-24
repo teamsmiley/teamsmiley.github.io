@@ -55,7 +55,8 @@ ForMember(d => d.DestPropX, o => o.ResolveUsing(s => s.Person != null ? s.Person
 
 혹시 잘못된부분이 있으면 teamsmiley@gmail.com으로 이메일 부탁 드립니다.
 
-관련 글 
+관련 글
+ 
 AutoMapper - 1 <https://teamsmiley.github.io/2016/12/22/automapper-1>
 
 AutoMapper - 2 <https://teamsmiley.github.io/2016/12/23/automapper-2> 
