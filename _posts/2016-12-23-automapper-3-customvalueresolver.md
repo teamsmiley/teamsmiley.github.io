@@ -1,6 +1,6 @@
 ---
 layout: post
-title: 'AutoMapper-3-customvalueresolver' 
+title: 'AutoMapper - 3 -CustomValueResolver' 
 author: teamsmiley 
 date: 2016-12-23
 tags: [AutoMapper]

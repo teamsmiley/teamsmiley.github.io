@@ -1,6 +1,6 @@
 ---
 layout: post
-title: 'AutoMapper' 
+title: 'AutoMapper -2 심화' 
 author: teamsmiley 
 date: 2016-12-23
 tags: [AutoMapper]

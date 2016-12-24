@@ -1,6 +1,6 @@
 ---
 layout: post
-title: 'Automapper - Mapfrom Vs ResolveUsing' 
+title: 'Automapper - 4 - Mapfrom Vs ResolveUsing' 
 author: teamsmiley 
 date: 2016-12-23
 tags: [AutoMapper]
