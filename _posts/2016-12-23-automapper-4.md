@@ -65,6 +65,7 @@ AutoMapper - 3 <https://teamsmiley.github.io/2016/12/23/automapper-3>
 
 AutoMapper - 4 <https://teamsmiley.github.io/2016/12/23/automapper-4>
 
+AutoMapper - 5 <https://teamsmiley.github.io/2016/12/26/automapper-5>
 
 ## 동영상 강의
 
