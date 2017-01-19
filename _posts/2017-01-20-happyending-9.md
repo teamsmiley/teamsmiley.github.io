@@ -96,7 +96,7 @@ Ct검사는 별 문제없이 진행됫고 결과는 일주일 뒤에 들으러 �
 현재에 오늘에 최선을 다하고 행복해하며 살아가야겟다.
 
 
-(https://teamsmiley.github.io/2017/01/20/happyending-1/)
+<https://teamsmiley.github.io/2017/01/20/happyending-1/>
 
 
 
