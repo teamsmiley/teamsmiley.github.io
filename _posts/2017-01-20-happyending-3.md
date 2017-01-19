@@ -139,3 +139,16 @@ category: {family}
 많이 편해진 마음으로 호텔로 돌아와서 잠을 청하는데...지나간 이틀이 떠올려지며 또 한없이 눈물이 흐른다..조금은 기쁜눈물이..
 
 여전히 내일 ct에 대한 걱정이 많다…. 잘되겟지..하며 애써 잠을 청해보지만 잘 오지 않았다…
+
+
+아직 끝난건 아니지만 해피앤딩을 확신하며..해피앤딩..종결형으로 써본다.
+
+<https://teamsmiley.github.io/2017/01/20/happyending-1/>
+<https://teamsmiley.github.io/2017/01/20/happyending-2/>
+<https://teamsmiley.github.io/2017/01/20/happyending-3/>
+<https://teamsmiley.github.io/2017/01/20/happyending-4/>
+<https://teamsmiley.github.io/2017/01/20/happyending-5/>
+<https://teamsmiley.github.io/2017/01/20/happyending-6/>
+<https://teamsmiley.github.io/2017/01/20/happyending-7/>
+<https://teamsmiley.github.io/2017/01/20/happyending-8/>
+<https://teamsmiley.github.io/2017/01/20/happyending-9/>

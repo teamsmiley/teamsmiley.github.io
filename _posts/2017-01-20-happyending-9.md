@@ -96,6 +96,8 @@ Ct검사는 별 문제없이 진행됫고 결과는 일주일 뒤에 들으러 �
 현재에 오늘에 최선을 다하고 행복해하며 살아가야겟다.
 
 
+아직 끝난건 아니지만 해피앤딩을 확신하며..해피앤딩..종결형으로 써본다.
+
 <https://teamsmiley.github.io/2017/01/20/happyending-1/>
 <https://teamsmiley.github.io/2017/01/20/happyending-2/>
 <https://teamsmiley.github.io/2017/01/20/happyending-3/>
@@ -105,6 +107,5 @@ Ct검사는 별 문제없이 진행됫고 결과는 일주일 뒤에 들으러 �
 <https://teamsmiley.github.io/2017/01/20/happyending-7/>
 <https://teamsmiley.github.io/2017/01/20/happyending-8/>
 <https://teamsmiley.github.io/2017/01/20/happyending-9/>
-
 
 

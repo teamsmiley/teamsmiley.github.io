@@ -112,3 +112,17 @@ category: {family}
 앞으로 더 사랑하고 아껴줄려는 굳은 다짐을 하고 
 
 오늘하루도 더 버텨본다.
+
+
+아직 끝난건 아니지만 해피앤딩을 확신하며..해피앤딩..종결형으로 써본다.
+
+<https://teamsmiley.github.io/2017/01/20/happyending-1/>
+<https://teamsmiley.github.io/2017/01/20/happyending-2/>
+<https://teamsmiley.github.io/2017/01/20/happyending-3/>
+<https://teamsmiley.github.io/2017/01/20/happyending-4/>
+<https://teamsmiley.github.io/2017/01/20/happyending-5/>
+<https://teamsmiley.github.io/2017/01/20/happyending-6/>
+<https://teamsmiley.github.io/2017/01/20/happyending-7/>
+<https://teamsmiley.github.io/2017/01/20/happyending-8/>
+<https://teamsmiley.github.io/2017/01/20/happyending-9/>
+
