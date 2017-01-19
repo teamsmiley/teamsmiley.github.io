@@ -164,7 +164,7 @@ Stay positive 라는 한마디가 돌아온다…
 
 http://www.ezday.co.kr/bbs/view_board.html?q_sq_board=5282294
 
-![boraboar]({{ site.baseurl }}/assets/borabora.PNG)
+![borabora]({{ site.baseurl }}/assets/borabora.PNG)
 
 
 언젠가 건강해진 와이프와 함께 꼭 가보려고 한다..
