@@ -1,6 +1,6 @@
 --- 
 layout: post 
-title: "게으른 백만 장" 
+title: "게으른 백만 장자" 
 date: 2008-04-30 00:00  
 author: teamsmiley 
 tags: [book]
