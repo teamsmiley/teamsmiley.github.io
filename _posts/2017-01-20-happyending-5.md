@@ -2,7 +2,7 @@
 layout: post
 title: '내사랑 현주 - 암 이기는 기록. 해피 앤딩 - 5 ' 
 author: teamsmiley 
-date: 2017-01-20
+date: 2017-01-20 00:00
 tags: [family]
 image: /files/covers/blog.jpg
 category: {family}
