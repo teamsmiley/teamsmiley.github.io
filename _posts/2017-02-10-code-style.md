@@ -4,6 +4,7 @@ title: 'Code Style'
 author: teamsmiley 
 date: 2017-02-10'
 tags: [code]
+image: /files/covers/code.jpg
 category: {program}
 ---
 # Code Style (코드 규약) - ver. 0.1 
