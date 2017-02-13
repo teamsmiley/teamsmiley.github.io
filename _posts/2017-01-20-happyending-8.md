@@ -4,7 +4,7 @@ title: '내사랑 현주 - 암 이기는 기록. 해피 앤딩 - 8'
 author: teamsmiley 
 date: 2017-01-20
 tags: [family]
-image: /files/covers/blog.jpg
+image: /files/covers/code.jpg
 category: {family}
 ---
 
