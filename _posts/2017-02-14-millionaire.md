@@ -1,7 +1,7 @@
 --- 
 layout: post 
 title: "게으른 백만 장자" 
-date: 2008-04-30 00:00  
+date: 2017-02-14 00:00  
 author: teamsmiley 
 tags: [book]
 image: /files/covers/blog.jpg
