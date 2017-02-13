@@ -83,7 +83,7 @@ category: {program}
 
 * 페이징 관련 용어 통일
 * page : 몇번 페이지는 몇장인가
-* pagenumber: 몇페이지인가 ⇒ 전체가 몇페이지인지  보여줄필요가 잇을까?
+* pagenumber: 몇페이지인가 ⇒ 전체가 몇페이지인지  보여줄필요가 있을까?
 * size : 한페이지에 몇개씩 뿌리는가
 
 ## Automapper 
@@ -106,7 +106,7 @@ category: {program}
 * 상속이 가능하면 상속을 받아서 처리도 해보자.
 * List를 받을때는 꼭 list라는 클래스 이름을 써주자.
 *  Viewmodel이 너무 크지 않게 해야한다. 꼭 필요한거만 가야한다. 그런데 viewmodel을 너무 많이 만들기 어려우므로 한두개정도 필드는 합쳐서 하나로 만들수도 있다. 
-* 리파지토리에 페이징을 구현하기 위해서는 전체 갯수가 필요하다.
+* 리파지토리에 페이징을 구현하기 위해서는 전체 개수가 필요하다.
 
 ```cs
 public IEnumerable<Invoice> GetUserInvoices(SearchUserInvoiceViewModel vm)
@@ -155,12 +155,12 @@ int GetInvoicesTotalCount(string status, SearchAdminInvoiceViewModel vm)
 
 
 ## 고민거리 
-* 프론트앤드에서 newjob  유저에서 사용하나 어드민에서도 사용한다.=> 어드민에서 user쪽 api를 사용하는것은 괞찮다.(두번 중복할 필요가 없는것 같음.)
+* 프론트앤드에서 newjob  유저에서 사용하나 어드민에서도 사용한다.=> 어드민에서 user쪽 api를 사용하는것은 괜찮다.(두번 중복할 필요가 없는것 같음.)
 
 * 프론트앤드에서의 service 여러 곳에서 사용하기 위해서 만들어둔것.
 
 * 프론트앤드에서 api url이 검색으로 확인이 됬으면 좋겟음.
-* 코드가 명확햇으면 좋겟음.
+* 코드가 명확했으면 좋겟음.
 
 
 
