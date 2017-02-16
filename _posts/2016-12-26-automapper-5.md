@@ -59,6 +59,14 @@ public IHttpActionResult PutUser(string userName, UserViewModel vm)
 
 매핑 하는 부분이 전부 사라졌다..코드가 많이 줄었다.
 
+추가 
+
+일반적으로 다음처럼 한다.
+
+![]({{ site.baseurl }}/assets/automapper-db-update.png)
+
+아주 간단해 졌다. 
+
 혹시 잘못된부분이 있으면 teamsmiley@gmail.com으로 이메일 부탁 드립니다.
 
 관련 글
