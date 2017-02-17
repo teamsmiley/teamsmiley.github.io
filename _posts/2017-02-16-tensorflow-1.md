@@ -63,7 +63,10 @@ python -c 'import os; import inspect; import tensorflow; print(os.path.dirname(i
 
 docker run -it -p 8888:8888 gcr.io/tensorflow/tensorflow
 
-url 을 복사해다 웹브라우저에 붙여넣기 하고 
+url 을 복사해다 웹브라우저에 붙여넣기 하면 화면이 보인다.
+
+![]({{ site.baseurl }}/assets/jupyter.png)
+
 새로 파일 만들기를 한후 
 다음 코드 적용
 
