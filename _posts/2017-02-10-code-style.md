@@ -16,6 +16,7 @@ category: {program}
 2. 개발 기간이 극단적으로 줄어들수 있는 스택을 구성한다. 
 3. 자동화에 의한 테스트를 이용해서 버그 발생을 방지한다. 
 4. 중복된 코드가 극단적으로 없어야 한다. 
+5. architecture should be independent of frameworks 
 
 ## 프로젝트 기본 셋업 
 * 프로젝트 폴더에는 docs라는 폴더를 기본으로 만든다. 
@@ -79,17 +80,21 @@ category: {program}
 
 
 
-## 리파지토리 
+## unit of work 
 
+* 리파지토리 밖에서 iqueryable을 이용한 체인을 걸어서 쿼리하지 마라.
+* 리파지토리는 언제나 IEnumerable을 리턴한다. 
+* 절때  IQueryable을 리턴해서는 안된다. - 리파지토리 밖에서 쿼리를 만들어버릴 수 있으므로 원천 봉쇄해야한다.    
+* DBContext는 private field on the repository , do not expose outside of repository
+* repository에서 dbcontext를 받는다. 특정 컨텍스트가 아니라 제너릭임 - 어플리케이션 부분이 아님 
 * 디비 쿼리 로직에 대한 모든 내용은 리파지토리에  작성되야한다.
 * 리파지토리는 디비와의 연관만 담당한다. 
-* 리파지토리는 절때  IQueryable을 리턴해서는 안된다. IEnumerable을 리턴한다.
 * 언제든 리파지토리만 바꿈으로써 orm이나 디비를 바꿀수 있다고 생각해야한다.
-* 리파지토리에는 save/ update 가 없다…
-* Update는  memory에서 수정하고 complete(); 호출
+* 리파지토리에는 save/ update 가 없다.
+* Update는 unit of work에서 처리 - complete(); 호출 처리 
 * Add는 memory에 추가후 complete(); 호출
-* 테이블당 하나의 리파지토리 클래스 
-* repository도 어떤 비지니스 로직을 포함하지 말자.(디비관련된 내용만 넣어야함.)
+* 테이블당 하나의 리파지토리 클래스.
+* repository도 어떤 비지니스 로직을 포함하지 말자.
 
 ## Paging 
 
