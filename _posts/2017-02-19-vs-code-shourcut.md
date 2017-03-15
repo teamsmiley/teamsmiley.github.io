@@ -28,9 +28,16 @@ category: {program}
 
 * Close All Window (Ctrl+W Ctrl+W)
 * 문서이동 (Ctrl+Tab)
-* Explore Side (Ctrl+Shift+E)
 * Build (Ctrl+Shift+B)
-* Find Side (Ctrl+F)
+* Find 메 (Ctrl+F)
+
+## 왼쪽메뉴 
+* 왼쪽 메뉴 닫기 (Ctrl+B)
+* 왼쪽 메뉴 깃  (Ctrl+Shift+G)
+* 왼쪽 메뉴 검색 (Ctrl+Shift+F)
+* 왼쪽 메뉴 Explore Side (Ctrl+Shift+E)
+* 왼쪽 메뉴 디버그  (Ctrl+Shift+D)
+* 왼쪽 메뉴 플러그인  (Ctrl+Shift+X)
 
 ## 기타 
 * Terminal (Ctrl+`)
