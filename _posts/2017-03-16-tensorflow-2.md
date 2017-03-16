@@ -20,7 +20,11 @@ https://www.python.org/downloads/release/python-353/
 
 ## tensorflow 설치 
 
+* Cpu 
 pip3 install --upgrade tensorflow
+
+* Gpu
+pip install --upgrade tensorflow-gpu
  
 
 ## 설치 확인 
