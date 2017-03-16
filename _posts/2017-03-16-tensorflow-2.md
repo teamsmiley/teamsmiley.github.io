@@ -21,25 +21,28 @@ https://www.python.org/downloads/release/python-353/
 ## tensorflow 설치 
 
 * Cpu 
+```bash
 pip3 install --upgrade tensorflow
-
+```
 * Gpu
+```bash
 pip install --upgrade tensorflow-gpu
- 
+```
 
 ## 설치 확인 
 
 $ python
 ```python
 >>> import tensorflow as tf
->>> hello = tf.constant(‘Hello, TensorFlow!’)
+>>> tf.__version__
+'1.0.1'
+>>> hello = tf.constant("hello")
 >>> sess = tf.Session()
 >>> print(sess.run(hello))
-Hello, TensorFlow!
+b'hello
 >>> a = tf.constant(10)
 >>> b = tf.constant(32)
 >>> print(sess.run(a + b))
 42
->>>
 ```
  
