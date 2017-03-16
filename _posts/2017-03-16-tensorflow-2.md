@@ -1,7 +1,7 @@
 --- 
 layout: post 
 title: "tensorflow - 2 윈도우에서 1.0 설치 " 
-date: 2017-02-16 00:00  
+date: 2017-03-16 00:00  
 author: teamsmiley 
 tags: [tensorflow]
 image: /files/covers/blog.jpg
