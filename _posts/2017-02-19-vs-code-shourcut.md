@@ -29,7 +29,7 @@ category: {program}
 * Close All Window (Ctrl+W Ctrl+W)
 * 문서이동 (Ctrl+Tab)
 * Build (Ctrl+Shift+B)
-* Find 메 (Ctrl+F)
+* Find 메뉴 (Ctrl+F)
 
 ## 왼쪽메뉴 
 * 왼쪽 메뉴 닫기 (Ctrl+B)
