@@ -1,11 +1,11 @@
 --- 
 layout: post 
-title: "tensorflow - 1" 
+title: "tensorflow - 윈도우에서 docker로 설치" 
 date: 2017-02-16 00:00  
 author: teamsmiley 
-tags: [deep learning]
+tags: [tensorflow]
 image: /files/covers/blog.jpg
-category: {AI}
+category: {machine running}
 ---
 
 # tensorflow 윈도우에서 사용  
