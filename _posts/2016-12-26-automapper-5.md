@@ -44,8 +44,8 @@ public IHttpActionResult PutUser(UserViewModel vm)
     //  이 3개를 전부 다음코드 하나가 처리한다.
     Mapper.Map(vm, entity);
     //or
-    //Mapper.Mapi<UserViewModel,Users>(vm, entity);
-    
+    Mapper.Map<UserViewModel,Users>(vm, entity);
+
    //entity가 업데이트 되었으므로 complete만 하면된다. 
    _unitOfWork.Complete(); //실제 디비업데이트한다.
 }
