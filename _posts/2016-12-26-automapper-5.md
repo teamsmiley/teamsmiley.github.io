@@ -12,48 +12,40 @@ category: {automapper}
 기존 코드 
 
 ```cs
-public IHttpActionResult PutUser(string userName, UserViewModel vm)
+public IHttpActionResult PutUser(UserViewModel vm)
 {
-    if (!ModelState.IsValid)
-    {
-        return BadRequest(ModelState);
-    }
-    var renderCoreUser = _unitOfWork.Users.SingleOrDefault(i => i.UserName == userName);
-    User.AssignedNodeCnt = (int)vm.AssignedNodeCnt;
-    User.FileServerId = (int)vm.FileServerId;
-    User.NodeGroupId = (int)vm.NodeGroupId;
-    User.PaymentType = vm.PaymentType;
-    User.UnitPrice = (double)vm.UnitPrice;
-    User.UserPriority = (int)vm.UserPriority;
-    User.Location = vm.Location;
-
+    //entity를 가져오고 
+    var entity = _unitOfWork.Users.SingleOrDefault(i => i.UserName == vm.userName);
+    //vm에서 값을 가져다 엔티티를 업데이트해준다. 
+    entity.AssignedNodeCnt = (int)vm.AssignedNodeCnt;
+    entity.FileServerId = (int)vm.FileServerId;
+    entity.NodeGroupId = (int)vm.NodeGroupId;
+    entity.PaymentType = vm.PaymentType;
+    entity.UnitPrice = (double)vm.UnitPrice;
+    entity.UserPriority = (int)vm.UserPriority;
+    entity.Location = vm.Location;
+   
+    //entity가 업데이트 되었으므로 complete만 하면된다.
     _unitOfWork.Complete();
-
-    var result = Mapper.Map<User, UserViewModel>(User);
-
-    return Ok(result);
-
 }
 ```
 
 수정후 코드 
 
 ```cs
-public IHttpActionResult PutUser(string userName, UserViewModel vm)
+public IHttpActionResult PutUser(UserViewModel vm)
 {
-    if (!ModelState.IsValid)
-    {
-        return BadRequest(ModelState);
-    }
-    var existUser = _unitOfWork.Users.SingleOrDefault(i => i.UserName == userName);
-    var user = Mapper.Map<UserViewModel, User>(vm);  //viewmodel을 디비에서 가져온 정보에 업데이트한다.
-   
-    _unitOfWork.Complete(); //실제 디비업데이트한다.
+    // entity 가져오기 
+    var entity =  _unitOfWork.Users.SingleOrDefault(i => i.UserName == vm.userName);
 
-    var result = Mapper.Map<User, UserViewModel>(existUser);
+    //map
+    //apply update 
+    //map to back to entity 
+    //  이 3개를 전부 다음코드 하나가 처리한다.
+    Mapper.Map(vm, entity);
 
-    return Ok(result);
-
+   //entity가 업데이트 되었으므로 complete만 하면된다. 
+   _unitOfWork.Complete(); //실제 디비업데이트한다.
 }
 ```
 
