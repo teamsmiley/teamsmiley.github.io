@@ -97,6 +97,11 @@ public class BillingDateFormatter : IValueResolver<Invoice, InvoiceDetailViewMod
           ;
 ```
 
+### Course의 createdatetime을 항상 datetime.now로 넣어주고 싶을때
+```cs
+CreateMap<CourseCreateResource, Course>()
+                .ForMember(dest => dest.CreateDateTime, opt => opt.MapFrom(x => DateTime.Now));
+```
 이렇게 하면 매핑시 항상 날짜를 shortdatestring으로 매핑한다. 
 
 ### : 이름앞에 Mr. 를 항상 붙이고 싶다. 
