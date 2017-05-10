@@ -1,11 +1,11 @@
 --- 
 layout: post 
-title: "angular2에서 header 값을 가져와서 리스트와함께 리턴하기" 
+title: "angular 2 pagination" 
 date: 2017-05-10 00:00  
 author: teamsmiley 
-tags: [CI]
+tags: [Angular]
 image: /files/covers/blog.jpg
-category: {CI}
+category: {Angular}
 ---
 
 # angular 2 pagination  
