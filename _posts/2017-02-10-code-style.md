@@ -50,6 +50,7 @@ category: {program}
 * 퍼블릭 함수 이름은 항상 대문자로 시작.
 
 ## 코드 관련 
+* out parametersms 절대  쓰지 않는다. 
 * 절대 절대경로를 사용하지 않는다. 
 * 모든 객체에 tostring을 override하자.
 * 매직넘버를 사용하지 않기 
