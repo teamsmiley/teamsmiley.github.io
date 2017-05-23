@@ -38,6 +38,7 @@ category: {program}
 * 함수 : 파스칼 : Recieve(int i)
 * 함수 - 파라미터 : 카멜 : int players, void SendMessage(string userName)
 * 임시 변수 - 카멜 
+* private변수 - _(underscre)+ camel case
 * 인터페이스 : I 접두어 붙이기
 * 약어 사용 금지 
 * 한글자 사용 금지 
@@ -50,6 +51,9 @@ category: {program}
 * 퍼블릭 함수 이름은 항상 대문자로 시작.
 
 ## 코드 관련 
+* 함수는 10줄 이하로 한다. 
+* 함수에 아규먼트는 3개 이하로 한다. 
+* 함수는 하나의 역할만 한다. 
 * out parametersms 절대  쓰지 않는다. 
 * 절대 절대경로를 사용하지 않는다. 
 * 모든 객체에 tostring을 override하자.
