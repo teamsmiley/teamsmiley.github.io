@@ -184,6 +184,16 @@ int GetInvoicesTotalCount(string status, SearchAdminInvoiceViewModel vm)
 * 프론트앤드에서의 service 여러 곳에서 사용하기 위해서 만들어둔것.
 * 프론트앤드에서 api url이 검색으로 확인이 됬으면 좋겟음.
 * 코드가 명확했으면 좋겟음.
+* controller에서 다음코드가 실행되는데 이건 리파지토리에서만 디비관련 코드가 있다라는 규칙을 어긴건가? 이게 편한데...
+```cs
+public IActionResult CreateCourse([FromBody] CourseCreateResource resource){
+    ...
+    _unitOfWork.Courses.Add(entity);
+    _unitOfWork.Complete();
+    ...
+}
+```
+
 
 
 
