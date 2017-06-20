@@ -175,13 +175,13 @@ IEnumerable<Invoice> GetInvoices(SearchAdminInvoiceViewModel vm);
 IEnumerable<Invoice> GetInvoicesWithPaging(SearchAdminInvoiceViewModel vm);
 int GetInvoicesTotalCount(string status, SearchAdminInvoiceViewModel vm)
 
+## Service
+* service  layer에서는 도메인 오브젝트를 넣고 빼야 한다. Job클래스를 넘겨야지 jobid를 넘겨서 또 가져오지 말자.
 
 
 ## 고민거리 
 * 프론트앤드에서 newjob  유저에서 사용하나 어드민에서도 사용한다.=> 어드민에서 user쪽 api를 사용하는것은 괜찮다.(두번 중복할 필요가 없는것 같음.)
-
 * 프론트앤드에서의 service 여러 곳에서 사용하기 위해서 만들어둔것.
-
 * 프론트앤드에서 api url이 검색으로 확인이 됬으면 좋겟음.
 * 코드가 명확했으면 좋겟음.
 
