@@ -92,7 +92,7 @@ angular.module('adwordsApp') //<==3
 나는 로그인 한 유저를 확인하고 싶엇다.  login controller에 logIn 함수를 수정하자. 
 
 ```js
-app.controller('loginController', [.., function (..., GoogleAdWordsService) {
+app.controller('loginController', [..,'GoogleAdWordsService', function (..., GoogleAdWordsService) {
 
 $scope.login = function () {
 
@@ -102,6 +102,8 @@ $scope.login = function () {
 ```
 
 두군데를 추가해주면 된다. 
+
+컨트롤러가 눌릴때마다 정보를 구글로 보낸다.
 
 참고 <https://medium.com/@zainzafar/google-adwords-conversion-tracking-using-angularjs-f2047b3331f4>
 
