@@ -55,12 +55,15 @@ $window.ga('send', 'pageview', { page: $location.url() });
   m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)
   })(window,document,'script','https://www.google-analytics.com/analytics.js','ga');
 
-  ga('create', 'UA-101388139-1', 'auto');
+  ga('create', 'UA-101388129-1', 'auto');
   ga('send', 'pageview');
 </script>
 ```
 * 위 두개를 처리하지 않으면 두번씩 로그가 잡히기도 한다. 
 
+* 현재 사이트가 Angularjs 라 /#/aaa로 라우팅이 되서 나머지 기능을 잘 되지 않는다. 
+
+* adwords 전환을 tag manager로 확인할수도 있으나 잘 안되니 기존방식을 추천한다. 
 
 
 

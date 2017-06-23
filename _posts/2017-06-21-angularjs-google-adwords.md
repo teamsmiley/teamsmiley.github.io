@@ -27,7 +27,7 @@ var google_conversion_id = 1071463456; //<=====
 var google_conversion_language = "en_US";
 var google_conversion_format = "1";
 var google_conversion_color = "ffffff";
-var google_conversion_label = "cX4RCOGESxCR-PT-lw"; //<=====
+var google_conversion_label = "cX4RCOG1SxCR-PT-lw"; //<=====
 var google_remarketing_only = false;
 /* ]]> */
 </script>
@@ -35,7 +35,7 @@ var google_remarketing_only = false;
 </script>
 <noscript>
 <div style="display:inline;">
-<img height="1" width="1" style="border-style:none;" alt="" src="//www.googleadservices.com/pagead/conversion/1071463441/?label=cX4RCOGESxCR-PT-Aw&amp;guid=ON&amp;script=0"/>
+<img height="1" width="1" style="border-style:none;" alt="" src="//www.googleadservices.com/pagead/conversion/1071463441/?label=cX4RCOG2SxCR-PT-Aw&amp;guid=ON&amp;script=0"/>
 </div>
 </noscript>
 ```
@@ -56,13 +56,13 @@ angular.module('adwordsApp') //<==3
     .factory('GoogleAdWordsService', function ($window) {
         // Conversion labels 
         var google_conversion_label = {
-            'register-customer': "12abCDef3gH5Klm6789", //<==2
-            'book-order': "9876mlK5Hg3feDCba21"
+            'register-customer': "12abCDef3g35Klm6789", //<==2
+            'book-order': "9876mlK5Hg3feDC2a21"
         };
        // Basic settings for AdWords Conversion
         var googleTrackConversion = function (conversion_label) {
             $window.google_trackConversion({
-                google_conversion_id: 0987612345, //<==1
+                google_conversion_id: 0987212345, //<==1
                 google_conversion_language: "en",
                 google_conversion_format: "3",
                 google_conversion_color: "ffffff",
@@ -105,6 +105,6 @@ $scope.login = function () {
 
 컨트롤러가 눌릴때마다 정보를 구글로 보낸다.
 
-참고 <https://medium.com/@zainzafar/google-adwords-conversion-tracking-using-angularjs-f2047b3331f4>
+* 참고 <https://medium.com/@zainzafar/google-adwords-conversion-tracking-using-angularjs-f2047b3331f4>
 
 
