@@ -90,7 +90,8 @@ category: {program}
 
 * 리파지토리 밖에서 iqueryable을 이용한 체인을 걸어서 쿼리하지 마라.
 * 리파지토리는 언제나 IEnumerable을 리턴한다. 
-* 절때  IQueryable을 리턴해서는 안된다. - 리파지토리 밖에서 쿼리를 만들어버릴 수 있으므로 원천 봉쇄해야한다.    
+* 절때  IQueryable을 리턴해서는 안된다. - 리파지토리 밖에서 쿼리를 만들어버릴 수 있으므로 원천 봉쇄해야한다.   
+* 리파지토리에는 어떤 비지니스 로직도 들어가서는 안된다.
 * DBContext는 private field on the repository , do not expose outside of repository
 * repository에서 dbcontext를 받는다. 특정 컨텍스트가 아니라 제너릭임 - 어플리케이션 부분이 아님 
 * 디비 쿼리 로직에 대한 모든 내용은 리파지토리에  작성되야한다.
