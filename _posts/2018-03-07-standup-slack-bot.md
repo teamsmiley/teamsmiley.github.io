@@ -6,19 +6,19 @@
 
 create new 버튼 클릭한다.
 
-![](create-app.png)
+![]({{ site.baseurl }}/files/create-app.png)
 
-![](create-app-bot.png)
+![]({{ site.baseurl }}/files/create-app-bot.png)
 
 bot을 선택한다. 
 
-![](create-app-bot-user.png)
+![]({{ site.baseurl }}/files/create-app-bot-user.png)
 
-![](create-app-bot-user-1.png)
+![]({{ site.baseurl }}/files/create-app-bot-user-1.png)
 
-![](create-app-oauth.png)
+![]({{ site.baseurl }}/files/create-app-oauth.png)
 
-![](create-app-oauth-1.png)
+![]({{ site.baseurl }}/files/create-app-oauth-1.png)
 
 키를 복사해둔다.
 
@@ -26,10 +26,10 @@ https://rendercorelab.slack.com/apps/manage
 
 에서 approve 
 
-![](aprove-app.png)
+![]({{ site.baseurl }}/files/aprove-app.png)
 
 
-![](bot.png)
+![]({{ site.baseurl }}/files/bot.png)
 
 이렇게 되면 성공
 
