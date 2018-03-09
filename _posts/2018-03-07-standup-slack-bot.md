@@ -63,15 +63,18 @@ docker-compose up -d
 
 @bot when
 @bot interview
+@bot report
 ```
 
-이제 등록해보자.
+이제 등록해보자. bot에게 dm을 보내자.
 ```
 standup #channelname
 Y: yesterday's info
 T: today's info
 B: blockers
 G: goals'
+
+standup #korea_only T: cleanup all open issue
 ```
 Y T B G 다 옵셔널이다. 꼭 다 써야하는건 아님 그러나  채널 이름은 꼭 써야함.
 
