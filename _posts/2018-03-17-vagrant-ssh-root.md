@@ -41,6 +41,7 @@ ssh root@db
 password 물어보고 로그인 가능하면 된다.
 
 ## 자주 발생되는 문제 
+
 * vagrant vm설치시 아이디 비번인 vagrant/vagrant root/vagrant로 설정된다.
 
 * vagrant 로 만든 vm에 비밀번호로 접속이 안된다.
