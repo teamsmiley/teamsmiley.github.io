@@ -70,6 +70,7 @@ cat ~/.ssh/id_rsa.pub
 
 접속할 서버에서 
 ```
+ssh-keygen -t rsa
 vi ~/.ssh/authorized_keys
 ```
 위에서 복사한 내용을 붙여 넣는다. 
@@ -84,6 +85,11 @@ vi ~/.ssh/authorized_keys
 vagrant ssh-config
 ```
 
+* vagrant share folder 가 잘 안될때 (mount: unknown filesystem type 'vboxsf')
+```
+vagrant plugin install vagrant-vbguest
+```
+이렇게 하고 나서 문제 없이된다.
 
 
 
