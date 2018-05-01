@@ -31,7 +31,9 @@ project.csproj 파일을 수정한다.
 <aspNetCore processPath="dotnet" arguments=".\rc-idp.dll" stdoutLogEnabled="true" stdoutLogFile=".\logs\stdout" /> <!--true로 변경-->
 ```
 
-## 또는 앞에 포스트처럼 nlog를 설정하여 로그를 본다. 
+## 또는 앞에 포스트처럼 nlog를 설정하여 로그를 본다.
+
+
 
 
 
