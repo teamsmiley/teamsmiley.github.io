@@ -131,6 +131,7 @@ export const environment = {
 이제 prod도 있고 staging도 있다. apiurl을 추가해보자.
 
 * environment.ts
+
 ```ts
 export const environment = {
   production: false,
@@ -176,7 +177,7 @@ export class AppComponent {
 
 app.component.html
 
-```html
+```ts
 <h1>{{apiUrl}}</h1>
 ```
 
