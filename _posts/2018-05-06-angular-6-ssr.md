@@ -357,4 +357,36 @@ npm run build:ssr-prod
 npm run build:ssr-staging
 ```
 
-이러면 된다. 
+이러면 된다.
+
+## 이제 프로덕션 빌드를 iis 서버에 배포해보자.
+
+참고 : https://www.youtube.com/watch?v=JUYCDnqR8p0
+
+iis를 설치한다.(7.5를 기준으로함. windows 2008 r2)
+
+iis node를 설치한다. https://github.com/tjanczuk/iisnode
+
+redirect 모듈도 설치한다. rewrite_2.0_rtw_x64.msi
+
+iis에서 사이트를 만든후 디렉토리를 만든다.
+
+server.ts를 다음처럼 변경한다.
+
+```ts
+// const DIST_FOLDER = join(process.cwd(), 'dist');
+const DIST_FOLDER = join(process.cwd(), '');
+```
+
+빌드한다. 
+
+npm run build:ssr-prod
+
+/dist 폴더에 잇는 모든 파일을 복사를 해서 실서버의 디렉토리에 복사한다. 
+
+403 에러 발생시  디렉토리 연결 권한을 administrator로 준다.
+
+![]({{ site.baseurl }}/assets/iis-connect-as.PNG)
+
+실제 사이트에서 접속 확인해본다.
+
