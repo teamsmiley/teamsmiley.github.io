@@ -389,5 +389,46 @@ npm run build:ssr-prod
 
 ![]({{ site.baseurl }}/assets/iis-connect-as.PNG)
 
+web.config도 설정해준다.
+
+```xml
+<configuration>
+  <system.webServer>
+
+    <!-- indicates that the hello.js file is a node.js application 
+    to be handled by the iisnode module -->
+
+           <handlers>
+            <!-- indicates that the app.js file is a node.js application to be handled by the iisnode module -->
+            <add name="iisnode" path="server.js" verb="*" modules="iisnode" />
+        </handlers>
+
+
+        <rewrite>
+            <rules>
+                <!-- Don't interfere with requests for node-inspector debugging -->
+                <rule name="NodeInspector" patternSyntax="ECMAScript" stopProcessing="true">
+                    <match url="^server.js\/debug[\/]?" />
+                </rule>
+
+                <!-- First we consider whether the incoming URL matches a physical file in the /public folder -->
+                <rule name="StaticContent">
+                    <action type="Rewrite" url="public{REQUEST_URI}" />
+                </rule>
+
+                <!-- All other URLs are mapped to the Node.js application entry point -->
+                <rule name="DynamicContent">
+                    <conditions>
+                        <add input="{REQUEST_FILENAME}" matchType="IsFile" negate="True" />
+                    </conditions>
+                    <action type="Rewrite" url="server.js" />
+                </rule>
+            </rules>
+        </rewrite>
+
+  </system.webServer>
+</configuration>
+```
+
 실제 사이트에서 접속 확인해본다.
 
