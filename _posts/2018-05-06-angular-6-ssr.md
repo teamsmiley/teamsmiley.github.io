@@ -178,7 +178,7 @@ export class AppComponent {
 app.component.html
 
 ```html
-<h1>{{ "{% apiUrl " }}%}</h1>
+<h1>{ { apiUrl } }</h1>
 ```
 
 실행을 해보고 화면에 찍히는지 확인
