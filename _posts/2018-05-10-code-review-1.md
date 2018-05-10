@@ -28,4 +28,21 @@ category: {program}
 
 간단해졌는데. 이런걸 신입 개발자에게 어떻게 설명을 해야 할지는 잘 모르겟다.
 
+```ts
+update (bool:any,post:any)
+```
 
+일단 bool이 변수명이고 타입이 any다 잘못됬다. 
+```ts
+isPublish: boolean, post:Post 
+```
+
+이렇게 타입을 정해줘야한다. 
+
+그리고 코드를 보니 단지 토글을 해주는것같다. 그럼 isPublish가 구지 들어갈 필요가없지 안나?
+
+post.isPublish있기때문에 
+
+```ts
+  post.isPublish = !post.isPublish;
+``` 
