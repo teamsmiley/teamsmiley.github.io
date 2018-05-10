@@ -1,6 +1,6 @@
 ---
 layout: post
-title: 'Swagger' 
+title: 'Swagger - NotSupportedException' 
 author: teamsmiley 
 date: 2018-05-06
 tags: [Swagger,ConflictingActionsResolver]
