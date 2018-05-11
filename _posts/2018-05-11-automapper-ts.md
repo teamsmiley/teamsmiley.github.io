@@ -31,7 +31,7 @@ scripts에 추가해 주면 된다.
 ],
 ```
 
-## app.component.ts 수정 
+## app.module.ts 수정 
 이걸 추가해준다
 ```ts
 import {  } from "automapper-ts";
@@ -88,14 +88,21 @@ export class PostAdminForUpdate extends PostForUpdate{
 appmodule.ts에 construct에 다음을 추가한다. 
 
 ```ts
-    automapper.createMap('PostFormGroup', 'PostForCreation')
-      .forSourceMember('id', (opts: AutoMapperJs.ISourceMemberConfigurationOptions) => { opts.ignore(); })
-      // .forMember('bandid', function (opts) { opts.mapFrom('band'); })
-      ;
-      automapper.createMap('PostFormGroup', 'PostAdminForCreation')
-      .forSourceMember('id', (opts: AutoMapperJs.ISourceMemberConfigurationOptions) => { opts.ignore(); })
-      .forMember('isPublish', function (opts) { opts.mapFrom('isPublish'); })
-      ;
+import {  } from "automapper-ts";
+
+constructor(){
+
+automapper.createMap('PostFormGroup', 'PostForCreation')
+  .forSourceMember('id', (opts: AutoMapperJs.ISourceMemberConfigurationOptions) => { opts.ignore(); })
+  // .forMember('bandid', function (opts) { opts.mapFrom('band'); })
+  ;
+automapper.createMap('PostFormGroup', 'PostAdminForCreation')
+  .forSourceMember('id', (opts: AutoMapperJs.ISourceMemberConfigurationOptions) => { opts.ignore(); })
+  .forMember('isPublish', function (opts) { opts.mapFrom('isPublish'); })
+  ;
+}
+...
+
 ```
 
 폼그룹을 create하고 매핑하는데 id는 무시를 해라. 
