@@ -31,12 +31,6 @@ scripts에 추가해 주면 된다.
 ],
 ```
 
-## app.module.ts 수정 
-이걸 추가해준다
-```ts
-import {  } from "automapper-ts";
-```
-
 ## model을 만들자.
 
 ```
