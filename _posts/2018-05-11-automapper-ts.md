@@ -31,6 +31,19 @@ scripts에 추가해 주면 된다.
 ],
 ```
 
+## typings.d.ts 를 추가 하자. (꼭 해야하는지는 모르겟음.)
+
+src/typings.d.ts
+
+```ts
+/* SystemJS module definition */
+declare var module: NodeModule;
+declare module 'automapper-ts';
+interface NodeModule {
+  id: string;
+}
+```
+
 ## model을 만들자.
 
 ```
@@ -139,5 +152,8 @@ create(): void {
   }
 ```
 
+## 문제
+
+* typescript hero 를 사용해 임포트부분을 알파벳 정렬을 하면 automapper가 자꾸 없어짐. 고쳐야함.
 
 
