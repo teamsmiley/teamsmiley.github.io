@@ -85,8 +85,35 @@ uploadFile(addtionUrl: string, resource: any): Observable<any> {
                 .subscribe(result => {
                     console.log('uploaded');
                 });
+                
+ this.fileDataService.uploadFile('thumnail', formData)
+                .subscribe(result => {
+                    console.log('uploaded');
+                });
 ```
 
 함수 하나로 바꿔져서 해결됬다.
+
+### 사용하는곳에서 저장위치를 마음대로 바꿔버릴 염려가 있다. 
+
+```ts
+uploadFile(resource: any, isThumnail:boolean): Observable<any> {
+    let url = `${this.apiUrl}boardfiles`;
+    if (isThumnail) url = url + '/thumnail';
+
+    return this.http.post(url , resource)
+        .pipe(
+            catchError(this.handleError)
+        );
+}
+
+//사용할때
+this.fileDataService.uploadFile(formData,true)
+                .subscribe(result => {
+                    console.log('uploaded');
+                });
+```
+
+이게 thumnail과 상위폴더 두개로 강제할수 있다. 
 
 
