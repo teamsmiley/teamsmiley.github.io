@@ -12,14 +12,15 @@ category: {programe}
 
 ## Server manager -> Roles -> WebServer (IIS) 
 
-* basic Authentication
-* request filtering
+
 * Logging Tools
 * Request Monitor
 * .Net Extensibility
 * ASP.Net 
 * ISAPI Extensions
 * ISAPI Filters, 
+* basic Authentication
+* request filtering
 * iis management console
 * iis management scripts and tools 
 * Management Service.
@@ -46,8 +47,6 @@ Web Platform Install를 실행해서 Web Deploy 3.6 for Hosting Servers을 설�
 ![]({{ site.baseurl }}/assets/web_deploy_903.png)
 
 설정을 하고 start를 한다. 
-
-![]({{ site.baseurl }}/assets/web_deploy_902.png)
 
 * 설정 확인 
   * windows credentials only로 해도 된다.
