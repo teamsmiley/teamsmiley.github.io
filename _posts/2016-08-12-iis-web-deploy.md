@@ -27,7 +27,9 @@ Web Platform Install를 실행해서 Web Deploy 3.6 for Hosting Servers을 설�
 ![]({{ site.baseurl }}/assets/web_deploy_4.png)
 
 * 설정 확인 
-
+  * windows credentials only로 해도 된다.
+  * Enable remote connection을 on하고 시작 
+  
 ![]({{ site.baseurl }}/assets/web_deploy_5.png)
 
 * 웹사이트를 선택하고 iis manager permissions를 선택한다. 
