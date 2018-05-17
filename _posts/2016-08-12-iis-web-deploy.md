@@ -8,6 +8,10 @@ image: /files/covers/blog.jpg
 category: {programe}
 ---
 
+## Web Platform Installer 최신 버전을 다운로드 받아 설치합니다.
+
+Web Platform Installer Direct Downloads <https://docs.microsoft.com/en-us/iis/install/web-platform-installer/web-platform-installer-direct-downloads>
+
 ## iis web deploy  설정 
 
 * web deploy 3.6 다운로드 및 설치 <https://www.microsoft.com/en-us/download/details.aspx?id=43717>
