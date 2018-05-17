@@ -43,6 +43,10 @@ Web Platform Install를 실행해서 Web Deploy 3.6 for Hosting Servers을 설�
 
 서버이름을 클릭하고 management service를 클릭한다.
 
+![]({{ site.baseurl }}/assets/web_deploy_903.png)
+
+설정을 하고 start를 한다. 
+
 ![]({{ site.baseurl }}/assets/web_deploy_902.png)
 
 * 설정 확인 
@@ -52,6 +56,8 @@ Web Platform Install를 실행해서 Web Deploy 3.6 for Hosting Servers을 설�
 ![]({{ site.baseurl }}/assets/web_deploy_5.png)
 
 ## 서비스가 도는지 확인하고 자동시작으로 바꿔준다. 
+
+![]({{ site.baseurl }}/assets/web_deploy_904.png)
 
 ## 로컬에서 테스트해보자.
 
