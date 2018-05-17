@@ -17,17 +17,10 @@ Server manager -> Roles -> WebServer (IIS) -> InternetInformationServer (IIS) Ma
 Web Platform Install를 실행해서 Web Deploy 3.6 for Hosting Servers을 설치한다. 
 
 ![]({{ site.baseurl }}/assets/web_deploy_2.png)
+
 ## iis web deploy  설정 
 
 * web deploy 3.6 다운로드 및 설치 <https://www.microsoft.com/en-us/download/details.aspx?id=43717>
-
-* 설치 전 
-
-![]({{ site.baseurl }}/assets/web_deploy_1.png)
-
-* 설치 후 
-
-![]({{ site.baseurl }}/assets/web_deploy_3.png)
 
 * 관리자 서비스 실행 
 
