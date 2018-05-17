@@ -12,6 +12,10 @@ category: {programe}
 
 Web Platform Installer Direct Downloads <https://docs.microsoft.com/en-us/iis/install/web-platform-installer/web-platform-installer-direct-downloads>
 
+## Web Deploy 3.6 for Hosting Servers 설치 
+
+Web Platform Install를 실행해서 Web Deploy 3.6 for Hosting Servers을 설치한다. 
+
 ## iis web deploy  설정 
 
 * web deploy 3.6 다운로드 및 설치 <https://www.microsoft.com/en-us/download/details.aspx?id=43717>
