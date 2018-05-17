@@ -51,6 +51,16 @@ Web Platform Install를 실행해서 Web Deploy 3.6 for Hosting Servers을 설�
 
 ![]({{ site.baseurl }}/assets/web_deploy_5.png)
 
+## 서비스가 도는지 확인하고 자동시작으로 바꿔준다. 
+
+## 로컬에서 테스트해보자.
+
+꼭 https로 해야한다. ssl 에러가 나면 무시하고 진행을 한다. 
+
+<https://localhost:8172/msdeploy.axd>
+
+userid/password를 물어보면 성공 
+
 
 * 이제 visual studio에서 배포 하면 된다.
 
