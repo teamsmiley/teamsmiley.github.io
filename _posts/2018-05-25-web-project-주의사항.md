@@ -21,6 +21,7 @@ category: {program}
 
 * url은 전부 소문자로 작성한다.
 * type스크립트 사용시 가능하면 any 타입을 줄인다.
+* 업데이트시 enter키를 치면 업데이트되게 한다. 엔터를 허용하는 텍스트박스등에서는 ctrl enter로 한다. 
 
 ## backend 
 
