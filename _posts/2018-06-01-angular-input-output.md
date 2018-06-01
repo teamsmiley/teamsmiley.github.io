@@ -34,11 +34,10 @@ editor를 컴포는트로 빼서  현재 페이지에서 사용해보자.
 
 자식 - 에디터
 ```html
-<div class="section-divider">
-  <span>Contents Write</span>
-  </div>
-  <textarea id="postformcontent"rows="6"> </textarea>
+<div>
+    <span>Contents Write</span>
 </div>
+<textarea id="postformcontent"rows="6"> </textarea>
 ```
 
 이제 컴포넌트를 두개를 사용하였으나 부모의 화면에 기존과 같이 보인다. 
@@ -72,7 +71,7 @@ post.content가 부모가 서버에서 받아온 값이다. 이걸 content라는
 
 이제 값이 화면에 보인다. 
 
-## ngOnInit or ngOnChanges
+## 참고 사항 - ngOnInit or ngOnChanges
 
 ngOnInit함수에서 인풋받은 값을 찍어보자. 널이거나 안나온다. 
 
