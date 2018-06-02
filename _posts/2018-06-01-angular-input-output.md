@@ -134,11 +134,31 @@ onParentContentChanged(event) {
 
 알고 보면 별것아닌데 헷갈리네.
 
+## 부모가 폼은 어떻게 만들어야할까? 
+content를 지웠기 때문에 부모 폼에서는 빼야할까? 하는 고민이 있다. 코드를 보자.
+
+```ts
+  postFormGroup = new FormGroup({
+    title: new FormControl('', Validators.required),
+    content: new FormControl('', Validators.required),
+    boardCategoryId: new FormControl(''),
+  });
+```
+일단 content는 기존에도 있엇기 때문에 그대로 두고 자식 컴포넌트에서 값을 받을때 처리방법을 보자.
+
+```ts
+onContentChanged(event) {
+  this.postFormGroup.patchValue({
+    content: event
+  });
+}
+```
+
+폼그룹에 patchValue를 하면되는듯. validation은 잘되는지 궁금
 
 ## todo 
 
 ### 하나의 폼을 잘라 내면 유효성 검사는 어떻게 할것인가?
-
 
 ### 자식 컴포넌트에서 구지 ngmodel을 사용해야할가?
 
