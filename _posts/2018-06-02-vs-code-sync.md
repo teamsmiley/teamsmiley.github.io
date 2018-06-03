@@ -20,7 +20,7 @@ search Settings Sync
 
 click install 
 
-sync-1.PNG
+![]({{ site.baseurl }}/assets/sync-1.PNG)
 
 또는 아래 링크에서 인스톨을 누르면된다. 
 
@@ -32,7 +32,7 @@ ctrl + shift + P 를 누르고 sync를 입력하자.
 
 그럼 다음그림이 나온다.
 
-sync-2.PNG
+![]({{ site.baseurl }}/assets/sync-2.PNG)
 
 일단 reset extension setting을 먼저 하자. (기존 정보가 있을지도 모르니 지우자.)
 
@@ -43,22 +43,22 @@ github에 접속해서 token을 얻는다.
 
 ** Settings > Developer settings > Personal access tokens **
 
-sync-3.PNG
+![]({{ site.baseurl }}/assets/sync-3.PNG)
 
 이름 입력 ,  gist를 선택 후 완료 누르면 토큰을 얻을수 있다. 이건 다시 알아낼수가 없으므로 잘 저장해둔다. 
 
-sync-4.PNG
+![]({{ site.baseurl }}/assets/sync-4.PNG)
 
 
 ## 현재 설정을 업로드후 gist id찾기 
 
 이제 alt + shift + u를 누르자. 
 
-sync-5.PNG
+![]({{ site.baseurl }}/assets/sync-5.PNG)
 
 화면에 조금전에 받아둔 토큰을 넣은후 엔터
 
-sync-6.PNG
+![]({{ site.baseurl }}/assets/sync-6.PNG)
 
 플러그인이 Gist를 만든다.  아웃풋 화면을 보면 gistid를 볼수 있다. 
 
@@ -66,9 +66,9 @@ sync-6.PNG
 
 https://gist.github.com/teamsmiley 
 
-sync-7.PNG
+![]({{ site.baseurl }}/assets/sync-7.PNG)
 
-sync-8.PNG
+![]({{ site.baseurl }}/assets/sync-8.PNG)
 
 이걸 누르고 복사를 하면 거기에 코드가 있다. 따로 이코드를 적어둔다.
 
@@ -80,9 +80,9 @@ sync-8.PNG
 
 personal token과 Gist id를 넣어줘야 한다.
 
-sync-10.pngP
+![]({{ site.baseurl }}/assets/sync-10.PNG)
 
-sync-11.png
+![]({{ site.baseurl }}/assets/sync-11.PNG)
 
 이제 싱크가 완료되서 설치된 플러그인들과 세팅을 sync한다. 
 
