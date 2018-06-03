@@ -76,7 +76,20 @@ sync-8.PNG
 <script src="https://gist.github.com/teamsmiley/5e96db765227cc7ff82def22346b1a42.js"></script>
 ```
 
-## 다른컴퓨터에서 Setting Sync를 설치하고 alt + shift + d를 누른다. 
+## 다른컴퓨터에서 Setting Sync를 설치하고 alt + shift + d 를 누른다. 
+
+personal token과 Gist id를 넣어줘야 한다.
+
+sync-10.pngP
+
+sync-11.png
+
+이제 싱크가 완료되서 설치된 플러그인들과 세팅을 sync한다. 
+
+
+## todo
+
+### macosx와 windows에서 차이점은 없을가?
 
 
 
