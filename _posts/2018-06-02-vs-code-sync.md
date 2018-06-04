@@ -2,7 +2,7 @@
 layout: post
 title: 'VS Code Settings Sync' 
 author: teamsmiley 
-date: 2018-06-01
+date: 2018-06-02
 tags: [vs code]
 image: /files/covers/blog.jpg
 category: {program}
