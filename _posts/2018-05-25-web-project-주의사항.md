@@ -16,10 +16,13 @@ category: {program}
 
 <https://teamsmiley.github.io/2017/02/10/code-style/> 이글도 관련이 되있기는 합니다. 
 
+## 전반적인내용
+
+* 유저 모델과 어드민 모델이 다를경우 WithAdmin이라는 걸로 구분한다. 커스텀 미디어타입 , 함수명 클래스명 모두 WithAdmin으로 한다.
 
 ## frontend
 
-* url은 전부 소문자로 작성한다.
+* url은 전부 소문자로 작성한다.(인증시 토큰이 넘어오는데 대소문자를 구분을 한다.)
 * type스크립트 사용시 가능하면 any 타입을 줄인다.
 * 업데이트시 enter키를 치면 업데이트되게 한다. 엔터를 허용하는 텍스트박스등에서는 ctrl enter로 한다. 
 
