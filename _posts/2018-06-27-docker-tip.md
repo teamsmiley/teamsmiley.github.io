@@ -102,6 +102,8 @@ services:
     command: ["game01"]
 ```
 
+command를 사용하여 entrypoint에 아규먼트 추가 
+
 ### docker compose로 올리자.
 
 cd /docker/mysql && docker-compose up -d 
