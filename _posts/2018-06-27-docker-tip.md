@@ -132,7 +132,10 @@ cmd는 docker run -it --rm zzzz /bin/bash 하면 Dockerfile에 있는 cmd는 무
 
 
 
+## 추가할것 
 
+docker로 크론탭을 사용해야하나?
+docker에서 다른서버에 자동로그인을 하는경우? .ssh가 모든 도커가 같은가? 같게 하는게 맞는가?
 
 
 
