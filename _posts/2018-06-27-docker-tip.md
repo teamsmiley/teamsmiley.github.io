@@ -66,7 +66,7 @@ ENTRYPOINT ["python2","-O","/data/LogImporter/LogImporter22th.py", "--server" ]
 ```
 
 ## 빌드해서 이미지를 만들자. 
-cd /docker/log-importer && docker build --tag log-importer .
+cd /docker/importer && docker build --tag importer .
 
 
 ## docker-compose를 만들자.
@@ -87,8 +87,8 @@ services:
       - /data/mysql:/var/lib/mysql
       - ./mysqld.cnf:/etc/mysql/mysql.conf.d/mysqld.cnf:ro
 
-  log-importer-game01:
-    image: log-importer
+  importer-game01:
+    image: importer
     restart: always
     links:
       - logdb
@@ -113,7 +113,7 @@ cd /docker/mysql && docker-compose up -d
 docker ps -a --no-trunc
 
 CONTAINER ID                                                       IMAGE               COMMAND                                                             CREATED             STATUS              PORTS                    NAMES
-6877a09445a022c9b70d95d4fdf7d43e5784301377c800c98c23147656b12116   log-importer        "python2 -O /data/LogImporter/LogImporter22th.py --server game01"   7 minutes ago       Up 7 minutes                                 mysql_log-importer-game01_1
+6877a09445a022c9b70d95d4fdf7d43e5784301377c800c98c23147656b12116   importer        "python2 -O /data/LogImporter/LogImporter22th.py --server game01"   7 minutes ago       Up 7 minutes                                 mysql_importer-game01_1
 
 c6552ef42dc9a39d9c8938b38fc0dc46ac18fb50776e0f9a08b0141b23651764   mysql:5.7           "docker-entrypoint.sh mysqld"                                       7 minutes ago       Up 7 minutes        0.0.0.0:3306->3306/tcp   mysql_logdb_1
 ```
@@ -122,6 +122,31 @@ game01이 잘 붙어서 성공이다.
 --no-trunc : 커맨드 내용을 다 보여준다. 
 
 ## docker-compose를 추가하여 나머지 서버들도 분석하면된다. 
+
+## 도커 이미지가 완성이 되었으면 이미지로 서버에 저장했다가 서버가 고장나면 복구해서 사용한다. 
+
+현재는 도커이미지가 빌드한 곳에만 있으므로 빌드서버가 고장나면 다 날라가는것이다.
+이걸 도커 hub에 올리면된다. 
+
+https://hub.docker.com 에 가입하고 로그인후 create repository 해서 리파지토리 만들고 도커 빌드를 다시 해보자. 태깅을 하는데 도커 허브에서 주는 걸로 해야한다. 
+
+본인아이디 / 저장소이름 
+
+```bash
+cd /docker/importer 
+docker build --tag YourId/importer .
+docker login   
+docker push YourId/importer
+```
+
+나중에 복구시에는 
+
+```
+docker login 
+docker pull YourId/importer 이러면된다.
+```
+
+## 소스코드가 바뀌면 빌드를 해서 이미지를 다시 만들어야할듯 
 
 
 ## Dockerfile에서 cmd와 entrypoint의 차이점 
@@ -135,7 +160,7 @@ cmd는 docker run -it --rm zzzz /bin/bash 하면 Dockerfile에 있는 cmd는 무
 ## 추가할것 
 
 docker로 크론탭을 사용해야하나?
-docker에서 다른서버에 자동로그인을 하는경우? .ssh가 모든 도커가 같은가? 같게 하는게 맞는가?
+
 
 
 
