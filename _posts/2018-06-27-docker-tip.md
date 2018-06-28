@@ -156,7 +156,6 @@ cmd는 docker run -it --rm zzzz /bin/bash 하면 Dockerfile에 있는 cmd는 무
 그러나 entryPoint는 아규먼트로 취급된다.  entrypoint에 있는거 다하고 그 후에 "/bin/bash"를 아규먼트로 하나 추가한다. 
 
 
-
 ## 추가할것 
 
 docker로 크론탭을 사용해야하나?
