@@ -54,7 +54,7 @@ MysqlPassword = os.environ["MysqlPassword"]
 Dockerfile
 ```yml
 FROM python:2.7-stretch
-MAINTAINER "brian.kim" <brian.kim@estsoftinc.com>
+MAINTAINER "brian.kim" <teamsmiley@gmail.com>
 
 RUN apt-get update
 RUN pip install mysql-python
