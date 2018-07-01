@@ -33,6 +33,8 @@ category: {program}
 ## database
 * 꼭 상위 - 하위로 나누어야만 하지 않는것도 있다 예를들면 게시글은 게시판 이름에 꼭 종속일 필요는 없다. 게시글대로 resource고 게시판대로 리소스임로 나중에 이 두개를 붙이면 된다. (뭔소리인지..)
 
+* entity framework에서 select시에 tracking을 안하게 해야한다.(기본으로 왜 지원을 안하지?)
+
 ## 정리 필요
 * 모든 api는 ( 컨트롤러는)  return값에 http상태 코드를  보내고 conent에 data를 실어 보내야한다.
 * Put은 StatusCode(HttpStatusCode.NoContent)를 결과로 던지자.
