@@ -151,9 +151,15 @@ docker pull YourId/importer 이러면된다.
 
 ## Dockerfile에서 cmd와 entrypoint의 차이점 
 
-cmd는 docker run -it --rm zzzz /bin/bash 하면 Dockerfile에 있는 cmd는 무시된다. 
+Dockerfile에서 cmd와 entrypoint를 설정할수 있다. 
+
+이미지가 로드되고 난후 바로 실행이 된다. 그런데 두 설정파일에는 차이점이 있다. 
+
+cmd는 docker run -it /bin/bash 처럼 커맨들를 추가하면 docker Dockerfile에 있는 cmd는 무시된다.
 
 그러나 entryPoint는 아규먼트로 취급된다.  entrypoint에 있는거 다하고 그 후에 "/bin/bash"를 아규먼트로 하나 추가한다. 
+
+docker run 실행시 --entrypoint를 사용하면 Dockerfile에 있는 EntryPoint는  무시된다.
 
 
 ## 추가할것 
