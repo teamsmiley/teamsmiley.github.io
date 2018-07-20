@@ -23,17 +23,18 @@ category: {CI}
 ## jenkins server
 
 * github desktop을 설치한다. 
-* git shell도 같이 설치되는데 실행한다. 
+* git-bash 실행한다. (C:\Program Files\Git)
 * ssh key를 만들자.
 ```
 ssh-keygen.exe -t rsa 
 ```
  
 * C:\Users\Administrator\.ssh 폴더에  id_rsa id_rsa.pub 파일이 생성된다. (다른 유저를 사용중이면 C:\Users\\**UserName**\\.ssh)
-* 젠킨스 루트 폴더에 .ssh폴더를 복사해서 붙여넣는다. C:\Program Files (x86)\Jenkins\.ssh 가 된다. 
-* C:\Program Files (x86)\Jenkins\.ssh\id_rsa.pub를 메모장에서 열어서 내용을 복사한다. 
 
-젠킨스 서버에서의 세팅은 완료되었음.
+* C:\Users\Administrator\.ssh\id_rsa.pub를 메모장에서 열어서 내용을 복사한다. ==>이건 github에 설정 
+
+* id_rsa 는 젠킨스에 나중에 설정
+
 
 ## github website 
 
@@ -52,9 +53,24 @@ https://github.com/**{UserName}**/**{RepositoryName}**/settings/keys>
 * source code management에서 git을 선택한다. 
 * Repository URL : git@github.com:**{UserName}**/**{RepositoryName}**.git ( 콜론을 잘 보자. 리파지토리 이름뒤에도 .git이 붙는다. )
 
-* credential을 추가한다. 
+* credential을 추가한다. ADD >> jenkins >> 
     * SSH Username with private key 
-    * Private Key : from the Jenkins master ~./ssh 
+    * Username : Administrator
+    * Private Key : Enter Directly id_rsa파일을 붙여 넣는다.
+    * Passphrase : 인증서 만들때 넣은값이다. 일반적으로 아무것도 안넣는다.
+
+
+![]({{site_baseurl}}/assets/jenkins-github-01.png)
+
 
 이렇게 하고 빌드하면 젠킨스가  github에서 소스코드를 가져올수 있다. 
- 
+
+## 여러개의 리파지토리는?
+
+위에 샘플에서는 한개의 리파지토리만 사용했다. 그런데 한번 사용한 키는 다른 리파지토리에 등록을 하려면 벌써 등록이 되잇다고 하면서 에러가 난다. 
+
+이런 경우에는 방금 만든 deploy키를 지우고 유저에 setting에 간다. 
+
+![]({{site_baseurl}}/assets/jenkins-github-02.png)
+
+new sshkey를 여기에 등록을 하고 젠킨스에서는 한번 만든 인증을 여러군데에서 사용하면된다. 
