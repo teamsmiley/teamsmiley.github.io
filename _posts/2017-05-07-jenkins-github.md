@@ -8,7 +8,9 @@ image: /files/covers/blog.jpg
 category: {CI}
 ---
 
-# Windows 에서 Jenkins에서 github 가져오기 
+# Jenkins에서 Github 연동 - Windows
+
+## repository 가져오기
 
 별거 아닌거가지고 3일이나 삽질해서 스트레스 받음..
 
@@ -73,4 +75,22 @@ https://github.com/**{UserName}**/**{RepositoryName}**/settings/keys>
 
 ![]({{site_baseurl}}/assets/jenkins-github-02.png)
 
-new sshkey를 여기에 등록을 하고 젠킨스에서는 한번 만든 인증을 여러군데에서 사용하면된다. 
+new ssh key를 여기에 등록을 하고 젠킨스에서는 한번 만든 인증을 여러군데에서 사용하면된다.
+
+## Github Webhook - Jenkins 
+
+소스코드를 push하면 사이트가 자동 빌드 되는것을 하고 싶다. 
+
+예전에는 github service를 이용하고 젠킨스에 플러그인을 설치했는데 이 방법이 depreciate가 됬음.
+
+새로운 webhook로 하자. 
+
+github >> repository >> setting >> webhook >> add new webhook
+
+![]({{site_baseurl}}/assets/github-webhook-01.png)
+
+![]({{site_baseurl}}/assets/github-webhook-02.png)
+
+혹시 안보이면 관련 플러그인을 설치하셔야 합니다. 
+
+
