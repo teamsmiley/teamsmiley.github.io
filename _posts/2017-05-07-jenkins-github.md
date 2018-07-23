@@ -89,8 +89,6 @@ github >> repository >> setting >> webhook >> add new webhook
 
 ![]({{site_baseurl}}/assets/github-webhook-01.png)
 
-![]({{site_baseurl}}/assets/github-webhook-02.PNG)
-
 혹시 안보이면 관련 플러그인을 설치하셔야 합니다.
 
 
