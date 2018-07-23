@@ -25,9 +25,9 @@ category: {CI}
 ## jenkins server
 
 * github desktop을 설치한다. 
-* git-bash 실행한다. (C:\Program Files\Git)
 * ssh key를 만들자.
 ```
+C:\Program Files\Git\git-bash.exe
 ssh-keygen.exe -t rsa 
 ```
  
@@ -36,6 +36,7 @@ ssh-keygen.exe -t rsa
 * C:\Users\Administrator\.ssh\id_rsa.pub를 메모장에서 열어서 내용을 복사한다. ==>이건 github에 설정 
 
 * id_rsa 는 젠킨스에 나중에 설정
+
 
 
 ## github website 
