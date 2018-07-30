@@ -483,6 +483,7 @@ app.use(function(req, res, next) {
 
 빌드해보자. 
 
+npm run build:ssr-ko
 npm run build:ssr-en
 
 서버에 파일을 올리고 web.config를 수정한다. 기존 룰을 지우고 다음처럼 한다. 
@@ -649,5 +650,56 @@ web.config를 다음을 추가한다.
 
 <https://github.com/teamsmiley/i18n-sample>
 
+
+## 추가 사항 
+
+### 페이지에서 언어를 선택할수 있게 하기 
+
+결과는 다음과 같다. 
+
+![]({{site_baseurl}}/assets/angular-ssr-12.PNG)
+
+app.components.ts 
+
+```ts
+import { Component, LOCALE_ID, Inject, OnInit } from "@angular/core";
+
+@Component({
+  selector: "app-root",
+  templateUrl: "./app.component.html",
+  styleUrls: ["./app.component.css"]
+})
+export class AppComponent {
+  title = "app";
+
+  currentLanguageCode: string = "en";
+
+  languages = [
+    { code: "en", label: "English", seleted: false },
+    { code: "ko", label: "한국어", seleted: false },
+    { code: "ja", label: "日本語", seleted: false }
+  ];
+
+  constructor(@Inject(LOCALE_ID) public localeId: string) {}
+
+  ngOnInit() {
+    if (this.localeId == "ko") this.currentLanguageCode = "ko";
+    else if (this.localeId == "ja") this.currentLanguageCode = "ja";
+  }
+}
+
+```
+
+app.component.html
+```html
+<div class="mr-md-3">
+  <select name="select" class="btn btn-outline-warning btn-sm" onchange="window.open(value,'_self');">
+    <option *ngFor="let language of languages" value="/{{language.code}}/home" [selected]="language.code==currentLanguageCode">{{language.label}}</option>
+  </select>
+</div>
+```
+
+npm run build:ssr-ko
+npm run build:ssr-en
 
 
