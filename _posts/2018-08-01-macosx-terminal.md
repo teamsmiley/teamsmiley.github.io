@@ -16,7 +16,9 @@ https://beomi.github.io/2017/07/07/Beautify-ZSH/
 http://blog.reshout.com/?p=1173
 
 ## host 지우기
+```
 echo "prompt_context() {}" >> ~/.zshrc
+```
 
 완료 화면 
 
