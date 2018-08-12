@@ -7,164 +7,197 @@ tags: [docker,mysql,replication]
 image: /files/covers/blog.jpg
 category: {macosx}
 ---
-# docker 로 mysql설치후 리플리케이션 까지.
+# docker 로 mysql설치후 리플리케이션 까지. (feat. swarm and docker-machine)
 
-현재 호스트명이 master와 slave 서버가 있다. 각각의 아이피는 192.168.1.24 192.168.1.29 이다. 
+## 목표 
+* 2개의 서버에 도커 스웜을 설치하고 컨테이너를 올린다. 
+* docker01 : master db 
+* docker02 :  slave db를 올린다. 
+* 특정 컨테이너는 호스트명으로 구별해서 특정 호스트에서 실행되게 한다. 
+* ingress network에서 포트가 중복 안되므로 master는 3306 slave는 3307을 외부에 오픈할 것이다.
+* 2개의 mysql이 리플리케이션이 되게 한다. 
 
-mysql의 데이터파일을은 각각의 서버에 /data/mysql에 저장하게 하자. (컨테이너 안에 저장하게 하면 안됨 도커재시작시 데이터 사라짐)
+## 실서버 설치 
 
-도커를 스웜을 사용해서 mysql을 올리면 어느 서버에 올라갈지 모른다. 그래서 특정 이미지는 특정 서버에 동작하게 한다. 
+docker01.ur-domain.com : 100.100.100.24
+docker02.ur-domain.com : 100.100.100.25
 
-컨테이너끼리 연결을 해서 리플리케이션을 해야하기 때문에 overlay network를 사용해야해서 swarm을 설치한다. 
+설치후 firewalld는 끄고 yum update는 다 끝내두자. 
 
-ingress network를 사용하기 때문에 하나의 docker-compose파일에서 호스트의 같은 포트를 오픈할수가 없다.  그러므로 우리는 master는 3306 slave는 3307을 외부에 오픈할 것이다.
-
-## swarm 설치 
-스웜을 설치하면 여러개의 노드가 하나의 아이피로 대표 될수 있다
-
-### master
-
-docker swarm init --advertise-addr 192.168.1.24
-
-결과로 나온 스크립트를 복사해둔다. 
+## 작업 컴퓨터에서 docker-machine을 사용하여 클러스터를 만든다. 
 ```
-docker swarm join --token SWMTKN-1-26qpppygfw3jc4yyy0ln5rtibqkrrsdbtkae656r15281md8gr-8tgq0y6hrf554t02suiu4ut4j 192.168.1.24:2377
+docker-machine -D create \
+  --driver generic \
+  --generic-ip-address=docker01.domain.com \
+  --generic-ssh-key ~/.ssh/id_rsa \
+  --generic-ssh-user root \
+  docker01
+
+docker-machine -D create \
+  --driver generic \
+  --generic-ip-address=docker02.domain.com \
+  --generic-ssh-key ~/.ssh/id_rsa \
+  --generic-ssh-user root \
+  docker02
 ```
-mkdir -p /data/mysql 
 
-데이터 폴더를 만든다. 
+-D 옵션은 무슨일이 일어나는지 자세히 보고 싶어서 추가하였다. 
 
-### slave
+centos에서 root를 사용해서 generic-ssh-user root 도 추가 하였다. 
 
-위에 복사해둔 스크립트를 실행하면 스웜 클러스터에 조인이 된다. 
-
-mkdir -p /data/mysql
-데이터 폴더 만든다. 
-
-### 다시 master에서 
-docker node ls  로 클러스터 확인
-
-## docker-compose셋팅 (master에서 )
+혹시 에러가 나면 다음을 실행하고 해보자.
 
 ```
-mkdir -p /docker/mysql/conf.d
-vi /docker/mysql/docker-compose.yml
+rm -rf /usr/lib/python2.7/site-packages/backports.ssl_match_hostname-3.*
+yum update
+```
+docker-machine ls 로 설치를 확인하다. 
+
+docker 01 02가 모두 설치 완료 
+
+## 데이터 저장 폴더 만들기 
+
+각 서버에 mysql데이터 저장공간인 /data/mysql 을 생성하도록 하자. (컨테이너 안에 데이터를 저장하게 하면 안됨. 도커재시작시 데이터 사라짐)
+```
+docker-machine ssh docker01 mkdir -p /data/mysql
+docker-machine ssh docker02 mkdir -p /data/mysql
+```
+
+## 도커 스웜 클러스터를 생성하자. 
+
+### docker01 swarm init
+```bash
+eval $(docker-machine env docker01)
+docker swarm init 
+# docker swarm join --token SWMTKN-1-3yq9e4n939qp2rlvw1p02sqxscxgnv1v3jf2eqxqfp53j1r9t2-0pz62kiaj2700pldxikwzn0cq 192.168.1.24:2377
+```
+
+### docker02 swarm node 
+```
+eval $(docker-machine env docker02)
+docker swarm join --token SWMTKN-1-3yq9e4n939qp2rlvw1p02sqxscxgnv1v3jf2eqxqfp53j1r9t2-0pz62kiaj2700pldxikwzn0cq 192.168.1.24:2377
+```
+### docker01 에서 노드를 확인하자.
+```
+eval $(docker-machine env docker01)
+docker node ls
+```
+2대가 보이고 한대는 매니저 한대는 노드로 보인다. 
+
+
+## docker-compose셋팅 (macosx)
+현재 작업하는 컴퓨터에서 docker-compose파일을 만들어야한다. 
+```
+cd ~/docker01/mysql
+vi docker-compose.yml
 ```
 
 ```yml
 ---
-version: '3.3'
+version: "3.3"
 
 services:
-  masterdb:
-    name: master
+  master:
     image: mysql:5.5
     ports:
       - "3306:3306"
     restart: always
-    networks:
-      - backend
     volumes:
       - /data/mysql:/var/lib/mysql
       - ./conf.d/master.cnf:/etc/mysql/conf.d/master.cnf
     environment:
-      MYSQL_ROOT_PASSWORD: yourpassword
+      MYSQL_ROOT_PASSWORD: XXXXXXXX
       MYSQL_DATABASE: ftp1
-      MYSQL_USER: your_id
-      MYSQL_PASSWORD: yourpassword
+      MYSQL_USER: urid
+      MYSQL_PASSWORD: XXXXXXXX
     deploy:
       mode: replicated
       replicas: 1
       placement:
         constraints:
-        - node.hostname == master
+          - node.hostname == docker01
 
-  slavedb:
-    name: slave
+  slave:
     image: mysql:5.5
+    ports:
+      - "3307:3306"
     restart: always
-    networks:
-      - backend
     volumes:
       - /data/mysql:/var/lib/mysql
       - ./conf.d/slave.cnf:/etc/mysql/conf.d/slave.cnf
     environment:
-      MYSQL_ROOT_PASSWORD: yourpassword
+      MYSQL_ROOT_PASSWORD: XXXXXXXX
       MYSQL_DATABASE: ftp1
-      MYSQL_USER: your_id
-      MYSQL_PASSWORD: yourpassword
+      MYSQL_USER: urid
+      MYSQL_PASSWORD: XXXXXXXX
+    links:
+      - master
     deploy:
       mode: replicated
       replicas: 1
       placement:
         constraints:
-        - node.hostname == slave
-
-  visualizer:
-    image: dockersamples/visualizer:stable
-    ports:
-      - "8080:8080"
-    volumes:
-      - "/var/run/docker.sock:/var/run/docker.sock"
-    deploy:
-      placement:
-        constraints: [node.role == manager]
-networks:
-  backend:
+          - node.hostname == docker02
 
 ```
-
-vi /docker/mysql/conf.d/master.cnf
+* master db mysql 설정
 ```
+mkdir conf.d
+vi conf.d/master.cnf
 [mysqld]
 log-bin=mysql-bin  
 server-id=1  
 ```
+* slave db mysql 설정
 
-vi /docker/mysql/conf.d/slave.cnf
 ```
+vi conf.d/slave.cnf
 [mysqld]
 server-id=2  
 ```
 
-## slave노드에도 이 파일을 복사하자. 
-
-scp -r /docker/my-composer root@docker02:/docker
-
-## docker stack으로 배포하기
-
+## 설정파일을 각 노드에 복사하자
 ```
-docker stack deploy -c docker-compose.yml mysql
+docker-machine ssh docker01 mkdir -p /docker/mysql/ftpuser
+docker-machine ssh docker02 mkdir -p /docker/mysql/ftpuser
+docker-machine scp -r . docker01:/docker/mysql/ftpuser
+docker-machine scp -r . docker02:/docker/mysql/ftpuser
+```
+
+## docker stack 으로 배포하기
+```bash
+eval $(docker-machine env docker01)
+docker stack deploy -c ftpuser/docker-compose.yml ftpuser
+## 현재 에러가 난다...왜그렇지 급해서 서버에서 디플로이함. 
+
 docker service ls 
-docker service logs mysql_master
+docker service logs ftpuser_master
 ```
-
-## 배포시 에러 확인
-docker service ps --no-trunc mysql_slavedb
+배포시 에러 나면 아래처럼 확인해보자.
+```
+docker service ps --no-trunc ftpuser_master
+docker service ps --no-trunc ftpuser_slave
+```
 
 ## replication
 master에서 백업을 해서 slave에 복구해주고 replication설정 해주면 된다.
 
-### master 
-
-mysql에 접속해서 디비를 만든다.
+### master 디비
+백업하고 
+```bash
+docker ps -a  # id 확인
+docker exec fe84c9117641 mysqldump -u root -pXXXXXXXX ftp1 > backup.sql
 ```
-docker exec -it mysql_master mysql -u root -p 
-create databases ftp1;
-exit;
-```
-
-마스터에서 백업을 해서 슬래이브에 복구해줄것임 
-```
-docker exec mysql_master mysqldump -u root -pkimchi66 ftp1 > backup.sql
-```
-
 mysql에 접속해서 필요한 정보를 확인한다. 
 ```
-docker exec -it  mysql_slavedb mysql -u root -p 
+docker exec -it  fe84c9117641 mysql -u root -pXXXXXXXX 
 SHOW MASTER STATUS; 
++------------------+----------+--------------+------------------+
+| File             | Position | Binlog_Do_DB | Binlog_Ignore_DB |
++------------------+----------+--------------+------------------+
+| mysql-bin.000026 |      107 |              |                  |
++------------------+----------+--------------+------------------+ 
 ```
-| mysql-bin.000021 |      107 |      
 
 이와같은결과가 나오면 적어둔다. 복구시 사용한다.
 
@@ -173,30 +206,27 @@ slave로 복사
 scp -r backup.sql root@docker02:/data
 ```
 
-### slave
+### slave 에 복구
 
 backup.sql을 가져와서 mysql을 복구한다. 
 ```
-cat /data/backup.sql | docker exec -i 315ccf6a1e5a mysql -u root -pkimchi66 ftp1
+cat /data/backup.sql | docker exec -i 8b27cd107ede mysql -u root -pXXXXXXXX ftp1
 ```
 
 mysql에 접속후 다음 스크립트를 실행한다. 
 
 ```
-docker exec -it 315ccf6a1e5a mysql -u root -pkimchi66
-```
+docker exec -it 8b27cd107ede mysql -u root -pXXXXXXXX
 
-```sql
 CHANGE MASTER TO
-master_host = 'masterdb',
+master_host = 'master',
 master_user = 'root',
-master_password = 'kimchi66',
-master_log_file = 'mysql-bin.000021',
+master_password = 'XXXXXXXX',
+master_log_file = 'mysql-bin.000026',
 master_log_pos = 107;
 
 START SLAVE;
 ```
-
 bin 과 pos는 위에서 찾야뒀던 값을 넣어준다. 
 
 ### 슬래이브가 잘 되는지 확인하자. 
@@ -205,14 +235,26 @@ bin 과 pos는 위에서 찾야뒀던 값을 넣어준다.
 show slave status \G
 ```
 
-에러 없으면 잘 된다
-
 ## 동작 확인 
 
 마지막으로 master 에 값을 하나 더 넣고 slave에 잘 들어가는지 확인하면된다. 
+```
+insert into accounts (username,pass) values ('aaaaaaaaaaaa','aaaaaaaaaaaaaaaa');
+select * from accounts where username='aaaaaaaaaaaa';
+delete from accounts where username='aaaaaaaaaaaa';
+```
+
+## 도커 스웜 컨테이너 구성을 웹으로 보자. 
+docker service create \
+  --name=viz \
+  --publish=8080:8080/tcp \
+  --constraint=node.role==manager \
+  --mount=type=bind,src=/var/run/docker.sock,dst=/var/run/docker.sock \
+  dockersamples/visualizer
 
 
+## 추가로 해야할일 
 
-
-
+* 기존에 있는 도커면 어덯게 도커머신에 등록하는가?
+* docker-compose.yml에 ./가 에러를 만든다. 왜?
 
