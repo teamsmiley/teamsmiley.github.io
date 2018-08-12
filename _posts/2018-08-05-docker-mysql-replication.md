@@ -7,7 +7,7 @@ tags: [docker,mysql,replication]
 image: /files/covers/blog.jpg
 category: {macosx}
 ---
-# docker 로 mysql설치후 리플리케이션 까지. (feat. swarm and docker-machine)
+# docker 로 mysql설치후 리플리케이션 까지. (feat. swarm , docker-machine)
 
 ## 목표 
 * 2개의 서버에 도커 스웜을 설치하고 컨테이너를 올린다. 
@@ -101,10 +101,9 @@ services:
     image: mysql:5.5
     ports:
       - "3306:3306"
-    restart: always
     volumes:
       - /data/mysql:/var/lib/mysql
-      - ./conf.d/master.cnf:/etc/mysql/conf.d/master.cnf
+      - /docker/mysql/ftpuser/conf.d/master.cnf:/etc/mysql/conf.d/master.cnf
     environment:
       MYSQL_ROOT_PASSWORD: XXXXXXXX
       MYSQL_DATABASE: ftp1
@@ -121,17 +120,14 @@ services:
     image: mysql:5.5
     ports:
       - "3307:3306"
-    restart: always
     volumes:
       - /data/mysql:/var/lib/mysql
-      - ./conf.d/slave.cnf:/etc/mysql/conf.d/slave.cnf
+      - /docker/mysql/ftpuser/conf.d/slave.cnf:/etc/mysql/conf.d/slave.cnf
     environment:
       MYSQL_ROOT_PASSWORD: XXXXXXXX
       MYSQL_DATABASE: ftp1
       MYSQL_USER: urid
       MYSQL_PASSWORD: XXXXXXXX
-    links:
-      - master
     deploy:
       mode: replicated
       replicas: 1
@@ -168,7 +164,6 @@ docker-machine scp -r . docker02:/docker/mysql/ftpuser
 ```bash
 eval $(docker-machine env docker01)
 docker stack deploy -c ftpuser/docker-compose.yml ftpuser
-## 현재 에러가 난다...왜그렇지 급해서 서버에서 디플로이함. 
 
 docker service ls 
 docker service logs ftpuser_master
@@ -256,5 +251,6 @@ docker service create \
 ## 추가로 해야할일 
 
 * 기존에 있는 도커면 어덯게 도커머신에 등록하는가?
-* docker-compose.yml에 ./가 에러를 만든다. 왜?
+* docker-machine을 하면 실서버 도 지워져 버린다.
+
 
