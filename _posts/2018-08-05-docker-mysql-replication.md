@@ -24,13 +24,12 @@ ingress network를 사용하기 때문에 하나의 docker-compose파일에서 �
 
 ### master
 
-docker swarm init --advertise-addr 192.168.99.24
+docker swarm init --advertise-addr 192.168.1.24
 
 결과로 나온 스크립트를 복사해둔다. 
 ```
 docker swarm join --token SWMTKN-1-26qpppygfw3jc4yyy0ln5rtibqkrrsdbtkae656r15281md8gr-8tgq0y6hrf554t02suiu4ut4j 192.168.1.24:2377
 ```
-
 mkdir -p /data/mysql 
 
 데이터 폴더를 만든다. 
@@ -40,10 +39,13 @@ mkdir -p /data/mysql
 위에 복사해둔 스크립트를 실행하면 스웜 클러스터에 조인이 된다. 
 
 mkdir -p /data/mysql
+데이터 폴더 만든다. 
 
-## docker-compose셋팅 
+### 다시 master에서 
+docker node ls  로 클러스터 확인
 
-### master에서 
+## docker-compose셋팅 (master에서 )
+
 ```
 mkdir -p /docker/mysql/conf.d
 vi /docker/mysql/docker-compose.yml
@@ -54,19 +56,22 @@ vi /docker/mysql/docker-compose.yml
 version: '3.3'
 
 services:
-  master:
+  masterdb:
+    name: master
     image: mysql:5.5
     ports:
       - "3306:3306"
     restart: always
+    networks:
+      - backend
     volumes:
       - /data/mysql:/var/lib/mysql
       - ./conf.d/master.cnf:/etc/mysql/conf.d/master.cnf
     environment:
-      MYSQL_ROOT_PASSWORD: urpass
+      MYSQL_ROOT_PASSWORD: yourpassword
       MYSQL_DATABASE: ftp1
-      MYSQL_USER: testuser
-      MYSQL_PASSWORD: urpass
+      MYSQL_USER: your_id
+      MYSQL_PASSWORD: yourpassword
     deploy:
       mode: replicated
       replicas: 1
@@ -74,27 +79,39 @@ services:
         constraints:
         - node.hostname == master
 
-  slave:
+  slavedb:
+    name: slave
     image: mysql:5.5
-    ports:
-      - "3307:3306"
     restart: always
+    networks:
+      - backend
     volumes:
       - /data/mysql:/var/lib/mysql
       - ./conf.d/slave.cnf:/etc/mysql/conf.d/slave.cnf
     environment:
-      MYSQL_ROOT_PASSWORD: urpass
+      MYSQL_ROOT_PASSWORD: yourpassword
       MYSQL_DATABASE: ftp1
-      MYSQL_USER: testuser
-      MYSQL_PASSWORD: urpass
-    links:
-      - master
+      MYSQL_USER: your_id
+      MYSQL_PASSWORD: yourpassword
     deploy:
       mode: replicated
       replicas: 1
       placement:
         constraints:
         - node.hostname == slave
+
+  visualizer:
+    image: dockersamples/visualizer:stable
+    ports:
+      - "8080:8080"
+    volumes:
+      - "/var/run/docker.sock:/var/run/docker.sock"
+    deploy:
+      placement:
+        constraints: [node.role == manager]
+networks:
+  backend:
+
 ```
 
 vi /docker/mysql/conf.d/master.cnf
@@ -103,16 +120,16 @@ vi /docker/mysql/conf.d/master.cnf
 log-bin=mysql-bin  
 server-id=1  
 ```
+
 vi /docker/mysql/conf.d/slave.cnf
 ```
 [mysqld]
 server-id=2  
 ```
 
-* constraints로 특정 서버를 호스트이름으로 정해줘서 master 서버에서는 master 컨테이너가 뜨게 처리했다. 
-마찬가지로 slave 컨테이너는 슬레이브 호스트에서만 실행되게 햇다. 
+## slave노드에도 이 파일을 복사하자. 
 
-* slave에서는 link를 이용해서 master를 링크하게 해두었다. replication할때 호스트명이 사용 되기 때문이다.
+scp -r /docker/my-composer root@docker02:/docker
 
 ## docker stack으로 배포하기
 
@@ -122,19 +139,12 @@ docker service ls
 docker service logs mysql_master
 ```
 
-## swarm visual monitor 설치하기 
-
-```
-docker service create \
-  --name=viz \
-  --publish=8080:8080/tcp \
-  --constraint=node.role==manager \
-  --mount=type=bind,src=/var/run/docker.sock,dst=/var/run/docker.sock \
-  dockersamples/visualizer
-```
+## 배포시 에러 확인
+docker service ps --no-trunc mysql_slavedb
 
 ## replication
 master에서 백업을 해서 slave에 복구해주고 replication설정 해주면 된다.
+
 ### master 
 
 mysql에 접속해서 디비를 만든다.
@@ -144,39 +154,44 @@ create databases ftp1;
 exit;
 ```
 
-백업을 해서 슬래이브에 복구해줄것임 
+마스터에서 백업을 해서 슬래이브에 복구해줄것임 
 ```
-docker exec mysql_master mysqldump -u root -pxxxxxx ftp1 > backup.sql
+docker exec mysql_master mysqldump -u root -pkimchi66 ftp1 > backup.sql
 ```
 
 mysql에 접속해서 필요한 정보를 확인한다. 
 ```
-docker exec -it mysql_master mysql -u root -p 
+docker exec -it  mysql_slavedb mysql -u root -p 
 SHOW MASTER STATUS; 
 ```
-| mysql-bin.000013 |      107 |      
+| mysql-bin.000021 |      107 |      
 
 이와같은결과가 나오면 적어둔다. 복구시 사용한다.
+
+slave로 복사 
+```
+scp -r backup.sql root@docker02:/data
+```
 
 ### slave
 
 backup.sql을 가져와서 mysql을 복구한다. 
 ```
-cat /docker/mysql/backup.sql | docker exec mysql_slave mysql -u root -pXXXXX ftp1
+cat /data/backup.sql | docker exec -i 315ccf6a1e5a mysql -u root -pkimchi66 ftp1
 ```
 
 mysql에 접속후 다음 스크립트를 실행한다. 
 
 ```
-docker exec -it mysql_slave mysql -u root -p
+docker exec -it 315ccf6a1e5a mysql -u root -pkimchi66
 ```
 
 ```sql
 CHANGE MASTER TO
-master_host = '192.168.1.24',
+master_host = 'masterdb',
 master_user = 'root',
-master_password = 'urpass',
-master_log_file = 'mysql-bin.000013',
+master_password = 'kimchi66',
+master_log_file = 'mysql-bin.000021',
 master_log_pos = 107;
 
 START SLAVE;
