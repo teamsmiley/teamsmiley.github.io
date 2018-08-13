@@ -80,9 +80,9 @@ https://gist.github.com/teamsmiley
 
 personal token과 Gist id를 넣어줘야 한다.
 
-![]({{ site.baseurl }}/assets/sync-10.PNG)
+![]({{ site.baseurl }}/assets/sync-10.png)
 
-![]({{ site.baseurl }}/assets/sync-11.PNG)
+![]({{ site.baseurl }}/assets/sync-11.png)
 
 이제 싱크가 완료되서 설치된 플러그인들과 세팅을 sync한다. 
 
