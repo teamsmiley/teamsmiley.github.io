@@ -18,7 +18,7 @@ category: {macosx}
 
 추가 기술 : cocoapod , alamofire ,  rxswift, swiftyjson,
 
-
+### 1단계
 1. 기본 프로젝트 만들기 - xcode , new project
 1. Controller에 dummy data 만들기 
 1. table view를 넣어서 화면에서 data를 가져와서 뿌리기
@@ -31,14 +31,14 @@ category: {macosx}
 1. 데이터를 가져와서 테이블뷰에 다시로드
 1. 검색도 가능하게 하자.(api가 필터를 제공해야한다.)
 
-
-추가목표 
+### 2단계 
 
 1. todo의 자세한 내용이 나오는 두번째 화면을 만든다. 
 1. todo에서 항목을 선택하면 두번째 화면이 나오게 한다.
 1. navigation을 붙여서 뒤로 갈수 잇게 한다.
 1. 탭을 추가하여 추가 옵션들을 보여줄수 있다.
 1. Silent Refresh (oauth2)
+1. storyboard 빼고 해보자.
 
 이렇게 같이 공부해보실분 연락주세요 teamsmiley@gmail.com
 
