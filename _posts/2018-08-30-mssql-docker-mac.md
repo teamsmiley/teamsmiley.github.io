@@ -85,7 +85,7 @@ password 입력 엔터
       "database": "",
       "authenticationType": "SqlLogin",
       "user": "sa",
-      "password": "",
+      "password": "Password12#$",
       "emptyPasswordInput": false,
       "savePassword": true,
       "profileName": "local"
@@ -144,3 +144,10 @@ command + shift + e
 ```
 
 결과창에 sample이 있으면 성공 
+
+### 추가 팁
+
+* 쿼리를 선택을 한 상태에서 command + shift + e 를 하면 선택된 부분만 실행된다.
+
+* 대소문자를 구분을 한다.
+
