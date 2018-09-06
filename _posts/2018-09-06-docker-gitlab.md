@@ -18,7 +18,7 @@ centos 7에  도커 최신버전을 설치하고 다음을 진행한다.
 
 ```
 sudo docker run --detach \
-    --hostname gitlab.example.com \
+    --hostname gitlab.xgridcolo.com \
     --publish 443:443 --publish 80:80 --publish 30022:22 \
     --name gitlab \
     --restart always \
@@ -32,7 +32,7 @@ sudo docker run --detach \
 
 위 커맨드를 실행하면 최신 깃랩 이미지를 받아서 실행을 한다. 
 
-http://gitlab.example.com로 접속을 해본다. 에러가 나면 다음을 확인하자.
+http://gitlab.xgridcolo.com로 접속을 해본다. 에러가 나면 다음을 확인하자.
 
 * 외부 방화벽
 * 서버 소프트웨어 방화벽 
