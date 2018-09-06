@@ -72,12 +72,17 @@ web:
 ```bash
 cd /data/docker/gitlab
 docker-compose up -d
+```
+
+웹사이트 접속이 안되면 다음처럼 한다.
+
+```
 docker exec gitlab_web_1 update-permissions
 docker restart gitlab_web_1
 docker logs -f gitlab_web_1
 ```
 
-잘안되면 꼭 docker logs -f gitlab_web_1 이 명령어로 로그를 확인하기 바란다.
+꼭 docker logs -f gitlab_web_1 이 명령어로 로그를 확인하기 바란다.
 
 ## gitlab email을 보낼수가 있다. 
 
@@ -90,8 +95,8 @@ vi etc/gitlab/gitlab.rb
 gitlab_rails['smtp_enable'] = true
 gitlab_rails['smtp_address'] = "smtp.gmail.com"
 gitlab_rails['smtp_port'] = 587
-gitlab_rails['smtp_user_name'] = "brian@rendercore.com"
-gitlab_rails['smtp_password'] = "Kimchi1))7"
+gitlab_rails['smtp_user_name'] = "your-email"
+gitlab_rails['smtp_password'] = "your-password"
 gitlab_rails['smtp_domain'] = "smtp.gmail.com"
 gitlab_rails['smtp_authentication'] = "login"
 gitlab_rails['smtp_enable_starttls_auto'] = true
