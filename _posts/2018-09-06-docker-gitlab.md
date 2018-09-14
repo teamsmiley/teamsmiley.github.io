@@ -84,7 +84,11 @@ docker logs -f gitlab_web_1
 
 꼭 docker logs -f gitlab_web_1 이 명령어로 로그를 확인하기 바란다.
 
-## gitlab email을 보낼수가 있다. 
+## gitlab에 활동 내역을 email로 보낼수가 있다. 
+
+메일 보내주는 서비스로 https://www.mailgun.com/ 가 있다. 10000까지는 무료로 보낼수 있다.
+
+회원가입하고 아이디 비번을 잘 기억하고 다음을 진행한다. 
 
 ```bash
 sudo docker exec -it gitlab_web_1 /bin/bash
@@ -93,18 +97,16 @@ vi etc/gitlab/gitlab.rb
 
 ```rb
 gitlab_rails['smtp_enable'] = true
-gitlab_rails['smtp_address'] = "smtp.gmail.com"
+gitlab_rails['smtp_address'] = "smtp.mailgun.org"
 gitlab_rails['smtp_port'] = 587
-gitlab_rails['smtp_user_name'] = "your-email"
-gitlab_rails['smtp_password'] = "your-password"
-gitlab_rails['smtp_domain'] = "smtp.gmail.com"
-gitlab_rails['smtp_authentication'] = "login"
+gitlab_rails['smtp_authentication'] = "plain"
 gitlab_rails['smtp_enable_starttls_auto'] = true
-gitlab_rails['smtp_tls'] = false
-gitlab_rails['smtp_openssl_verify_mode'] = 'peer' # Can be: 'none', 'peer', 'client_once', 'fail_if_no_peer_cert', see http://api.rubyonrails.org/classes/ActionMailer/Base.html
+gitlab_rails['smtp_user_name'] = "mailgun-id"
+gitlab_rails['smtp_password'] = "mailgun-password"
+gitlab_rails['smtp_domain'] = "mg.yourdomain.com"
 ```
 
-이제 회원가입을 하면 이메일이 발송된다.
+이제 이슈를 열거나 답글을 달면 이메일로 알림이 간다. 
 
 ## 초기화면에서 회원가입 없애기 
 
