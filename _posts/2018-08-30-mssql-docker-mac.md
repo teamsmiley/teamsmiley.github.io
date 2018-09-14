@@ -50,15 +50,13 @@ services:
   db:
     image: microsoft/mssql-server-linux:latest
     volumes:
-      - mssql-server-linux-data:/var/opt/mssql/data
+      - ./data:/var/opt/mssql/data
+    # hostname: 'sqlserver'
     environment:
       ACCEPT_EULA: Y
       MSSQL_SA_PASSWORD: StrongPassw0rd
     ports:
       - "1433:1433"
-
-volumes:
-  mssql-server-linux-data:
 ```
 
 docker-compose up -d 
