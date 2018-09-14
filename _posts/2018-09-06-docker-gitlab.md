@@ -90,6 +90,8 @@ docker logs -f gitlab_web_1
 
 회원가입하고 아이디 비번을 잘 기억하고 다음을 진행한다. 
 
+mailgun 설치는 다음 참고 : <https://teamsmiley.github.io/2018/09/14/mailgun/>
+
 ```bash
 sudo docker exec -it gitlab_web_1 /bin/bash
 vi etc/gitlab/gitlab.rb
@@ -101,8 +103,8 @@ gitlab_rails['smtp_address'] = "smtp.mailgun.org"
 gitlab_rails['smtp_port'] = 587
 gitlab_rails['smtp_authentication'] = "plain"
 gitlab_rails['smtp_enable_starttls_auto'] = true
-gitlab_rails['smtp_user_name'] = "mailgun-id"
-gitlab_rails['smtp_password'] = "mailgun-password"
+gitlab_rails['smtp_user_name'] = "mailgun-smtp-id"
+gitlab_rails['smtp_password'] = "mailgun-smpt-password"
 gitlab_rails['smtp_domain'] = "mg.yourdomain.com"
 ```
 
