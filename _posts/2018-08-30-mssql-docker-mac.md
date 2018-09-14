@@ -24,7 +24,7 @@ sudo docker pull microsoft/mssql-server-linux:2017-latest
 ### mssql run
 
 ```
-sudo docker run -e 'ACCEPT_EULA=Y' -e 'SA_PASSWORD=Password12#$' \
+sudo docker run -e 'ACCEPT_EULA=Y' -e 'SA_PASSWORD=StrongPassw0rd' \
    -p 1433:1433 --name mssql \
    -d microsoft/mssql-server-linux:2017-latest
 ```
@@ -36,6 +36,33 @@ sudo docker run -e 'ACCEPT_EULA=Y' -e 'SA_PASSWORD=Password12#$' \
 docker ps 
 ```
 프로세스가 보이면 된다
+
+### docker-compose 사용
+
+mkdir ~/Desktop/mssql/
+cd ~/Desktop/mssql/
+vi docker-compose.yml
+
+```yml
+---
+version: "3.4"
+services:
+  db:
+    image: microsoft/mssql-server-linux:latest
+    volumes:
+      - mssql-server-linux-data:/var/opt/mssql/data
+    environment:
+      ACCEPT_EULA: Y
+      MSSQL_SA_PASSWORD: StrongPassw0rd
+    ports:
+      - "1433:1433"
+
+volumes:
+  mssql-server-linux-data:
+```
+
+docker-compose up -d 
+
 
 ## 뷰어 
 
