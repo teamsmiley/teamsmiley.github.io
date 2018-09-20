@@ -8,16 +8,13 @@ image: /files/covers/blog.jpg
 category: {aws}
 ---
 
-# aws study plan
+# study plan
 
-기간 약 8주 
-
-aws기본부터 응용까지 
-
-
-## 목차 
+devops를 해보자. 
 
 ## schedule 
+
+### aws
 1. region , available zone , edge location
 1. EC2
 1. Security Group - firewall
@@ -42,12 +39,25 @@ aws기본부터 응용까지
 1. SQS - que
 1. aws cli
 
-## 추가 
-
+### docker 
 1. docker
 1. swarm 
 1. k8s
 1. docker on aws
+1. ci/cd with docker (teamcity)
+
+### ci/cd 
+1. jenkins
+
+### clean archtect 
+
+* c# restful api and angular 6 frontend
+* domain driven 개발 
+* use case driven 개발 
+* TDD
+
+
+
 
 
 
