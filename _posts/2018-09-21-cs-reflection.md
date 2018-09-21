@@ -3,7 +3,7 @@ layout: post
 title: 'c# name sapce 하위 클래스들 알아내기' 
 author: teamsmiley
 date: 2018-09-21
-tags: [c#]]
+tags: [c#]
 image: /files/covers/blog.jpg
 category: {c#}
 ---
