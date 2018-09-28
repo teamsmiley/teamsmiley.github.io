@@ -181,9 +181,14 @@ command + shift + e
 ```
 docker exec -it mssql_db_1 mkdir /var/opt/mssql/backup
 
-docker cp AdventureWorks2014.sql mssql_db_1:/var/opt/mssql/backup
+docker cp AdventureWorks2017.bak mssql_db_1:/var/opt/mssql/backup
 
 docker exec -it mssql_db_1 /opt/mssql-tools/bin/sqlcmd \
    -S localhost -U SA -P 'StrongPassw0rd' \
-   -i /var/opt/mssql/backup/AdventureWorks2014.sql
+   -Q "RESTORE filelistonly FROM DISK = '/var/opt/mssql/backup/AdventureWorks2017.bak'"
+
+docker exec -it mssql_db_1 /opt/mssql-tools/bin/sqlcmd \
+   -S localhost -U SA -P 'StrongPassw0rd' \
+   -Q "RESTORE DATABASE AdventureWorks2017 FROM DISK = '/var/opt/mssql/backup/AdventureWorks2017.bak' WITH MOVE 'AdventureWorks2017' TO '/var/opt/mssql/backup/AdventureWorks2017.mdf', MOVE 'AdventureWorks2017_Log' TO '/var/opt/mssql/backup/AdventureWorks2017.ldf', REPLACE"
+
 ```
