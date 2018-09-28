@@ -16,51 +16,29 @@ https://docs.microsoft.com/en-us/sql/linux/quickstart-install-connect-docker?vie
 
 ## install mssql 
 
-### install mssql 2016 docker image
+### install mssql 2017 docker image
 ```
 sudo docker pull microsoft/mssql-server-linux:2017-latest
 ```
 
 ### mssql run
+데이터 저장할 폴더를 만들고 사용합니다. 저는 Users/ragon/Desktop/mssql/data 여기로 정했습니다.
 
 ```
-sudo docker run -e 'ACCEPT_EULA=Y' -e 'SA_PASSWORD=StrongPassw0rd' \
-   -p 1433:1433 --name mssql \
-   -d microsoft/mssql-server-linux:2017-latest
-```
+mkdir -p ~/Desktop/mssql
 
-* Specify your own strong password that is at least 8 characters and meets the SQL Server password requirements. Required setting for the SQL Server image.
+docker run --name mssql -e 'ACCEPT_EULA=Y' -e 'MSSQL_SA_PASSWORD=StrongPassw0rd' -p 1433:1433  -d microsoft/mssql-server-linux:latest
+
+docker logs mssql
+```
 
 ### mssql 프로세스 확인
+```bash
+docker ps # 프로세스가 보이면 된다
+docker stop mssql # 멈출때
+docker start mssql # 시작할때
+docker rm mssql # 지울때 
 ```
-docker ps 
-```
-프로세스가 보이면 된다
-
-### docker-compose 사용
-
-mkdir ~/Desktop/mssql/
-cd ~/Desktop/mssql/
-vi docker-compose.yml
-
-```yml
----
-version: "3.4"
-services:
-  db:
-    image: microsoft/mssql-server-linux:latest
-    volumes:
-      - ./data:/var/opt/mssql/data
-    # hostname: 'sqlserver'
-    environment:
-      ACCEPT_EULA: Y
-      MSSQL_SA_PASSWORD: StrongPassw0rd
-    ports:
-      - "1433:1433"
-```
-
-docker-compose up -d 
-
 
 ## 뷰어 
 
@@ -110,7 +88,7 @@ password 입력 엔터
       "database": "",
       "authenticationType": "SqlLogin",
       "user": "sa",
-      "password": "Password12#$",
+      "password": "",
       "emptyPasswordInput": false,
       "savePassword": true,
       "profileName": "local"
@@ -127,7 +105,7 @@ password 입력 엔터
 
 ### 샘플 디비 만들기 
 
-vs code에서 aaa.sql을 열고 다음처럼 입력합니다.
+vs code에서 sample.sql을 열고 다음처럼 입력합니다.
 
 sqlCreateDatabase 엔터 
 
@@ -179,17 +157,35 @@ command + shift + e
 ## 디비 임포트 
 https://github.com/Microsoft/sql-server-samples/releases 에서 AdventureWorks2017.bak 를 다운받는다.
 
+```bash
+cd ~/Desktop/mssql
+brew install wget
+# bak file download
+wget https://github.com/Microsoft/sql-server-samples/releases/download/adventureworks/AdventureWorks2017.bak
+
+# create folder into container
+docker exec -it mssql mkdir /var/opt/mssql/backup 
+
+# copy into container
+docker cp ~/Desktop/mssql/AdventureWorks2017.bak mssql:/var/opt/mssql/backup/AdventureWorks2017.bak
+
+# vscode에서 복구 명령어를 실행하자.
+code import.sql
 ```
-docker exec -it mssql_db_1 mkdir /var/opt/mssql/backup 
 
-docker cp AdventureWorks2017.bak mssql_db_1:/var/opt/mssql/backup
+로지컬 이름을 알야내야하므로 다음 쿼리를 선택후 ctrl + shift + e 
 
-docker exec -it mssql_db_1 /opt/mssql-tools/bin/sqlcmd \
-   -S localhost -U SA -P 'StrongPassw0rd' \
-   -Q "RESTORE filelistonly FROM DISK = '/var/opt/mssql/backup/AdventureWorks2017.bak'"
+AdventureWorks2017
 
-docker exec -it mssql_db_1 /opt/mssql-tools/bin/sqlcmd \
-   -S localhost -U SA -P 'StrongPassw0rd' \
-   -Q "RESTORE DATABASE AdventureWorks2017 FROM DISK = '/var/opt/mssql/backup/AdventureWorks2017.bak' WITH MOVE 'AdventureWorks2017' TO '/var/opt/mssql/backup/AdventureWorks2017.mdf', MOVE 'AdventureWorks2017_Log' TO '/var/opt/mssql/backup/AdventureWorks2017.ldf', REPLACE"
+AdventureWorks2017_log
 
+두개를 알아냈음  다음 쿼리를 실행해서 복구한다. 
+
+```sql
+RESTORE DATABASE AdventureWorks2017 FROM DISK = '/var/opt/mssql/backup/AdventureWorks2017.bak' WITH MOVE 'AdventureWorks2017' TO '/var/opt/mssql/backup/AdventureWorks2017.mdf', MOVE 'AdventureWorks2017_Log' TO '/var/opt/mssql/backup/AdventureWorks2017.ldf', REPLACE
 ```
+
+복구 완료 
+
+sample.sql에서 디비리스트를 뽑아보면 adventureworks가 있으면 성공 
+
