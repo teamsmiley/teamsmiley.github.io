@@ -177,9 +177,10 @@ command + shift + e
 * 대소문자를 구분을 한다.
 
 ## 디비 임포트 
+https://github.com/Microsoft/sql-server-samples/releases 에서 AdventureWorks2017.bak 를 다운받는다.
 
 ```
-docker exec -it mssql_db_1 mkdir /var/opt/mssql/backup
+docker exec -it mssql_db_1 mkdir /var/opt/mssql/backup 
 
 docker cp AdventureWorks2017.bak mssql_db_1:/var/opt/mssql/backup
 
