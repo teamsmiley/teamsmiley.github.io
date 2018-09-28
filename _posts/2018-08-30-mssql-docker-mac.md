@@ -176,3 +176,14 @@ command + shift + e
 
 * 대소문자를 구분을 한다.
 
+## 디비 임포트 
+
+```
+docker exec -it mssql_db_1 mkdir /var/opt/mssql/backup
+
+docker cp AdventureWorks2014.sql mssql_db_1:/var/opt/mssql/backup
+
+docker exec -it mssql_db_1 /opt/mssql-tools/bin/sqlcmd \
+   -S localhost -U SA -P 'StrongPassw0rd' \
+   -i /var/opt/mssql/backup/AdventureWorks2014.sql
+```
