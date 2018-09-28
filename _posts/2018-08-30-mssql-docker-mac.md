@@ -174,7 +174,9 @@ code import.sql
 ```
 
 로지컬 이름을 알야내야하므로 다음 쿼리를 선택후 ctrl + shift + e 
-
+```sql
+RESTORE filelistonly FROM DISK = '/var/opt/mssql/backup/AdventureWorks2017.bak'
+```
 AdventureWorks2017
 
 AdventureWorks2017_log
