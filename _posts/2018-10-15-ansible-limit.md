@@ -1,0 +1,20 @@
+---
+layout: post
+title: 'Ansible - 01' 
+author: teamsmiley
+date: 2018-10-25
+tags: [devops]
+image: /files/covers/blog.jpg
+category: {c#}
+---
+
+# ansible
+
+## ansible 에서 특정 노드만 빼기
+
+```bash
+ansible-playbook --limit '!node01,!node02,!node03,!node04' kubernetes.yml 
+ansible-playbook --limit 'all:!bad_host' playbook.yml
+ansible-playbook --limit 'all:!group1,!node100' kubernetes.yml 
+ansible-playbook --limit 'hoost1:host2' yourPlaybook.yml
+```
