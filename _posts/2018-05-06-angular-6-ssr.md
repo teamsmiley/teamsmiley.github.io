@@ -261,16 +261,16 @@ configuration을 추가해준다. 변경해보자.
 
 package.json에서 build부분을 초기 환경과 prod환경 둘다 되게 해주자.
 ```json
-"build:client-and-server-bundles": "ng build --prod && ng run angular.io-example:server",
+"build:client-and-server-bundles": "ng build --prod && ng run angular.io-example:server  --i18n-file=src/locale/messages.en.xlf --i18n-locale=en --i18n-format=xlf",
 
-"build:client-and-server-bundles-prod": "ng build --prod --configuration=production && ng run angular.io-example:server:production",
+"build:client-and-server-bundles-prod": "ng build --prod --configuration=production && ng run angular.io-example:server:production  --i18n-file=src/locale/messages.en.xlf --i18n-locale=en --i18n-format=xlf",
 ```
 
 ## staging 추가 
 
 ### package.json에서 추가 
 ```json
-"build:client-and-server-bundles-staging": "ng build --prod --configuration=staging && ng run angular.io-example:server:staging",
+"build:client-and-server-bundles-staging": "ng build --prod --configuration=staging && ng run angular.io-example:server:staging  --i18n-file=src/locale/messages.en.xlf --i18n-locale=en --i18n-format=xlf",
 ```
 
 ### angular.json에서 build configuration 추가 
