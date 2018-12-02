@@ -136,7 +136,7 @@ public IEnumerable<Invoice> GetUserInvoices(SearchUserInvoiceViewModel vm)
         {
             var oldestDate = DateTime.Now.AddMonths(-24);
  
-            return RendercoreContext.Invoices
+            return AAAContext.Invoices
                .Where(i => i.UserName == vm.UserName || i.ParentUserName == vm.UserName)
                .Where(i => i.BillingStatus != "UnInvoice")
                .Where(i => vm.Product == "ALL" || i.Product == vm.Product)

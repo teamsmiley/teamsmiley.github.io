@@ -173,7 +173,7 @@ public async Task<ActionResult> PostThumbnail()
 
                 string contentRootPath = _hostingEnvironment.ContentRootPath;
 
-                string imgDir =  @"\Hosting\s4.www.rendercore.com\wwwroot\thumbnail\";
+                string imgDir =  @"\Hosting\s4.www.zzz.com\wwwroot\thumbnail\";
                 var date = DateTime.Now.ToString("yyyyMM");
                 var saveDir = Path.Combine(imgDir + date);
 
@@ -223,7 +223,7 @@ public async Task<ActionResult> PostImg()
 
                 string contentRootPath = _hostingEnvironment.ContentRootPath;
 
-                string imgDir = @"\Hosting\s4.www.rendercore.com\wwwroot\img\";
+                string imgDir = @"\Hosting\s4.www.zzz.com\wwwroot\img\";
                 var date = DateTime.Now.ToString("yyyyMM");
                 var saveDir = Path.Combine(imgDir + date);
 
@@ -263,13 +263,13 @@ public async Task<ActionResult> PostImg()
 첫번재 포스트는 삭제하자. 두번째와 세번째는 코드가 비슷해 보인다. 저장 경로가 달라지는것 같다.
 
 ```cs
-string imgDir =  @"\Hosting\s4.www.rendercore.com\wwwroot\thumbnail\";
+string imgDir =  @"\Hosting\s4.www.zzz.com\wwwroot\thumbnail\";
 ```
 
 일단 두번째도 삭제하고 3번째만 가지고 진행을 해보자. 
 
 ```cs
-private const string UPLOAD_URL = "https://s4.www.rendercore.com/";
+private const string UPLOAD_URL = "https://s4.www.zzz.com/";
 ```
 
 이부분이 하드코딩. 그러면 안되는데 로컬에서 개발시는 로컬환경 서버에 적용시는 서버환경이 되야하기 때문이다. 설정은 꼭 설정파일에 넣는 버릇을 들여야한다. 

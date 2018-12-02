@@ -20,7 +20,7 @@ public IEnumerable<Job> GetAbleToKillingJob(List<int> jobIds)
 
     foreach (var jobId in jobIds)
     {
-        var temp = RendercoreContext.Jobs.SingleOrDefault(j => j.JobId.Equals(jobId));
+        var temp = AAAContext.Jobs.SingleOrDefault(j => j.JobId.Equals(jobId));
         ableJob.Add(temp);
     }
 
@@ -40,7 +40,7 @@ list에 들어있는 id를 가지고 루프를 돌면서 가져온후에 다시 
 
 public IEnumerable<Job> GetAbleToResumeJob(List<int> jobIds)
 {
-    return RendercoreContext.Jobs
+    return AAAContext.Jobs
         .Where(j => jobIds.Contains(j.JobId))
         .Where(j => j.Status == (int)JobHelper.Status.JOB_PAUSE).ToList();
 }

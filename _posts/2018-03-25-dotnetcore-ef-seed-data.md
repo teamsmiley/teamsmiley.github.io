@@ -38,7 +38,7 @@ Startup.cs에서 다음을 추가한다.
 ```cs
 public void Configure(IApplicationBuilder app, IHostingEnvironment env,DBContext dbContext)
 {
-    await rendercoreContext.EnsureSeedDataForContext();
+    await aaaContext.EnsureSeedDataForContext();
     app.UseMvc();
 }
 ```

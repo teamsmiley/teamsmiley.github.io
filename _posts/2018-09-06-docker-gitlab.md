@@ -114,13 +114,13 @@ gitlab_rails['smtp_domain'] = "mg.yourdomain.com"
 
 초기 화면에서 회원가입이 있으면 회사 내부만 쓰려고 하던 목적에 맞지 않는다. 없애보자.
 
-* <http://gitlab.xgridcolo.com/admin/application_settings>
+* <http://gitlab.xxx.com/admin/application_settings>
 
 로그인 >> admin area >> Sign-up restrictions >> Sign-up enabled 을 off하면된다.
 
 ## 유저 추가 
 
-<http://gitlab.xgridcolo.com/admin/users/new> 에서 유저를 추가한다. 그리고 유저 리스트로 가면 설정버튼이 보인다. 
+<http://gitlab.xxx.com/admin/users/new> 에서 유저를 추가한다. 그리고 유저 리스트로 가면 설정버튼이 보인다. 
 
 설정버튼을 눌러서 들어가면 비밀번호를 세팅할수 있다. 
 

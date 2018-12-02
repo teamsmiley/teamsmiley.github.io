@@ -22,7 +22,7 @@ bot을 선택한다.
 
 키를 복사해둔다.
 
-https://rendercorelab.slack.com/apps/manage
+https://aaa.slack.com/apps/manage
 
 에서 approve 
 

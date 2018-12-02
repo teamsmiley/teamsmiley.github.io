@@ -28,7 +28,7 @@ NotSupportedException: HTTP method "GET" & path "boards/{boardname}/documents/{i
 ```cs
 services.AddSwaggerGen(c =>
 {
-    c.SwaggerDoc("v1", new Info { Title = "Rendercore API", Version = "v1" });
+    c.SwaggerDoc("v1", new Info { Title = "API", Version = "v1" });
     c.ResolveConflictingActions(apiDescriptions => apiDescriptions.First()); //추가 
 });
 ```
