@@ -1166,22 +1166,58 @@ hal deploy apply
 
 halyard가 쿠베에 접속해서 디플로이를 순서대로 한다. 
 
-### Connect to the Spinnaker UI - 화면을 보자.
+### Connect to the Spinnaker UI - 화면을 보자. (master에서 )
+
 ```
-hal deploy connect
+kubectl get svc -n spinnaker
 ```
 
+화면을 보여주는 spin-deck이  clusterip 타입이 되있는걸 알수 있다. 로드발란스로 바꾸자.
+```bash
+kubectl edit svc -n spinnaker spin-deck
 
-This command automatically forwards ports 9000 (Deck UI) and 8084 (Gate API service).
+>  ports:
+>  - port: 80   # port도 9000에서 80으로 변경
+> type: LoadBalancer
+> loadBalancerIP: 192.168.0.84
+```
+다시 확인해보면 로드 발란스로 바뀐것을 볼수 있다. 
+```
+$ kubectl get service -n spinnaker
+NAME               TYPE           CLUSTER-IP       EXTERNAL-IP    PORT(S)          AGE
+spin-clouddriver   ClusterIP      10.100.126.188   <none>         7002/TCP         156m
+spin-deck          LoadBalancer   10.98.72.68      192.168.0.84   9000:30854/TCP   156m
+spin-echo          ClusterIP      10.103.164.108   <none>         8089/TCP         156m
+spin-front50       ClusterIP      10.104.60.169    <none>         8080/TCP         156m
+spin-gate          ClusterIP      10.106.131.142   <none>         8084/TCP         156m
+spin-orca          ClusterIP      10.111.102.198   <none>         8083/TCP         156m
+spin-redis         ClusterIP      10.103.32.242    <none>         6379/TCP         156m
+spin-rosco         ClusterIP      10.108.147.63    <none>         8087/TCP         156m
+```
+```
+kubectl edit svc -n spinnaker spin-gate
+> port: 80
+> type: LoadBalancer
+> loadBalancerIP: 192.168.0.85
+```
 
-웹브라우저로 접속해보자. 
+```bash
+docker exec -it halyard bash
 
-http://192.168.0.194:9000.
+hal config security ui edit --override-base-url http://204.16.116.84
+hal config security api edit --override-base-url http://204.16.116.85
+hal deploy apply
+```
+
+http://192.168.0.85:9000
+
+드디어 화면이 보인다. 
 
 
+## TODO
+minio - docker 
+spinnaker 화면 인증 
 
-hal config security ui edit --override-base-url http://192.168.0.194:9000
-hal config security api edit --override-base-url http://192.168.0.194:8084
 
 
 
