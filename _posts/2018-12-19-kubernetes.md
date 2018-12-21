@@ -1209,9 +1209,13 @@ hal config security api edit --override-base-url http://204.16.116.85
 hal deploy apply
 ```
 
-http://192.168.0.85:9000
+http://204.16.116.84
 
 드디어 화면이 보인다. 
+
+정리하면 서비스 타입을 로드발란스로 바꿔서 외부로 오픈하고 외부에서 사용하는 아이피로 override-base-url을 써서 설정을 바꿔준후  hal deploy apply를 하면 클러스터로 설정이 넘어간다. 
+
+
 
 
 ## TODO
