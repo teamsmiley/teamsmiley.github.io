@@ -1215,16 +1215,17 @@ http://204.16.116.84
 
 정리하면 서비스 타입을 로드발란스로 바꿔서 외부로 오픈하고 외부에서 사용하는 아이피로 override-base-url을 써서 설정을 바꿔준후  hal deploy apply를 하면 클러스터로 설정이 넘어간다. 
 
-## error  발생
-```
+## spin-front50 crash 발생
+```bash
 $ kubectl get pods -n spinnaker
 NAME                                READY   STATUS             RESTARTS   AGE
 spin-front50-7cf9844bcb-hf8fg       0/1     CrashLoopBackOff   15         61m
 spin-front50-fcdbb667c-fk8kz        0/1     CrashLoopBackOff   18         74m
 ```
 
-## 스피네커 설정하다보니 도커 이미지를 가져오는 부분이 있다.
+minio server실행이 되있는지 확인한다.
 
+## 스피네커 설정하다보니 도커 이미지를 가져오는 부분이 있다.
 ```bash
 hal config provider docker-registry enable
 
@@ -1239,7 +1240,7 @@ hal config provider docker-registry account add my-docker-registry \
     --username $USERNAME \
     --password 
 ```
-
+ty6
 
     --repositories $REPOSITORIES \
 
