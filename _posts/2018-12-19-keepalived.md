@@ -25,7 +25,8 @@ vagrant ssh
 두개의 노드 모두다 
 
 ```
-sudo yum install -y keepalived
+sudo bash
+yum install -y keepalived
 systemctl enable keepalived
 ```
 
@@ -34,9 +35,8 @@ systemctl enable keepalived
 mv /etc/keepalived/keepalived.conf /etc/keepalived/keepalived.old
 vi /etc/keepalived/keepalived.conf
 ```
-
+두 서버 같은 설정으로 넣는다.
 ```bash
-# master
 vrrp_instance VI_1 {
   state MASTER
   interface eth1
@@ -48,22 +48,7 @@ vrrp_instance VI_1 {
     auth_pass 1111
   }
   virtual_ipaddress {
-    192.168.1.200/24 dev em1
-  }
-}
-# backup
-vrrp_instance VI_1 {
-  state BACKUP # 여기 수정
-  interface eth1
-  virtual_router_id 51
-  priority 50 # 여기 수정
-  advert_int 1
-  authentication {
-    auth_type PASS
-    auth_pass 1111
-  }
-  virtual_ipaddress {
-    192.168.1.200/24 dev eth1 label eth1:0
+    192.168.1.200/24 dev eth1 label eth1:0 # 이부분 중요
   }
 }
 ```
