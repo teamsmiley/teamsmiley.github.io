@@ -13,7 +13,7 @@ category: {macosx}
 https://beomi.github.io/2017/07/07/Beautify-ZSH/
 
 ## 깃 프롬프트 보이기 
-http://blog.reshout.com/?p=1173
+https://jqno.nl/post/2012/04/02/howto-display-the-current-git-branch-in-your-prompt/
 
 ## host 지우기
 ```
