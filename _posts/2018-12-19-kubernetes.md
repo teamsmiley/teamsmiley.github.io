@@ -1324,10 +1324,40 @@ namespace가 좀 헷갈리니 항상 체크해야겟다.
 
 일단 파이프라인을 만들어야하는듯.
 
-트리거 적용
+configurtion ==> 트리거 적용 >> docker registry  >> name >> image >> enable trigger
 
-트리거가 되는지.
-트리거는 되나 이미지 버전을 넣어주는 법을 모르겟음.
+add stage >> deploy >> Manifest Source >> text 
+
+```yml
+---
+apiVersion: apps/v1
+kind: ReplicaSet
+metadata:
+  labels:
+    app: idp
+  name: idp
+  namespace: publish-api-live
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: idp
+  template:
+    metadata:
+      labels:
+        app: idp
+    spec:
+      containers:
+        - image: 'UR-REGISTRY:5000/UR-IMAGE:${trigger["tag"]}' # 이거 중요 트리거에서 넘겨준 정보를 가지고 빌드한다.
+          name: idp
+          ports:
+            - containerPort: 80
+```
+
+트리거는 태그 번호가 바귀어야만 자동으로 된다. 기존 태그를 업데이트하면 트리거가 진행안됨..꼭 번호를 사용하시길 
+
+${trigger["tag"]} 이 부분이 트리거에서 넘겨주는 값을 가지고 빌드를 하는 부분
+
 
 
 
