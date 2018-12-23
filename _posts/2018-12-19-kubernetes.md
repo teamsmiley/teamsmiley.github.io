@@ -1282,6 +1282,48 @@ spin-front50-fcdbb667c-fk8kz        0/1     CrashLoopBackOff   18         74m
 
 minio server실행이 되있는지 확인한다.
 
+## spinnaker 를 설정하면서 배운점 
+
+1. application을 만들자.  
+2. load balance를 만들자. (기존에 service를 넣으면 된다.)
+3. create server cluster (기존에 replicaset을 넣으면 된다.)
+
+아직은 pv pvc는 생성이 안되는듯 보여 직접 kubectl로 적용했고 ingress도 생성이 안되는듯 보여 수동으로 생성했다. 
+
+namespace가 좀 헷갈리니 항상 체크해야겟다.
+
+## 여기까지는 됫는데 이게 빌드가 바귀면 자동으로 배포를 해야하는게 목표.
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 ## 스피네커 설정하다보니 도커 이미지를 가져오는 부분이 있다.
 ```bash
 hal config provider docker-registry enable
