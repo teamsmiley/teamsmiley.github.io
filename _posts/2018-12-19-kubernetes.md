@@ -1078,6 +1078,33 @@ metadata:
 
 kubectl create -f spinnaker.yml
 
+
+
+### docker private registry enable 
+
+private registry 에 꼭 ssl이 필요하다 그것도 selfsign이 아닌 제대로 된것.
+
+그래서 let's encrypt로 설치했다. 참고 <https://teamsmiley.github.io/2018/12/22/docker-private-registry/>
+
+```bash
+CONTEXT=$(kubectl config current-context)
+
+hal config provider docker-registry enable
+
+ADDRESS=registry.xgridcolo.com:5000 
+REPOSITORIES="auth-server"
+USERNAME=ragon
+
+hal config provider docker-registry account add rc-registry \
+    --repositories $REPOSITORIES \
+    --address $ADDRESS \
+    --username $USERNAME \
+    --password 
+# password는 프롬프트로 물어본다.
+
+hal config provider kubernetes account add my-k8s-v2-account 
+```
+
 ### Adding an account (on node194 halyard container 안에서)
 
 First, make sure that the provider is enabled:
@@ -1086,11 +1113,12 @@ hal config provider kubernetes enable
 ```
 
 Then add the account:
-```
+```bash
 CONTEXT=$(kubectl config current-context)
 
 hal config provider kubernetes account add my-k8s-v2-account \
     --provider-version v2 \
+    --docker-registries rc-registry # registry에서 이미지를 받을수 있게
     --context $CONTEXT
 ```
 
@@ -1164,10 +1192,7 @@ docker exec -it halyard bash
 hal version list #사용할 버전을 고른다. 난 1.10.6
 
 hal config version edit --version 1.10.6
-```
 
-Deploy Spinnaker
-```
 hal deploy apply
 ```
 
@@ -1342,11 +1367,14 @@ ADDRESS=registry.xgridcolo.com:5000
 REPOSITORIES="auth-server"
 USERNAME=ragon
 
-hal config provider docker-registry account edit rc-registry \
+hal config provider docker-registry account add rc-registry \
     --repositories $REPOSITORIES \
     --address $ADDRESS \
     --username $USERNAME \
     --password 
+
+
+hal config provider kubernetes account add my-k8s-v2-account --docker-registries rc-registry
 
 hal deploy apply
 
