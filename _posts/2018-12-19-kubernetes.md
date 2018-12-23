@@ -1347,16 +1347,10 @@ hal config provider docker-registry account edit rc-registry \
     --address $ADDRESS \
     --username $USERNAME \
     --password 
+
 hal deploy apply
 
 ```
-
-docker run \
-  --entrypoint htpasswd \
-  registry -Bbn ragon kimchi66 > auth/htpasswd
-
-    
-hal config provider docker-registry account delete my-docker-registry
 
 ## TODO
 minio - docker 
