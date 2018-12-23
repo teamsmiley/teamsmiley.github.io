@@ -1082,18 +1082,23 @@ kubectl create -f spinnaker.yml
 
 ### docker private registry enable 
 
-private registry 에 꼭 ssl이 필요하다 그것도 selfsign이 아닌 제대로 된것.
+private registry 에 꼭 ssl이 필요하다 그것도 selfsign이 아닌 제대로 된것. 아이디 비번도 꼭 필요하다.
 
-그래서 let's encrypt로 설치했다. 참고 <https://teamsmiley.github.io/2018/12/22/docker-private-registry/>
+그래서 let's encrypt로 설치했다. 
+
+참고 <https://teamsmiley.github.io/2018/12/22/docker-private-registry/>
 
 ```bash
+
+docker exec -it halyard bash
+
 CONTEXT=$(kubectl config current-context)
 
 hal config provider docker-registry enable
 
-ADDRESS=registry.xgridcolo.com:5000 
+ADDRESS=registry.ur-domain.com:5000 
 REPOSITORIES="auth-server"
-USERNAME=ragon
+USERNAME=ur-username
 
 hal config provider docker-registry account add rc-registry \
     --repositories $REPOSITORIES \
@@ -1123,19 +1128,17 @@ hal config provider kubernetes account add my-k8s-v2-account \
 ```
 
 You’ll also need to run
-```
+```bash
 hal config features edit --artifacts true
-```
-
-Add Account
-```
+# Add Account
 hal config deploy edit --type distributed --account-name my-k8s-v2-account
 ```
 
 ## minio
+
 스피네커에서 사용하는 내용을 저장하기위해 외부 저장소를 쓰는데 여기서는 간단하게 minio를 사용하기로 한다. 
 
-s3도 안쓰고 node194에 로컬에 그냥 저장하는걸로 하자.
+s3도 안쓰고 node194에 로컬에 그냥 저장하는 걸로 하자.
 
 ### 미니오 서버를 실행 (on node194)
 
@@ -1321,64 +1324,12 @@ namespace가 좀 헷갈리니 항상 체크해야겟다.
 
 일단 파이프라인을 만들어야하는듯.
 
+트리거 적용
+
+트리거가 되는지.
+트리거는 되나 이미지 버전을 넣어주는 법을 모르겟음.
 
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-## 도커 이미지가 를 가져오는 부분이 있다.
-
-private registry 에 꼭 ssl이 필요하다 그것도 selfsign이 아닌 제대로 된것.
-
-그래서 let's encrypt로 설치했다. (따로 포스트 할 예정) //todo
-
-https://registry.xgridcolo.com:5000/v2/auth-server/tags/list
-
-```bash
-CONTEXT=$(kubectl config current-context)
-
-hal config provider docker-registry enable
-
-ADDRESS=registry.xgridcolo.com:5000 
-REPOSITORIES="auth-server"
-USERNAME=ragon
-
-hal config provider docker-registry account add rc-registry \
-    --repositories $REPOSITORIES \
-    --address $ADDRESS \
-    --username $USERNAME \
-    --password 
-
-
-hal config provider kubernetes account add my-k8s-v2-account --docker-registries rc-registry
-
-hal deploy apply
-
-```
 
 ## TODO
 minio - docker 

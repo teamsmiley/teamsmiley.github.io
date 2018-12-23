@@ -39,14 +39,14 @@ git clone https://github.com/certbot/certbot.git
 --agree-tos \
 --debug \
 --no-bootstrap \
--d registry.xgridcolo.com
+-d UR-DOMAIN.COM
 ```
 
 _acme-challenge.registry txt 도메인에 등록하라고 나옴
 
 ```
 Please deploy a DNS TXT record under the name
-_acme-challenge.registry.xgridcolo.com with the following value:
+_acme-challenge.UR-DOMAIN.COM with the following value:
 
 h1vJeUEv6AYJu5stnwlLy-xxx
 
@@ -62,9 +62,9 @@ Cleaning up challenges
 
 IMPORTANT NOTES:
  - Congratulations! Your certificate and chain have been saved at:
-   /etc/letsencrypt/live/registry.xgridcolo.com/fullchain.pem
+   /etc/letsencrypt/live/UR-DOMAIN.COM/fullchain.pem
    Your key file has been saved at:
-   /etc/letsencrypt/live/registry.xgridcolo.com/privkey.pem
+   /etc/letsencrypt/live/UR-DOMAIN.COM/privkey.pem
    Your cert will expire on 2019-03-23. To obtain a new or tweaked
    version of this certificate in the future, simply run certbot-auto
    again. To non-interactively renew *all* of your certificates, run
