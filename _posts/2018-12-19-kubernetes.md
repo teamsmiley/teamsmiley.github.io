@@ -1294,6 +1294,7 @@ namespace가 좀 헷갈리니 항상 체크해야겟다.
 
 ## 여기까지는 됫는데 이게 빌드가 바귀면 자동으로 배포를 해야하는게 목표.
 
+일단 파이프라인을 만들어야하는듯.
 
 
 
@@ -1324,24 +1325,32 @@ namespace가 좀 헷갈리니 항상 체크해야겟다.
 
 
 
-## 스피네커 설정하다보니 도커 이미지를 가져오는 부분이 있다.
+## 도커 이미지가 를 가져오는 부분이 있다.
+
+private registry 에 꼭 ssl이 필요하다 그것도 selfsign이 아닌 제대로 된것.
+
+그래서 let's encrypt로 설치했다. (따로 포스트 할 예정) //todo
+
+https://registry.xgridcolo.com:5000/v2/auth-server/tags/list
+
 ```bash
+
+CONTEXT=$(kubectl config current-context)
+
 hal config provider docker-registry enable
 
-ADDRESS=204.16.116.125:5000 
-REPOSITORIES="auth-server"
-USERNAME=
-PASSWORD=
+ADDRESS=registry.xgridcolo.com:5000 
+REPOSITORIES=auth-server
 
-hal config provider docker-registry account add my-docker-registry \
-    --insecure-registry true \
-    --address $ADDRESS \
-    --username $USERNAME \
-    --password 
+hal config provider docker-registry account add rc-registry \
+    --address $ADDRESS
+
+    --repositories $REPOSITORIES \
+hal deploy apply
+
 ```
 
 
-    --repositories $REPOSITORIES \
 
     
 hal config provider docker-registry account delete my-docker-registry
@@ -1390,7 +1399,11 @@ spinnaker 화면 인증
 
 
 
+Got solution for the aforementioned problem. 
 
+Enable okHttpClient in clouddriver.yaml 
+
+and add certificate to the keystore and truststore.
 
 
 
