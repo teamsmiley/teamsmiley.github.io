@@ -24,6 +24,10 @@ cd /data/git/docker/registry
 ## lets encrypt ssl 발급받기 
 
 ```bash
+yum update
+
+pip install requests urllib3 pyOpenSSL --force --upgrade
+
 cd /tmp
 git clone https://github.com/certbot/certbot.git
 
