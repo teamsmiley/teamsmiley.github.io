@@ -1334,23 +1334,26 @@ private registry 에 꼭 ssl이 필요하다 그것도 selfsign이 아닌 제대
 https://registry.xgridcolo.com:5000/v2/auth-server/tags/list
 
 ```bash
-
 CONTEXT=$(kubectl config current-context)
 
 hal config provider docker-registry enable
 
 ADDRESS=registry.xgridcolo.com:5000 
-REPOSITORIES=auth-server
+REPOSITORIES="auth-server"
+USERNAME=ragon
 
-hal config provider docker-registry account add rc-registry \
-    --address $ADDRESS
-
+hal config provider docker-registry account edit rc-registry \
     --repositories $REPOSITORIES \
+    --address $ADDRESS \
+    --username $USERNAME \
+    --password 
 hal deploy apply
 
 ```
 
-
+docker run \
+  --entrypoint htpasswd \
+  registry -Bbn ragon kimchi66 > auth/htpasswd
 
     
 hal config provider docker-registry account delete my-docker-registry
