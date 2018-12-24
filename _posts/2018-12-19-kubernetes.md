@@ -1100,7 +1100,7 @@ ADDRESS=registry.ur-domain.com:5000
 REPOSITORIES="auth-server"
 USERNAME=ur-username
 
-hal config provider docker-registry account add rc-registry \
+hal config provider docker-registry account add my-registry \
     --repositories $REPOSITORIES \
     --address $ADDRESS \
     --username $USERNAME \
@@ -1123,7 +1123,7 @@ CONTEXT=$(kubectl config current-context)
 
 hal config provider kubernetes account add my-k8s-v2-account \
     --provider-version v2 \
-    --docker-registries rc-registry # registry에서 이미지를 받을수 있게
+    --docker-registries my-registry # registry에서 이미지를 받을수 있게
     --context $CONTEXT
 ```
 
