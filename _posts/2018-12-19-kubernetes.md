@@ -1192,9 +1192,9 @@ spinnaker.s3.versioning: false
 컨테이너로 접속해서 
 ```bash
 docker exec -it halyard bash
-hal version list #사용할 버전을 고른다. 난 1.10.6
+hal version list #사용할 버전을 고른다. 난 1.11.x
 
-hal config version edit --version 1.10.6
+hal config version edit --version 1.11.x
 
 hal deploy apply
 ```
