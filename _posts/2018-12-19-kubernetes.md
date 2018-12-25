@@ -1310,65 +1310,76 @@ spin-front50-fcdbb667c-fk8kz        0/1     CrashLoopBackOff   18         74m
 
 minio server실행이 되있는지 확인한다.
 
-## spinnaker 를 설정하면서 배운점 
+
+## blue green 배포 적용 
+
+<https://www.spinnaker.io/guides/user/kubernetes-v2/traffic-management/#sample-bluegreen-pipeline>
+
+여기를 잘 참고하면 된다. 
+
+영어가 불편하신분을 위해 설명을 하면  
 
 1. application을 만들자.  
-2. load balance를 만들자. (기존에 service를 넣으면 된다.)
-3. create server cluster (기존에 replicaset을 넣으면 된다.)
+2. load balancer를 만들자. (service)
+3. pipeline을 추가한다. 
 
-아직은 pv pvc는 생성이 안되는듯 보여 직접 kubectl로 적용했고 ingress도 생성이 안되는듯 보여 수동으로 생성했다. 
+아직은 pv pvc는 생성이 안되는듯 보여 직접 kubectl로 적용했고 ingress도 생성이 안되는듯 보여 수동으로 생성했다. (방법 아시는분은 댓글좀..)
 
-namespace가 좀 헷갈리니 항상 체크해야겟다.
+해보자.
 
-## 여기까지는 됫는데 이게 빌드가 바귀면 자동으로 배포를 해야하는게 목표.
+### 서비스를 만들자. (load balancer)
 
-일단 파이프라인을 만들어야하는듯.
+```yml
+kind: Service
+  apiVersion: v1
+  metadata:
+    name: my-service
+  spec:
+    selector:
+      app: myapp
+    ports:
+    - protocol: TCP
+      port: 80
+```
 
+### 파이프 라인을 추가하자. 
+
+1. 트리거를 추가하자. 
+```
 configurtion ==> 트리거 적용 >> docker registry  >> name >> image >> enable trigger
+```
+태그가 번호가 꼭 바뀌어야 이 트리거가 실행된다.
+
+2. 스테이지 추가 
 
 add stage >> deploy >> Manifest Source >> text 
 
 ```yml
----
 apiVersion: apps/v1
 kind: ReplicaSet
 metadata:
+  annotations:
+    strategy.spinnaker.io/max-version-history: '2' # 최대 보관 이미지 갯수 롤백이 최근 1번째까지 가능하게 된다.
+    traffic.spinnaker.io/load-balancers: '["service my-service"]' #위에 만들어둔 서비스 붙인다. 이게 없으면 disable이 안된다. 
   labels:
-    app: idp
-  name: idp
-  namespace: publish-api-live
+    tier: frontend
+  name: frontend
 spec:
-  replicas: 1
+  replicas: 3
   selector:
     matchLabels:
-      app: idp
+      tier: frontend
   template:
     metadata:
       labels:
-        app: idp
+        tier: frontend
     spec:
       containers:
         - image: 'UR-REGISTRY:5000/UR-IMAGE:${trigger["tag"]}' # 이거 중요 트리거에서 넘겨준 정보를 가지고 빌드한다.
-          name: idp
-          ports:
-            - containerPort: 80
+          name: frontend
 ```
 
-트리거는 태그 번호가 바귀어야만 자동으로 된다. 기존 태그를 업데이트하면 트리거가 진행안됨..꼭 번호를 사용하시길 
-
 ${trigger["tag"]} 이 부분이 트리거에서 넘겨주는 값을 가지고 빌드를 하는 부분
-
-
-
-
-## TODO
-minio - docker 
-spinnaker 화면 인증 
-
-
-
-
-
 
 
 
