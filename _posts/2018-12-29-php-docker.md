@@ -118,5 +118,10 @@ echo phpinfo();
 ?>
 ```
 
+웹브라우저로 확인한다. 
+
+localhost/index.php
+
+
 
 
