@@ -1,6 +1,6 @@
 ---
 layout: post
-title: '초보 Devops - kubernetes' 
+title: 'kubernetes 초급 - 설치하고 사용하기' 
 author: teamsmiley
 date: 2018-12-19
 tags: [devops]
@@ -8,75 +8,193 @@ image: /files/covers/blog.jpg
 category: {kubernetes}
 ---
 
-# 테스트 랩 만들기 
+# 기본 설치 프로그램을 설치합니다.
 
-homebrew 
-
-home brew cask 
-
-homebrew install https://brew.sh/index_ko
-
-
-Homebrew-Cask은 Google 크롬 또는 Atom과 같은 GUI 응용 프로그램을 설치하는 Homebrew의 확장 프로그램입니다. 독립적으로 시작되었지만 유지 보수 담당자는 Homebrew의 핵심 팀과 긴밀하게 협력합니다.
-
-brew install brew-cask
-brew cask install virtualbox
-brew cask install vagrant
-
-## virtualbox install
-
-## vagrant install
-
-# kubernetes 
-
-구조 총 3개의 서버 (centos 7)
-
-192.168.0.191 master
-192.168.0.192 node192
-192.168.0.193 node193
-
-## 설치 - Master,Node192,Node193
-
-### 기본 서버 설정
-<https://kubernetes.io/docs/setup/independent/install-kubeadm/#before-you-begin>
+## homebrew install
+https://brew.sh/index_ko
 
 ```bash
-hostnamectl set-hostname 'master'
-setenforce 0
-sed -i 's/^SELINUX=enforcing$/SELINUX=permissive/' /etc/selinux/config
+/usr/bin/ruby -e "$(curl -fsSL https://raw.githubusercontent.com/Homebrew/install/master/install)"
+```
+
+## home brew cask 
+
+Homebrew-Cask은 Google 크롬 또는 Atom과 같은 GUI 응용 프로그램을 설치하는 Homebrew의 확장 프로그램입니다. 
+
+독립적으로 시작되었지만 유지 보수 담당자는 Homebrew의 핵심 팀과 긴밀하게 협력합니다.
+
+```bash
+brew install brew-cask
+```
+
+## virtualbox install
+가상머신을 설치하기 위한 프로그램입니다.
+```bash
+brew cask install virtualbox
+```
+
+## vagrant install
+virtual box를 관리하기 위해서 사용합니다. 조금 쉽게 virtualbox를 사용가능합니다.
+
+```bash
+brew cask install vagrant
+```
+
+## kubernetes 설치 
+
+1개의 마스터 서버 (centos 7)
+2개의 노드 서버 (centos 7)
+1개의 미니오 스토리지 서버(centos 7)
+1개의 도커 registry (centos 7)
+
+아이피는 다음과 같습니다. 
+
+| | |
+|---|---|
+192.168.0.191 | master  |
+192.168.0.192 | node192 |
+192.168.0.193 | node193 |
+192.168.0.194 | node194 | 
+192.168.0.195 | registry |
+| | |
+
+## 설치 - Master,Node192,Node193,Node194 
+
+## 가상머신 만들기 
+
+마스터 서버를 설치해봅니다.
+
+```
+mkdir -p ~/Desktop/kube/master
+cd ~/Desktop/kube/master
+vagrant init centos/7 --minimal
+vagrant up
+```
+
+virtual box를 실행해서 vm 이 만들어진것을 확인한다.
+
+이제 vm에 이름과 아이피를 지정하자. 
+
+Vagrantfile 파일을 수정하면 됩니다. 
+
+```ini
+Vagrant.configure("2") do |config|
+  config.vm.box = "centos/7"
+  # 추가 부분
+  config.vm.network "public_network", ip: "192.168.0.191", bridge: "en0: Wi-Fi (AirPort)"
+  config.vm.hostname "master"
+  # cpu 2개 momory 4G kubernetes 요구사항
+  config.vm.provider :virtualbox do |v|
+    v.customize ["modifyvm", :id, "--memory", "4000"]
+    v.customize ["modifyvm", :id, "--cpus", "2"]
+    v.customize ["modifyvm", :id, "--ioapic", "on"]
+  end
+
+end
+```
+
+vagrant 로 다시 vm을 시작해봅니다.
+
+```bash
+vagrant halt # vm을 정지시킵니다.
+vagrant destroy -y # vm을 삭제합니다.
+vagrant up # 새로운 설정으로 vm 을 부팅시킵니다.
+vagrant plugin install vagrant-vbguest # 추가 플러그인 설치합니다.
+vagrant ssh # 가상머신으로 접속합니다.
+sudo yum update && sudo yum -y install kernel-headers kernel-devel #이거 안하면 mount에러남
+sudo yum install net-tools -y # ifconfig를 설치합니다. 
+hostname # hostname 을 체크합니다.
+```
+
+kubernetes를 설치하기전 해야할 일이 있습니다. 
+
+<https://kubernetes.io/docs/setup/independent/install-kubeadm/#before-you-begin>
+
+문서를 참고하시면되는데요 진행해보겠습니다. 
+
+## before you begin kubernetes
+
+```bash
+# hostname 설정
+sudo hostnamectl set-hostname 'master'
+# selinux off
+sudo setenforce 0
+sudo sed -i 's/^SELINUX=enforcing$/SELINUX=permissive/' /etc/selinux/config
 
 # firewall off
-systemctl disable firewalld
+sudo systemctl disable firewalld
 
 # docker install
 curl -fsSL https://get.docker.com -o get-docker.sh
 sudo sh get-docker.sh
-systemctl start docker
-systemctl enable docker
+sudo usermod -aG docker vagrant
+sudo systemctl start docker
+sudo systemctl enable docker
 
-modprobe br_netfilter
+sudo curl -L "https://github.com/docker/compose/releases/download/1.22.0/docker-compose-$(uname -s)-$(uname -m)" -o /usr/local/bin/docker-compose
+
+sudo chmod +x /usr/local/bin/docker-compose
+
+sudo modprobe br_netfilter
+```
+vagrant 를 재시작하면 /proc/sys/net/bridge/bridge-nf-call-iptables 값이 항상 0으로 바뀐다. 매번 1로 설정해줘야한다.
+```
+sudo bash 
+echo '1' > /proc/sys/net/bridge/bridge-nf-call-iptables
+exit
+```
+
+<!-- 이걸 좀 쉽게 하는법이 있다 vagrant가 부팅되면서 항상 실행되는 파일을 만들면 된다. 
+
+vi startup.sh
+
+```bash
+#!/bin/bash
+sudo bash
 echo '1' > /proc/sys/net/bridge/bridge-nf-call-iptables
 ```
 
+vi Vagrantfile
+
+```ini
+# 추가
+config.vm.provision "shell", path: "startup.sh"
+```
+
+확인해보자. 
+
+```
+vagrant reload
+vagrant ssh 
+cat /proc/sys/net/bridge/bridge-nf-call-iptables
+``` -->
+
+
+
+
+
 * host 파일 설정
 ```
-vi /etc/hosts
+sudo vi /etc/hosts
 ```
 ```
-192.168.0.191 master
+192.168.0.101 master
 192.168.0.192 node192
 192.168.0.193 node193
+192.168.0.194 node194
+192.168.0.195 registry
 ```
 
-* 스왑오프
+* swap off
 ```bash
-swapoff -a # 임시로 스왑 오프 재부팅시 살아남.
-vi /etc/fstab  # swap을 지우기 
+sudo swapoff -a # 임시로 swap off 재부팅시 살아남.
+sudo vi /etc/fstab  # swap을 지우기 
 ```
 
-### kubernetes package install 
+## kubernetes package install
 
 ```bash
+sudo bash
 cat <<EOF > /etc/yum.repos.d/kubernetes.repo
 [kubernetes]
 name=Kubernetes
@@ -88,17 +206,220 @@ gpgkey=https://packages.cloud.google.com/yum/doc/yum-key.gpg https://packages.cl
 exclude=kube*
 EOF
 
-yum install -y kubelet kubeadm kubectl --disableexcludes=kubernetes
+sudo yum install -y kubelet kubeadm kubectl --disableexcludes=kubernetes
 
-systemctl enable kubelet && systemctl start kubelet
+sudo systemctl enable kubelet 
+sudo systemctl start kubelet
+exit
+exit
 ```
+이렇게 하면 kubernetes설치까지 마무리 된것이다. 이제 이 vm을 이미지로 만들어서 node192 node192을 만들어보자.
 
-## init kubenetes - Master
+## vm이미지 만들어서 나머지 노드들 만들기
+
+위처럼 똑같이 2개를 더 만들어서 설치하면되긴 하는데 귀찮아서 이미지로 만들어서 바로 로딩해서 사용할수 있게 합니다.
 
 ```bash
+vagrant package # package.box가 생성됩니다. 
+vagrant box add kube-default package.box # package.box를 이름으로 등록합니다.
+rm -f package.box # 다른 컴퓨터에서 사용하려면 옮겨 둬야 한다.
+```
+
+## node192 setup 
+192노드를 셋업합니다.
+
+```bash
+mkdir -p ~/Desktop/kube/node192
+cd ~/Desktop/kube/node192
+vagrant init kube-default --minimal
+vagrant plugin install vagrant-vbguest
+vagrant up
+vagrant ssh 
+ifconfig # ip 확인
+kubectl --help
+```
+kubectl이 설치되있는것을 확인할수 있습니다. 
+
+이제 아이피를 지정해봅시다.
+```
+vi Vagrantfile
+```
+```ini
+Vagrant.configure("2") do |config|
+  config.vm.box = "kube-default"
+  # 추가된 부분
+  config.vm.hostname = "node192"
+  config.vm.network "public_network", ip: "192.168.0.192", bridge: "en0: Wi-Fi (AirPort)"
+end
+```
+
+* 혹시 다음 에러가 나시면 업데이트가 필요합니다.
+
+```
+Vagrant was unable to mount VirtualBox shared folders. This is usually
+because the filesystem "vboxsf" is not available. This filesystem is
+made available via the VirtualBox Guest Additions and kernel module.
+Please verify that these guest additions are properly installed in the
+guest. This is not a bug in Vagrant and is usually caused by a faulty
+Vagrant box. For context, the command attempted was:
+
+mount -t vboxsf -o uid=1000,gid=1000 vagrant /vagrant
+
+The error output from the command was:
+
+/sbin/mount.vboxsf: mounting failed with the error: No such device
+```
+* 해결방법
+```
+vagrant ssh 
+sudo yum update && sudo yum -y install kernel-headers kernel-devel
+exit
+vagrant reload 
+```
+
+## node193을 설치
+
+```bash
+mkdir -p ~/Desktop/kube/node193
+cd ~/Desktop/kube/node193
+vagrant init kube-default --minimal
+
+vi Vagrantfile
+
+> Vagrant.configure("2") do |config|
+>   config.vm.box = "kube-default"
+>   # 추가된 부분
+>   config.vm.hostname = "node193"
+>   config.vm.network "public_network", ip: "192.168.0.193", bridge: "en0: Wi-Fi (AirPort)"
+> end
+
+vagrant up # 혹시 에러나면 플러그인 설치
+vagrant plugin install vagrant-vbguest
+vagrant up
+vagrant ssh 
+ifconfig # ip 확인
+kubectl --help
+```
+kubectl이 설치되있는것을 확인할수 있습니다. 
+
+## registry도 설치
+```bash
+mkdir -p ~/Desktop/kube/registry/data/docker
+mkdir -p ~/Desktop/kube/registry/data/registry
+cd ~/Desktop/kube/registry
+vagrant init kube-default --minimal
+
+vi Vagrantfile
+
+> Vagrant.configure("2") do |config|
+>   config.vm.box = "kube-default"
+>   # 추가된 부분
+>   config.vm.hostname = "registry"
+>   config.vm.network "public_network", ip: "192.168.0.195", bridge: "en0: Wi-Fi (AirPort)"
+>   config.vm.network "forwarded_port", host: 5000, guest: 5000
+>   config.vm.synced_folder "./data/", "/data/"
+> end
+
+```
+
+* vm의 포트 5000번과 로컬에 포트 5000을 매핑
+* ./data 폴더를 vm에 /data 로 매핑을 해준다.
+
+```bash
+vagrant up # 혹시 에러나면 플러그인 설치
+vagrant plugin install vagrant-vbguest
+vagrant up
+
+vagrant ssh 
+ifconfig # ip 확인
+exit
+```
+이제 repository를 도커를 이용하여 실행해보자. 
+
+```bash
+vi ~/Desktop/kube/registry/data/docker/docker-compose.yml
+```
+```yml
+---
+version: "3.3"
+
+services: 
+  registry:
+    container_name: registry
+    restart: always
+    image: registry:2.6.2
+    privileged: true
+    ports:
+      - 5000:5000
+    environment:
+      TZ: "America/Los_Angeles"
+      REGISTRY_STORAGE_DELETE_ENABLED: "true"
+      REGISTRY_STORAGE_FILESYSTEM_ROOTDIRECTORY: /data/registry
+    volumes:
+      - /data/registry:/data/registry/docker/registry
+```
+데이터는 이 /data/registry 경로에 저장을 한다.
+
+이제 도커를 실행해보자.
+
+```bash
+vagrant reload # 설정이 바뀌였으므로 재시작한다.
+cd ~/Desktop/kube/registry/
+vagrant ssh
+
+cd /data/docker && docker-compose up -d
+docker ps 
+```
+
+docker private registry를 생성하자. 도커 이미지를 만들면 저장해두는 저장소다. 도커를 빌드해서 사용할 계획이므로 이것이 꼭 먼저 있어야한다.
+
+이렇게 하면 도커 이미지들을 저장할수 있다.
+
+## minio server
+spinnaker 에서 필요한 데이터를 저장하는 저장소 역할을 합니다. s3등을 사용하여도 되나 여기서는 vm으로 저장합니다. 
+
+```bash
+mkdir ~/Desktop/kube/minio/data/minio
+mkdir ~/Desktop/kube/minio/data/minio-config
+
+cd ~/Desktop/kube/minio
+vagrant init kube-default --minimal
+vagrant up 
+
+vi Vagrantfile
+
+> Vagrant.configure("2") do |config|
+>   config.vm.box = "kube-default"
+>   # 추가된 부분
+>  config.vm.hostname = "minio"
+>  config.vm.network "public_network", ip: "192.168.0.194", bridge: "en0: Wi-Fi (AirPort)"
+>  config.vm.synced_folder "./data/", "/data/"
+> end
+
+vagrant up 
+```
+
+## 전체 설치 버전
+
+<https://github.com/heptiolabs/wardroom/blob/master/swizzle/Vagrantfile>
+
+```bash
+vi Vagrant file 
+vagrant up 
+```
+
+## init kubenetes - master
+
+이제 쿠버네티스를 셋업해보자. 
+
+```bash
+cat /proc/sys/net/bridge/bridge-nf-call-iptables
+sudo bash 
+echo '1' > /proc/sys/net/bridge/bridge-nf-call-iptables
+
 kubeadm init
 # 또는 
-kubeadm init --pod-network-cidr=192.168.0.0/24
+kubeadm init --service-cidr=192.168.0.0/24
 ```
 결과값을 잘 복사해두자. 나중에 이 값을 이용해서 노드를 마스터에 연결해준다.
 
@@ -106,7 +427,7 @@ kubeadm init --pod-network-cidr=192.168.0.0/24
 You can now join any number of machines by running the following on each node
 as root:
 
-  kubeadm join 192.168.0.191:6443 --token lr98l5.962xm2vi5pznrdhz --discovery-token-ca-cert-hash sha256:d1ffcec6e71cc2be3105adf450d80f179462db35abe47155820bab852ce1d6f5
+kubeadm join 10.0.2.15:6443 --token 7i0ywg.dgdqonel09n6doyj --discovery-token-ca-cert-hash sha256:c61c22e4de41e2de01c05b5d54a10ff44633cc736be3670a56d7a8f500c9d1f6
 ```
 
 ```bash
@@ -135,7 +456,14 @@ kubectl apply -f "https://cloud.weave.works/k8s/net?k8s-version=$(kubectl versio
 
 위에 복사해둔 스크립트를 노드에 실행을 해준다.
 ```
-kubeadm join 192.168.0.191:6443 --token lr98l5.962xm2vi5pznrdhz --discovery-token-ca-cert-hash sha256:d1ffcec6e71cc2be3105adf450d80f179462db35abe47155820bab852ce1d6f5
+vagrant up
+vagrant ssh
+
+sudo bash 
+echo '1' > /proc/sys/net/bridge/bridge-nf-call-iptables
+
+
+sudo kubeadm join 192.168.0.191:6443 --token lr98l5.962xm2vi5pznrdhz --discovery-token-ca-cert-hash sha256:d1ffcec6e71cc2be3105adf450d80f179462db35abe47155820bab852ce1d6f5
 ```
 
 ## 클러스터 연결 확인
