@@ -24,22 +24,29 @@ cd /data/git/docker/registry
 ## lets encrypt ssl 발급받기 
 
 ```bash
-yum update
+sudo bash
+sudo curl -L "https://github.com/docker/compose/releases/download/1.23.2/docker-compose-$(uname -s)-$(uname -m)" -o /usr/local/bin/docker-compose
+sudo chmod +x /usr/local/bin/docker-compose
+sudo yum update
+sudo yum install epel-release git -y
+sudo yum install python-pip -y
+sudo yum install python-virtualenv -y
 
-pip install requests urllib3 pyOpenSSL --force --upgrade
+sudo pip install requests urllib3 pyOpenSSL --force --upgrade
 
 cd /tmp
-git clone https://github.com/certbot/certbot.git
+git clone https://github.com/certbot/certbot.git 
+cd certbot
 
 ./certbot-auto certonly \
 --manual \
 --preferred-challenges=dns \
---email support@xgridcolo.com \
+--email teamsmiley@gmail.com \
 --server https://acme-v02.api.letsencrypt.org/directory \
 --agree-tos \
 --debug \
 --no-bootstrap \
--d UR-DOMAIN.COM
+-d registry.publishapi.com
 ```
 
 _acme-challenge.registry txt 도메인에 등록하라고 나옴
@@ -82,7 +89,7 @@ IMPORTANT NOTES:
 ```bash
 docker run \
   --entrypoint htpasswd \
-  registry -Bbn USERNAME PASSWORD > auth/htpasswd
+  registry -Bbn USERNAME PASSWORD > /data/git/docker/registry/auth/htpasswd
 ```
 
 

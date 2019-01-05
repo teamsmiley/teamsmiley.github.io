@@ -1444,7 +1444,7 @@ metadata:
 
 kubectl create -f spinnaker.yml
 
-### docker private registry enable 
+### docker private registry enable (on minio server node194)
 
 private registry 에 꼭 ssl이 필요하다 그것도 selfsign이 아닌 제대로 된것. 아이디 비번도 꼭 필요하다.
 
@@ -1460,7 +1460,7 @@ CONTEXT=$(kubectl config current-context)
 
 hal config provider docker-registry enable
 
-ADDRESS=registry.ur-domain.com:5000 
+ADDRESS=registry.aaa.com:5000 
 REPOSITORIES="auth-server"
 USERNAME=ur-username
 
