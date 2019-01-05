@@ -58,6 +58,11 @@ brew cask install vagrant
 192.168.0.195 | registry |
 | | |
 
+## 맥북 wifi를 192.168.0.1로 지정
+```
+sudo ifconfig en0 alias 192.168.0.1/24 up
+```
+
 ## 설치 - Master,Node192,Node193,Node194 
 
 ## 가상머신 만들기 
@@ -405,8 +410,11 @@ vagrant up
 
 ```bash
 vi Vagrant file 
+vagrant plugin install vagrant-libvirt
 vagrant up 
 ```
+
+
 
 ## init kubenetes - master
 
@@ -416,10 +424,16 @@ vagrant up
 cat /proc/sys/net/bridge/bridge-nf-call-iptables
 sudo bash 
 echo '1' > /proc/sys/net/bridge/bridge-nf-call-iptables
+cat /proc/sys/net/bridge/bridge-nf-call-iptables
+
+cat /proc/sys/net/ipv4/ip_forward
+echo '1' > /proc/sys/net/ipv4/ip_forward
+cat /proc/sys/net/ipv4/ip_forward
+
+route del default eth0 # 기본 라우터를 eth1 192로 한다.
+route add default gw 192.168.0.1 netmask 0.0.0.0 dev eth1 # default gw 추가 
 
 kubeadm init
-# 또는 
-kubeadm init --service-cidr=192.168.0.0/24
 ```
 결과값을 잘 복사해두자. 나중에 이 값을 이용해서 노드를 마스터에 연결해준다.
 
@@ -427,7 +441,7 @@ kubeadm init --service-cidr=192.168.0.0/24
 You can now join any number of machines by running the following on each node
 as root:
 
-kubeadm join 10.0.2.15:6443 --token 7i0ywg.dgdqonel09n6doyj --discovery-token-ca-cert-hash sha256:c61c22e4de41e2de01c05b5d54a10ff44633cc736be3670a56d7a8f500c9d1f6
+kubeadm join 192.168.0.191:6443 --token a24iv1.35ela7tz6sfc1h1r --discovery-token-ca-cert-hash sha256:432645b936c5103fc97f79ecead7340f2a766627750c13bfad72e09d246a3567
 ```
 
 ```bash
@@ -460,8 +474,14 @@ vagrant up
 vagrant ssh
 
 sudo bash 
-echo '1' > /proc/sys/net/bridge/bridge-nf-call-iptables
 
+cat /proc/sys/net/bridge/bridge-nf-call-iptables
+echo '1' > /proc/sys/net/bridge/bridge-nf-call-iptables
+cat /proc/sys/net/bridge/bridge-nf-call-iptables
+
+cat /proc/sys/net/ipv4/ip_forward
+echo '1' > /proc/sys/net/ipv4/ip_forward
+cat /proc/sys/net/ipv4/ip_forward
 
 sudo kubeadm join 192.168.0.191:6443 --token lr98l5.962xm2vi5pznrdhz --discovery-token-ca-cert-hash sha256:d1ffcec6e71cc2be3105adf450d80f179462db35abe47155820bab852ce1d6f5
 ```
@@ -478,10 +498,13 @@ node193   NotReady   <none>   12s     v1.13.0
 
 계속확인하여 node가 ready상태로 변경될때가지 대기
 
+not ready가 오래되면 다음처럼 한다. 
+
 노드 상태를 확인해보자.
 
 ```bash
-kubectl describe nodes master
+kubectl describe nodes node192
+kubectl describe nodes node193
 ```
 
 ## kubenetes 기본 구조 공부
