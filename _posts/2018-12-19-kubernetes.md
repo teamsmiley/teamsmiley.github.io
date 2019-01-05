@@ -59,8 +59,10 @@ brew cask install vagrant
 | | |
 
 ## 맥북 wifi를 192.168.0.1로 지정
-```
+```bash
 sudo ifconfig en0 alias 192.168.0.1/24 up
+sudo route -nv add -net 192.168.0 -interface en0
+#sudo route delete -net 192.168.0 -interface en0 #해제
 ```
 
 ## 설치 - Master,Node192,Node193,Node194 
@@ -421,8 +423,9 @@ vagrant up
 이제 쿠버네티스를 셋업해보자. 
 
 ```bash
-cat /proc/sys/net/bridge/bridge-nf-call-iptables
 sudo bash 
+
+cat /proc/sys/net/bridge/bridge-nf-call-iptables
 echo '1' > /proc/sys/net/bridge/bridge-nf-call-iptables
 cat /proc/sys/net/bridge/bridge-nf-call-iptables
 
@@ -433,7 +436,7 @@ cat /proc/sys/net/ipv4/ip_forward
 route del default eth0 # 기본 라우터를 eth1 192로 한다.
 route add default gw 192.168.0.1 netmask 0.0.0.0 dev eth1 # default gw 추가 
 
-kubeadm init
+kubeadm init --apiserver-advertise-address 192.168.0.191 --pod-network-cidr 10.1.0.0/16
 ```
 결과값을 잘 복사해두자. 나중에 이 값을 이용해서 노드를 마스터에 연결해준다.
 
@@ -441,7 +444,7 @@ kubeadm init
 You can now join any number of machines by running the following on each node
 as root:
 
-kubeadm join 192.168.0.191:6443 --token a24iv1.35ela7tz6sfc1h1r --discovery-token-ca-cert-hash sha256:432645b936c5103fc97f79ecead7340f2a766627750c13bfad72e09d246a3567
+kubeadm join 192.168.0.191:6443 --token w5k7m1.hiqhovf3uhhbdk7k --discovery-token-ca-cert-hash sha256:cf20a97b79e2eb461c815580c19a207c290f74e52830eac8d0be337e3a3f6116
 ```
 
 ```bash
@@ -454,7 +457,6 @@ sudo chown $(id -u):$(id -g) $HOME/.kube/config
 
 ```bash
 kubectl apply -f "https://cloud.weave.works/k8s/net?k8s-version=$(kubectl version | base64 | tr -d '\n')"
-
 > serviceaccount/weave-net created
 > clusterrole.rbac.authorization.k8s.io/weave-net created
 > clusterrolebinding.rbac.authorization.k8s.io/weave-net created
@@ -682,12 +684,12 @@ curl http://192.168.0.193:30001
 
 클러스터의 모든 서버 아이피에 포트를 연다.
 
-외부에 오픈하기는 가장 쉬운 방법 - 단점도 있다 포트가 30000번이상과 2개의 다른 서비스에 하나의 포트를 사용할수 없다.  전체 클러스터에 포트를 열기 때문 
+외부에 오픈하기는 가장 쉬운 방법 - 단점도 있다 포트가 30000번이상, 2개의 다른 서비스에 하나의 포트를 사용할수 없다.  전체 클러스터에 포트를 열기 때문 
 
 ### ClusterIP
 clusterip가 기본값이다. 처음에는 이걸 왜 쓰냐고 생각햇는데 내부 서비스끼리 연결될때 이걸 사용한다. 
 
-예를 들면 워드프레스와 mysql 두개의 서비스가 돌고 잇을때 mysql은 외부에 오픈할 필요없이 워드프레스 pod에만 연결이 되면 되므로 mysql 서비스를만들어서 clusetip로 하면된다. 
+예를 들면 워드프레스와 mysql 두개의 서비스가 돌고 잇을때 mysql은 외부에 오픈할 필요없이 워드프레스 pod에만 연결이 되면 되므로 mysql 서비스를만들어서 cluster ip로 하면된다. 
 
 그럼 워드프레스에서 mysql에 어떻게 연결하나? - 나중에 해보다 //todo 
 
@@ -781,8 +783,12 @@ spec:
   selector:
     service-name: hello-node
 ```
+
+```bash
 kubectl delete -f hello-node.yml
 kubectl create -f hello-node.yml
+kubectl replace -f hello-node.yml
+```
 
 ```bash
 $ kubectl  get svc
@@ -816,8 +822,8 @@ kubectl get svc
 
 ### sample pod and service 삭제 
 ```bash
-kubectl delete pods hello-node
 kubectl delete svc hello-node
+kubectl delete pods hello-node
 ```
 
 ## kube dashboard 
@@ -1049,11 +1055,12 @@ kubectl -n kube-system describe secret $(kubectl -n kube-system get secret | gre
 ## mysql 서비스 설치하기 (namespace 꼭 사용하기)
 
 kubernetes를사용할때는 꼭 name space를 쓰기를 추천드립니다.
-```
-kubectl create namespace publish-api-dev
-kubectl create namespace publish-api-live
+```bash
+kubectl create namespace dev
+kubectl create namespace live
 kubectl get namespaces
 ```
+
 mysql은 pv,pvc생성 >> pod 생성 >> 서비스 생성 이런식으로 됩니다. 
 
 ### Create Local Persistent Volumes (on master)
@@ -1066,11 +1073,10 @@ vi dev-mysql-pv-pvc.yml
 ```yml
 ---
 kind: PersistentVolume
-namespace: publish-api-dev
 apiVersion: v1
 metadata:
   name: dev-mysql-pv-volume
-  namespace: publish-api-dev
+  namespace: dev
   labels:
     type: local
 spec:
@@ -1094,7 +1100,7 @@ apiVersion: v1
 kind: PersistentVolumeClaim
 metadata:
   name: dev-mysql-pv-claim
-  namespace: publish-api-dev
+  namespace: dev
 spec:
   storageClassName: slow
   selector:
@@ -1115,7 +1121,7 @@ apiVersion: v1
 kind: Service
 metadata:
   name: dev-mysql
-  namespace: publish-api-dev
+  namespace: dev
 spec:
   type: LoadBalancer
   loadBalancerIP: 192.168.0.82
@@ -1129,7 +1135,7 @@ apiVersion: apps/v1 # for versions before 1.9.0 use apps/v1beta2
 kind: Deployment
 metadata:
   name: dev-mysql
-  namespace: publish-api-dev
+  namespace: dev
 spec:
   selector:
     matchLabels:
@@ -1161,19 +1167,18 @@ spec:
 ```
 ```
 kubectl create -f dev-mysql-pv-pvc.yml 
-kubectl get pv -n publish-api-dev
-kubectl get pvc -n publish-api-dev
+kubectl get pv -n dev
+kubectl get pvc -n dev
 kubectl create -f dev-mysql-deployment.yml
-kubectl get pods -n publish-api-dev
-kubectl get services -n publish-api-dev
+kubectl get pods -n dev
+kubectl get services -n dev
 ```
 
 Node192 번에 /data/dev-mysql폴더가 없으면 만들어 줘야한다. 
 
 여기에 데이터를 저장하게 해두었으나 실제로는 nfs등에 저장하면될듯 
 
-개발디비여서 외부에서 접속할 필요가 있어서 loadbalancer 를 서비스 타입으로 사용하나 서비스 디비는 외부에 오픈될 필요가 없으면 cluseterip를 사용해도 될듯 싶다. 
-
+개발디비여서 외부에서 접속할 필요가 있으면 loadbalancer 를 서비스 타입으로 사용하나 서비스 디비는 외부에 오픈될 필요가 없으면 cluseterip를 사용해도 될듯 싶다. 
 
 ## ingress-nginx 
 
@@ -1229,7 +1234,7 @@ kubectl apply -f https://raw.githubusercontent.com/kubernetes/ingress-nginx/mast
 잘됬는지 체크 
 ```bash
 kubectl get pods --all-namespaces -l app.kubernetes.io/name=ingress-nginx 
-kubectl get svc -n ingress-nginx  #open된 포트 확인하자
+kubectl get svc -n ingress-nginx  #open된 포트 확인하자 32565
 ```
 
 설정을 추가하자.
@@ -1241,26 +1246,16 @@ apiVersion: extensions/v1beta1
 kind: Ingress
 metadata:
   name: ingress-nginx
-  # namespace: publish-api-live
   annotations:
     nginx.ingress.kubernetes.io/rewrite-target: /
 spec:
   rules:
-  - host: publishapi.com
+  - host: aaa.com
     http:
       paths:
       - path: /
         backend:
           serviceName: hello-node
-          # serviceName: auth-svc
-          servicePort: 8080
-          
-  - host: auth.publishapi.com
-    http:
-      paths:
-      - backend:
-          serviceName: hello-node
-          # serviceName: auth-svc
           servicePort: 8080
 ```
 kubectl create -f ingress-config.yml
@@ -1268,7 +1263,13 @@ kubectl create -f ingress-config.yml
 
 확인해보자. 
 
-curl http://192.168.0.192:31531
+curl http://192.168.0.191:8080 ==> 404 not found 
+
+vi /etc/hosts
+```
+192.168.0.192 aaa.com
+```
+curl http://aaa.com:32565 
 
 동작한다.
 
@@ -1316,6 +1317,15 @@ kubectl create -f ingress-service.yml
 kubectl get svc -n ingress-nginx 
 ```
 
+vi /etc/hosts
+```
+192.168.0.83 aaa.com
+```
+
+curl http://192.168.0.83  not working
+
+curl http://aaa.com 
+
 로드발란스로 동작한다.
 
 * 중요 
@@ -1338,10 +1348,15 @@ cat ~/.kube/config
 ```
 복사해둔다. 
 
-쿠버네티스 클러스터가 현재 존재하고 이제 halyard를 설치할 서버를 준비하자. node194 에서 다음 작업을 진행한다.
+쿠버네티스 클러스터가 현재 존재하고 이제 halyard를 설치할 서버를 준비하자. node194(minio) 에서 다음 작업을 진행한다.
 
 ### halyard (on 194)
 ```bash
+sudo bash
+echo "net.ipv4.ip_forward=1" >> /etc/sysctl.conf
+systemctl restart network
+sysctl net.ipv4.ip_forward
+
 mkdir ~/.hal
 chmod 777 -R ~/.hal
 
@@ -1375,7 +1390,7 @@ source <(hal --print-bash-completion)
 
 * on master
 
-```
+```bash
 kubectl create namespace spinnaker
 
 vi spinnaker.yml
@@ -1428,8 +1443,6 @@ metadata:
 ```
 
 kubectl create -f spinnaker.yml
-
-
 
 ### docker private registry enable 
 
