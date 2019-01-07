@@ -17,8 +17,8 @@ centos 7  설치
 ## 폴더 생성 
 
 ```
-mkdir -p /data/git/docker/registry/auth
-cd /data/git/docker/registry
+mkdir -p /data/docker/auth
+cd /data/docker
 ```
 
 ## lets encrypt ssl 발급받기 
@@ -89,11 +89,12 @@ IMPORTANT NOTES:
 ```bash
 docker run \
   --entrypoint htpasswd \
-  registry -Bbn USERNAME PASSWORD > /data/git/docker/registry/auth/htpasswd
+  registry -Bbn USERNAME PASSWORD > /data/docker/auth/htpasswd
 ```
 
 
-## 도커 실행 
+## 도커 실행
+cd /data/docker/registry/
 vi docker-compose.yml
 
 ```yml
@@ -123,6 +124,7 @@ services:
 ```
 
 ```
+cd /data/docker/
 docker-compose up -d
 ```
 

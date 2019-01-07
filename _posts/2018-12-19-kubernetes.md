@@ -1,6 +1,6 @@
 ---
 layout: post
-title: 'kubernetes 초급 - 설치하고 사용하기' 
+title: 'kubernetes spinnaker 초급 - 설치하고 사용하기' 
 author: teamsmiley
 date: 2018-12-19
 tags: [devops]
@@ -8,7 +8,9 @@ image: /files/covers/blog.jpg
 category: {kubernetes}
 ---
 
-# 기본 설치 프로그램을 설치합니다.
+# kubernetes 와 spinnaker를 설치하고 사용해봅니다.
+
+맥북에서 virtualbox를 사용하여 여러개의 가상머신을 만든후 거기에 설치를 진행할 것입니다 그래서 다음처럼 기본 설치 프로그램을 설치합니다.
 
 ## homebrew install
 https://brew.sh/index_ko
@@ -44,8 +46,7 @@ brew cask install vagrant
 
 1개의 마스터 서버 (centos 7)
 2개의 노드 서버 (centos 7)
-1개의 미니오 스토리지 서버(centos 7)
-1개의 도커 registry (centos 7)
+1개의 미니오 스토리지 서버,registry (centos 7)
 
 아이피는 다음과 같습니다. 
 
@@ -54,11 +55,12 @@ brew cask install vagrant
 192.168.0.191 | master  |
 192.168.0.192 | node192 |
 192.168.0.193 | node193 |
-192.168.0.194 | node194 | 
-192.168.0.195 | registry |
+192.168.0.194 | node194(minio storage, docker registry| 
 | | |
 
 ## 맥북 wifi를 192.168.0.1로 지정
+기존 사용하는 네트워크와 별개의 네트워크를 사용합니다. 혹시 공유기를 사용하시는분들중에 192.168.0.1 대역을 사용하시면 아마 안해도 되지 않을가 싶습니다. 
+
 ```bash
 sudo ifconfig en0 alias 192.168.0.1/24 up
 sudo route -nv add -net 192.168.0 -interface en0
@@ -87,16 +89,14 @@ Vagrantfile 파일을 수정하면 됩니다.
 ```ini
 Vagrant.configure("2") do |config|
   config.vm.box = "centos/7"
-  # 추가 부분
+  config.vm.hostname = "master"
   config.vm.network "public_network", ip: "192.168.0.191", bridge: "en0: Wi-Fi (AirPort)"
-  config.vm.hostname "master"
-  # cpu 2개 momory 4G kubernetes 요구사항
-  config.vm.provider :virtualbox do |v|
-    v.customize ["modifyvm", :id, "--memory", "4000"]
-    v.customize ["modifyvm", :id, "--cpus", "2"]
-    v.customize ["modifyvm", :id, "--ioapic", "on"]
+  config.vm.synced_folder "./data/", "/data/"
+  config.vm.provider "virtualbox" do |vb|
+    vb.customize ["modifyvm", :id, "--memory", "4000"]
+    vb.customize ["modifyvm", :id, "--cpus", "4"]
+    vb.customize ["modifyvm", :id, "--ioapic", "on"]
   end
-
 end
 ```
 
@@ -104,13 +104,14 @@ vagrant 로 다시 vm을 시작해봅니다.
 
 ```bash
 vagrant halt # vm을 정지시킵니다.
-vagrant destroy -y # vm을 삭제합니다.
 vagrant up # 새로운 설정으로 vm 을 부팅시킵니다.
-vagrant plugin install vagrant-vbguest # 추가 플러그인 설치합니다.
 vagrant ssh # 가상머신으로 접속합니다.
-sudo yum update && sudo yum -y install kernel-headers kernel-devel #이거 안하면 mount에러남
-sudo yum install net-tools -y # ifconfig를 설치합니다. 
-hostname # hostname 을 체크합니다.
+
+su - 
+> vagrant
+
+yum update && yum -y install kernel-headers kernel-devel 
+yum install net-tools wget git -y # ifconfig git wget를 설치합니다. 
 ```
 
 kubernetes를 설치하기전 해야할 일이 있습니다. 
@@ -122,86 +123,45 @@ kubernetes를 설치하기전 해야할 일이 있습니다.
 ## before you begin kubernetes
 
 ```bash
-# hostname 설정
-sudo hostnamectl set-hostname 'master'
+su -
 # selinux off
-sudo setenforce 0
-sudo sed -i 's/^SELINUX=enforcing$/SELINUX=permissive/' /etc/selinux/config
+setenforce 0
+sed -i 's/^SELINUX=enforcing$/SELINUX=permissive/' /etc/selinux/config
 
 # firewall off
-sudo systemctl disable firewalld
+systemctl disable firewalld
 
 # docker install
 curl -fsSL https://get.docker.com -o get-docker.sh
-sudo sh get-docker.sh
-sudo usermod -aG docker vagrant
-sudo systemctl start docker
-sudo systemctl enable docker
+sh get-docker.sh
+systemctl start docker
+systemctl enable docker
 
-sudo curl -L "https://github.com/docker/compose/releases/download/1.22.0/docker-compose-$(uname -s)-$(uname -m)" -o /usr/local/bin/docker-compose
+curl -L "https://github.com/docker/compose/releases/download/1.22.0/docker-compose-$(uname -s)-$(uname -m)" -o /usr/local/bin/docker-compose
 
-sudo chmod +x /usr/local/bin/docker-compose
+chmod +x /usr/local/bin/docker-compose
 
-sudo modprobe br_netfilter
+modprobe br_netfilter
 ```
-vagrant 를 재시작하면 /proc/sys/net/bridge/bridge-nf-call-iptables 값이 항상 0으로 바뀐다. 매번 1로 설정해줘야한다.
-```
-sudo bash 
-echo '1' > /proc/sys/net/bridge/bridge-nf-call-iptables
-exit
-```
-
-<!-- 이걸 좀 쉽게 하는법이 있다 vagrant가 부팅되면서 항상 실행되는 파일을 만들면 된다. 
-
-vi startup.sh
-
-```bash
-#!/bin/bash
-sudo bash
-echo '1' > /proc/sys/net/bridge/bridge-nf-call-iptables
-```
-
-vi Vagrantfile
-
-```ini
-# 추가
-config.vm.provision "shell", path: "startup.sh"
-```
-
-확인해보자. 
-
-```
-vagrant reload
-vagrant ssh 
-cat /proc/sys/net/bridge/bridge-nf-call-iptables
-``` -->
-
-
-
-
 
 * host 파일 설정
-```
-sudo vi /etc/hosts
-```
-```
-192.168.0.101 master
-192.168.0.192 node192
-192.168.0.193 node193
-192.168.0.194 node194
-192.168.0.195 registry
+```bash
+vi /etc/hosts
+> 192.168.0.101 master 
+> 192.168.0.192 node192
+> 192.168.0.193 node193
+> 192.168.0.194 node194
 ```
 
 * swap off
 ```bash
-sudo swapoff -a # 임시로 swap off 재부팅시 살아남.
-sudo vi /etc/fstab  # swap을 지우기 
+swapoff -a # 임시로 swap off 재부팅시 살아남.
+vi /etc/fstab  # swap을 지우기 
 ```
 
 ## kubernetes package install
 
 ```bash
-sudo bash
 cat <<EOF > /etc/yum.repos.d/kubernetes.repo
 [kubernetes]
 name=Kubernetes
@@ -213,14 +173,14 @@ gpgkey=https://packages.cloud.google.com/yum/doc/yum-key.gpg https://packages.cl
 exclude=kube*
 EOF
 
-sudo yum install -y kubelet kubeadm kubectl --disableexcludes=kubernetes
-
-sudo systemctl enable kubelet 
-sudo systemctl start kubelet
+yum install -y kubelet kubeadm kubectl --disableexcludes=kubernetes
+systemctl start kubelet
+systemctl enable kubelet 
 exit
+
 exit
 ```
-이렇게 하면 kubernetes설치까지 마무리 된것이다. 이제 이 vm을 이미지로 만들어서 node192 node192을 만들어보자.
+이렇게 하면 kubernetes설치까지 마무리 된것이다. 이제 이 vm을 이미지로 만들어서 node192 node193 node194을 만들어보자.
 
 ## vm이미지 만들어서 나머지 노드들 만들기
 
@@ -228,8 +188,8 @@ exit
 
 ```bash
 vagrant package # package.box가 생성됩니다. 
-vagrant box add kube-default package.box # package.box를 이름으로 등록합니다.
-rm -f package.box # 다른 컴퓨터에서 사용하려면 옮겨 둬야 한다.
+vagrant box add kube-default package.box --force # package.box를 이름으로 등록합니다.
+#rm -f package.box # 다른 컴퓨터에서 사용하려면 옮겨 둬야 한다.
 ```
 
 ## node192 setup 
@@ -238,182 +198,273 @@ rm -f package.box # 다른 컴퓨터에서 사용하려면 옮겨 둬야 한다.
 ```bash
 mkdir -p ~/Desktop/kube/node192
 cd ~/Desktop/kube/node192
-vagrant init kube-default --minimal
-vagrant plugin install vagrant-vbguest
-vagrant up
-vagrant ssh 
-ifconfig # ip 확인
-kubectl --help
-```
-kubectl이 설치되있는것을 확인할수 있습니다. 
-
-이제 아이피를 지정해봅시다.
-```
 vi Vagrantfile
 ```
+
 ```ini
 Vagrant.configure("2") do |config|
   config.vm.box = "kube-default"
-  # 추가된 부분
   config.vm.hostname = "node192"
   config.vm.network "public_network", ip: "192.168.0.192", bridge: "en0: Wi-Fi (AirPort)"
+  config.vm.provider "virtualbox" do |vb|
+    vb.customize ["modifyvm", :id, "--memory", "4000"]
+    vb.customize ["modifyvm", :id, "--cpus", "2"]
+    vb.customize ["modifyvm", :id, "--ioapic", "on"]
+  end
 end
 ```
 
-* 혹시 다음 에러가 나시면 업데이트가 필요합니다.
-
-```
-Vagrant was unable to mount VirtualBox shared folders. This is usually
-because the filesystem "vboxsf" is not available. This filesystem is
-made available via the VirtualBox Guest Additions and kernel module.
-Please verify that these guest additions are properly installed in the
-guest. This is not a bug in Vagrant and is usually caused by a faulty
-Vagrant box. For context, the command attempted was:
-
-mount -t vboxsf -o uid=1000,gid=1000 vagrant /vagrant
-
-The error output from the command was:
-
-/sbin/mount.vboxsf: mounting failed with the error: No such device
-```
-* 해결방법
-```
+```bash
+vagrant up
 vagrant ssh 
-sudo yum update && sudo yum -y install kernel-headers kernel-devel
-exit
-vagrant reload 
+su -
+echo '1' > /proc/sys/net/bridge/bridge-nf-call-iptables #vagrant 를 재시작하면 값이 항상 0으로 바뀐다. 매번 1로 설정해줘야한다.
+
+ifconfig # ip 확인
+kubectl --help
 ```
+kubectl이 설치되있는것을 확인할수 있습니다.
+
 
 ## node193을 설치
 
 ```bash
 mkdir -p ~/Desktop/kube/node193
 cd ~/Desktop/kube/node193
-vagrant init kube-default --minimal
-
 vi Vagrantfile
+```
 
-> Vagrant.configure("2") do |config|
->   config.vm.box = "kube-default"
->   # 추가된 부분
->   config.vm.hostname = "node193"
->   config.vm.network "public_network", ip: "192.168.0.193", bridge: "en0: Wi-Fi (AirPort)"
-> end
+```ini
+Vagrant.configure("2") do |config|
+  config.vm.box = "kube-default"
+  config.vm.hostname = "node193"
+  config.vm.network "public_network", ip: "192.168.0.193", bridge: "en0: Wi-Fi (AirPort)"
+  config.vm.provider "virtualbox" do |vb|
+    vb.customize ["modifyvm", :id, "--memory", "4000"]
+    vb.customize ["modifyvm", :id, "--cpus", "2"]
+    vb.customize ["modifyvm", :id, "--ioapic", "on"]
+  end
+end
+```
 
-vagrant up # 혹시 에러나면 플러그인 설치
-vagrant plugin install vagrant-vbguest
+```bash
 vagrant up
-vagrant ssh 
+vagrant ssh
+
+su -
+echo '1' > /proc/sys/net/bridge/bridge-nf-call-iptables #vagrant 를 재시작하면 값이 항상 0으로 바뀐다. 매번 1로 설정해줘야한다.
+
 ifconfig # ip 확인
 kubectl --help
 ```
 kubectl이 설치되있는것을 확인할수 있습니다. 
 
-## registry도 설치
-```bash
-mkdir -p ~/Desktop/kube/registry/data/docker
-mkdir -p ~/Desktop/kube/registry/data/registry
-cd ~/Desktop/kube/registry
-vagrant init kube-default --minimal
+## node 194
 
+* minio storage : daemon mode , spinnaker 에서 필요한 데이터를 저장하는 저장소 역할을 합니다. s3등을 사용하여도 되나 여기서는 vm에 하드디스크에 저장합니다. 
+* docker registry : docker - docker private registry 2
+* halyard : spinnaker installer - docker
+
+```bash
+mkdir -p ~/Desktop/kube/node194/data/auth # registry 인증 정보 저장
+mkdir -p ~/Desktop/kube/node194/data/docker # docker-compose 위치
+mkdir -p ~/Desktop/kube/node194/data/registry # docker image 저장위치
+mkdir -p ~/Desktop/kube/node194/data/minio # minio file 저장 위치
+mkdir -p ~/Desktop/kube/node194/data/minio-config # minio 설정 저장위치 
+mkdir -p ~/Desktop/kube/node194/data/docker/hal # halyard 설정 저장위치
+mkdir -p ~/Desktop/kube/node194/data/docker/kube # master config파일을 복사해둘 위치 halyard에서 이 파일을 참조해서 기본 설정을 만들기 때문
+
+
+cd ~/Desktop/kube/node194
 vi Vagrantfile
-
-> Vagrant.configure("2") do |config|
->   config.vm.box = "kube-default"
->   # 추가된 부분
->   config.vm.hostname = "registry"
->   config.vm.network "public_network", ip: "192.168.0.195", bridge: "en0: Wi-Fi (AirPort)"
->   config.vm.network "forwarded_port", host: 5000, guest: 5000
->   config.vm.synced_folder "./data/", "/data/"
-> end
-
 ```
 
-* vm의 포트 5000번과 로컬에 포트 5000을 매핑
-* ./data 폴더를 vm에 /data 로 매핑을 해준다.
+```ini
+Vagrant.configure("2") do |config|
+  config.vm.box = "kube-default"
+  config.vm.hostname = "minio"
+  config.vm.network "public_network", ip: "192.168.0.194", bridge: "en0: Wi-Fi (AirPort)"
+  config.vm.network "forwarded_port", host: 5000, guest: 5000 # docker registry
+  config.vm.network "forwarded_port", host: 8084, guest: 8084 # halyard 포트
+  config.vm.network "forwarded_port", host: 9000, guest: 9000 # halyard 포트
+  config.vm.network "forwarded_port", host: 9001, guest: 9001 # minio
+  config.vm.synced_folder "./data", "/data"
+  config.vm.synced_folder "./data/letsencrypt", "/etc/letsencrypt"
+end
+```
 
 ```bash
-vagrant up # 혹시 에러나면 플러그인 설치
-vagrant plugin install vagrant-vbguest
 vagrant up
+vagrant ssh
 
-vagrant ssh 
+su -
+echo '1' > /proc/sys/net/bridge/bridge-nf-call-iptables #vagrant 를 재시작하면 값이 항상 0으로 바뀐다. 매번 1로 설정해줘야한다.
+echo "net.ipv4.ip_forward=1" >> /etc/sysctl.conf
+systemctl restart network
+sysctl net.ipv4.ip_forward
+
 ifconfig # ip 확인
-exit
 ```
-이제 repository를 도커를 이용하여 실행해보자. 
+
+### minio 
+
+```
+cd
+wget https://dl.minio.io/server/minio/release/linux-amd64/minio
+chmod +x minio
+mv minio /usr/local/bin/minio
+minio server --address ":9001" --config-dir /data/minio-config /data/minio
+```
+
+화면에 Access key와 secret key가 보인다 복사해두고 다음 커맨들를 사용하자. 
+
+AccessKey: 6K3MW29PYQHC4W39E03D
+SecretKey: kuOkqn3y6UKvmHvC0DgoLyb+fDstDJFZV3NBwtZ1
+
+ctrl+c로 멈춘다. 
+
+이제 데몬으로 띄워서 항상 동작하게 한다.
 
 ```bash
-vi ~/Desktop/kube/registry/data/docker/docker-compose.yml
+cat <<EOT >> /etc/default/minio
+# Volume to be used for Minio server.
+MINIO_VOLUMES="/data/minio/"
+# Use if you want to run Minio on a custom port.
+MINIO_OPTS="--address :9001"
+# Access Key of the server.
+MINIO_ACCESS_KEY=6K3MW29PYQHC4W39E03D
+# Secret key of the server.
+MINIO_SECRET_KEY=kuOkqn3y6UKvmHvC0DgoLyb+fDstDJFZV3NBwtZ1
+
+EOT
+
+# Download minio.service in /etc/systemd/system/
+( cd /etc/systemd/system/; curl -O https://raw.githubusercontent.com/minio/minio-service/master/linux-systemd/minio.service )
+
+vi /etc/systemd/system/minio.service 
+# user와 그룹을 수정한다. 난 루트를 사용
+# User=root
+# Group=root
+
+systemctl start minio
+systemctl enable minio
 ```
+
+http://localhost:9001 으로 확인한다. 파일도 넣어보고 폴더도 만들어보기 바란다.
+
+### private repositry와 halyard를 도커를 이용하여 실행해보자. 
+
+<https://teamsmiley.github.io/2018/12/22/docker-private-registry/>
+
+여기를 참고하셔도 됩니다. 
+
+#### registry ssl 추가 
+```bash
+yum install epel-release python-pip  python-virtualenv -y
+easy_install pip
+pip install requests urllib3 pyOpenSSL --force --upgrade
+
+cd /tmp
+git clone https://github.com/certbot/certbot.git 
+cd certbot
+
+./certbot-auto certonly \
+--manual \
+--preferred-challenges=dns \
+--email teamsmiley@gmail.com \
+--server https://acme-v02.api.letsencrypt.org/directory \
+--agree-tos \
+--debug \
+--no-bootstrap \
+-d registry.publishapi.com
+```
+
+_acme-challenge.registry txt 형태로 도메인에 등록요청
+
+```
+- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+Please deploy a DNS TXT record under the name
+_acme-challenge.registry.publishapi.com with the following value:
+
+r6hQID8GMkcW9ibu--vGVAZdENS01Qeu4GmfbV5OoMY
+
+Before continuing, verify the record is deployed.
+- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+```
+
+도메인관리 사이트에 접속하여 이 레코드를 추가합니다. 엔터는 아직 치시면 안됩니다.
+
+저장하고 난후 조금 기다립니다. 그후 터미널로 들어와서 엔터를 칩니다. 
+
+잘 생성되었습니다.
+
+나중에 혹시 필요할지 몰라서  vm에서 랩탑으로 옮겨두겠습니다. 
+```bash
+cp -R /etc/letsencrypt/ /data/
+```
+
+#### registry 유저 생성
+
+```bash
+docker run \
+  --entrypoint htpasswd \
+  registry -Bbn USERNAME PASSWORD > /data/auth/htpasswd
+```
+
+#### registry 실행
+```
+vi /data/docker/docker-compose.yml
+```
+
 ```yml
 ---
 version: "3.3"
-
-services: 
-  registry:
-    container_name: registry
+services:
+  halyard:
+    container_name: halyard
     restart: always
-    image: registry:2.6.2
+    image: gcr.io/spinnaker-marketplace/halyard:stable
+    volumes:
+      - ./hal:/home/spinnaker/.hal
+      - ./kube:/home/spinnaker/.kube
+      - /data:/data
+    ports:
+      - 8084:8084
+      - 9000:9000
+
+  registry:
+    container_name: 'registry'
+    restart: always
+    image: registry
     privileged: true
     ports:
       - 5000:5000
     environment:
       TZ: "America/Los_Angeles"
+      REGISTRY_AUTH: htpasswd
       REGISTRY_STORAGE_DELETE_ENABLED: "true"
       REGISTRY_STORAGE_FILESYSTEM_ROOTDIRECTORY: /data/registry
+      REGISTRY_AUTH_HTPASSWD_PATH: /auth/htpasswd
+      REGISTRY_AUTH_HTPASSWD_REALM: Registry Realm
+      REGISTRY_HTTP_TLS_CERTIFICATE: /etc/letsencrypt/live/registry.publishapi.com/fullchain.pem
+      REGISTRY_HTTP_TLS_KEY: /etc/letsencrypt/live/registry.publishapi.com/privkey.pem
     volumes:
-      - /data/registry:/data/registry/docker/registry
+      - /data/registry:/data/registry
+      - /data/letsencrypt:/etc/letsencrypt
+      - /data/auth:/auth
 ```
-데이터는 이 /data/registry 경로에 저장을 한다.
+
+docker-compose파일을 경로는 vm의 경로를 도커의 경로로 매핑하는것이다.
 
 이제 도커를 실행해보자.
 
 ```bash
-vagrant reload # 설정이 바뀌였으므로 재시작한다.
-cd ~/Desktop/kube/registry/
-vagrant ssh
-
 cd /data/docker && docker-compose up -d
 docker ps 
-```
 
-docker private registry를 생성하자. 도커 이미지를 만들면 저장해두는 저장소다. 도커를 빌드해서 사용할 계획이므로 이것이 꼭 먼저 있어야한다.
-
-이렇게 하면 도커 이미지들을 저장할수 있다.
-
-## minio server
-spinnaker 에서 필요한 데이터를 저장하는 저장소 역할을 합니다. s3등을 사용하여도 되나 여기서는 vm으로 저장합니다. 
-
-```bash
-mkdir ~/Desktop/kube/minio/data/minio
-mkdir ~/Desktop/kube/minio/data/minio-config
-
-cd ~/Desktop/kube/minio
-vagrant init kube-default --minimal
-vagrant up 
-
-vi Vagrantfile
-
-> Vagrant.configure("2") do |config|
->   config.vm.box = "kube-default"
->   # 추가된 부분
->  config.vm.hostname = "minio"
->  config.vm.network "public_network", ip: "192.168.0.194", bridge: "en0: Wi-Fi (AirPort)"
->  config.vm.synced_folder "./data/", "/data/"
-> end
-
-vagrant up 
-```
-
-## 전체 설치 버전
-
-<https://github.com/heptiolabs/wardroom/blob/master/swizzle/Vagrantfile>
-
-```bash
-vi Vagrant file 
-vagrant plugin install vagrant-libvirt
-vagrant up 
+docker exec -it halyard bash
+source <(hal --print-bash-completion) # 탭 완성 기능
+exit
 ```
 
 
@@ -423,7 +474,8 @@ vagrant up
 이제 쿠버네티스를 셋업해보자. 
 
 ```bash
-sudo bash 
+vagrant ssh 
+su -
 
 cat /proc/sys/net/bridge/bridge-nf-call-iptables
 echo '1' > /proc/sys/net/bridge/bridge-nf-call-iptables
@@ -432,9 +484,13 @@ cat /proc/sys/net/bridge/bridge-nf-call-iptables
 cat /proc/sys/net/ipv4/ip_forward
 echo '1' > /proc/sys/net/ipv4/ip_forward
 cat /proc/sys/net/ipv4/ip_forward
+```
 
-route del default eth0 # 기본 라우터를 eth1 192로 한다.
-route add default gw 192.168.0.1 netmask 0.0.0.0 dev eth1 # default gw 추가 
+위부분은 virtual box를 재시작할때마다. 새로 세팅해줘야한다.
+
+```bash
+#route del default eth0 # 기본 라우터를 eth1 192로 한다.
+#route add default gw 192.168.0.1 netmask 0.0.0.0 dev eth1 # default gw 추가 
 
 kubeadm init --apiserver-advertise-address 192.168.0.191 --pod-network-cidr 10.1.0.0/16
 ```
@@ -443,8 +499,7 @@ kubeadm init --apiserver-advertise-address 192.168.0.191 --pod-network-cidr 10.1
 ```
 You can now join any number of machines by running the following on each node
 as root:
-
-kubeadm join 192.168.0.191:6443 --token w5k7m1.hiqhovf3uhhbdk7k --discovery-token-ca-cert-hash sha256:cf20a97b79e2eb461c815580c19a207c290f74e52830eac8d0be337e3a3f6116
+kubeadm join 192.168.0.191:6443 --token oqwu2g.qjbgsr7vi5ic7ona --discovery-token-ca-cert-hash sha256:29df177eabedb6fefae643df034705ba4453fb01837487c66e252ef42e5748bc
 ```
 
 ```bash
@@ -475,7 +530,7 @@ kubectl apply -f "https://cloud.weave.works/k8s/net?k8s-version=$(kubectl versio
 vagrant up
 vagrant ssh
 
-sudo bash 
+su -
 
 cat /proc/sys/net/bridge/bridge-nf-call-iptables
 echo '1' > /proc/sys/net/bridge/bridge-nf-call-iptables
@@ -556,7 +611,7 @@ kubectl delete pods/hello-pod
 kubectl delete replicationcontrollers/auth-server
 kubectl delete svc auth-server-svc
 
-# 추가 샘플 
+# 추가 예제 
 kubectl get all --all-namespaces
 
 kubectl get pods --all-namespaces
@@ -578,9 +633,12 @@ kubectl delete replicasets --all
 kubectl delete secret --all
 ```
 
-## yml 생성 (pod , service)를 만들어야한다.
+## yml 생성 (pod , service)를 만들어야한다. 마스터에서
 
+```
+cd /data/
 vi hello-node.yml
+```
 
 ```yml
 ---
@@ -787,7 +845,6 @@ spec:
 ```bash
 kubectl delete -f hello-node.yml
 kubectl create -f hello-node.yml
-kubectl replace -f hello-node.yml
 ```
 
 ```bash
@@ -817,13 +874,13 @@ curl http://192.168.0.81:8080 # 포트가 서비스 자체 포트로 바귀었�
 kubectl delete -f https://raw.githubusercontent.com/google/metallb/v0.7.3/manifests/metallb.yaml
 kubectl delete -f mt-config.yml
 kubectl get configmap -n metallb-system
-kubectl get svc 
+kubectl get svc
 ```
 
 ### sample pod and service 삭제 
 ```bash
-kubectl delete svc hello-node
-kubectl delete pods hello-node
+kubectl delete -f hello-node.yml
+
 ```
 
 ## kube dashboard 
@@ -1250,7 +1307,7 @@ metadata:
     nginx.ingress.kubernetes.io/rewrite-target: /
 spec:
   rules:
-  - host: aaa.com
+  - host: publishapi.com
     http:
       paths:
       - path: /
@@ -1267,9 +1324,9 @@ curl http://192.168.0.191:8080 ==> 404 not found
 
 vi /etc/hosts
 ```
-192.168.0.192 aaa.com
+192.168.0.192 publishapi.com
 ```
-curl http://aaa.com:32565 
+curl http://publishapi.com:32565 
 
 동작한다.
 
@@ -1319,12 +1376,12 @@ kubectl get svc -n ingress-nginx
 
 vi /etc/hosts
 ```
-192.168.0.83 aaa.com
+192.168.0.83 publishapi.com
 ```
 
 curl http://192.168.0.83  not working
 
-curl http://aaa.com 
+curl http://publishapi.com 
 
 로드발란스로 동작한다.
 
@@ -1340,51 +1397,17 @@ curl http://aaa.com
 
 ## Spinnaker
 
-스피네커는 젠킨스와 비슷한 역할을 수행한다. halyard가  kubernetes cluser에 접속해서 설치를 진행한다. 그러므로 kubernetes config파일을 복사해서 halyard노드에 추가해야한다.
+스피네커는 젠킨스와 비슷한 역할을 수행한다. halyard가 kubernetes cluser에 접속해서 설치를 진행한다. 그러므로 kubernetes config파일을 복사해서 halyard노드에 추가해야한다.
 
 * on master
 ```
 cat ~/.kube/config
 ```
-복사해둔다. 
+복사해서 194번 서버 /data/docker/kube/ 에 넣어둔다.
 
 쿠버네티스 클러스터가 현재 존재하고 이제 halyard를 설치할 서버를 준비하자. node194(minio) 에서 다음 작업을 진행한다.
 
-### halyard (on 194)
-```bash
-sudo bash
-echo "net.ipv4.ip_forward=1" >> /etc/sysctl.conf
-systemctl restart network
-sysctl net.ipv4.ip_forward
 
-mkdir ~/.hal
-chmod 777 -R ~/.hal
-
-mkdir ~/.kube
-vi ~/.kube/config #master에서 내용을 가져와서 붙여넣기해야한다. 
-chmod -R  777 ~/.kube
-```
-
-도커 이미지가 있어서 바로 실행하면 된다.
-```
-docker run -p 8084:8084 -p 9000:9000 \
-    --name halyard \
-    -v ~/.hal:/home/spinnaker/.hal \
-    -v ~/.kube:/home/spinnaker/.kube \
-    -d \
-    gcr.io/spinnaker-marketplace/halyard:stable
-```
-도커 이미지가 상당히 크다.
-
-컨테이너에 접속하자. 
-```bash
-docker exec -it halyard bash
-```
-
-다음은 탭 완성 기능 
-```
-source <(hal --print-bash-completion)
-```
 
 ### kubernetes-v2 를 대상으로 배포해야하므로 master에 작업을 한다. 
 
@@ -1444,35 +1467,6 @@ metadata:
 
 kubectl create -f spinnaker.yml
 
-### docker private registry enable (on minio server node194)
-
-private registry 에 꼭 ssl이 필요하다 그것도 selfsign이 아닌 제대로 된것. 아이디 비번도 꼭 필요하다.
-
-그래서 let's encrypt로 설치했다. 
-
-참고 <https://teamsmiley.github.io/2018/12/22/docker-private-registry/>
-
-```bash
-
-docker exec -it halyard bash
-
-CONTEXT=$(kubectl config current-context)
-
-hal config provider docker-registry enable
-
-ADDRESS=registry.aaa.com:5000 
-REPOSITORIES="auth-server"
-USERNAME=ur-username
-
-hal config provider docker-registry account add my-registry \
-    --repositories $REPOSITORIES \
-    --address $ADDRESS \
-    --username $USERNAME \
-    --password 
-# password는 프롬프트로 물어본다.
-
-hal config provider kubernetes account add my-k8s-v2-account 
-```
 
 ### Adding an account (on node194 halyard container 안에서)
 
@@ -1483,12 +1477,12 @@ hal config provider kubernetes enable
 
 Then add the account:
 ```bash
+
 CONTEXT=$(kubectl config current-context)
 
 hal config provider kubernetes account add my-k8s-v2-account \
     --provider-version v2 \
-    --docker-registries my-registry # registry에서 이미지를 받을수 있게
-    --context $CONTEXT
+    --docker-registries my-registry --context $CONTEXT 
 ```
 
 You’ll also need to run
@@ -1504,39 +1498,20 @@ hal config deploy edit --type distributed --account-name my-k8s-v2-account
 
 s3도 안쓰고 node194에 로컬에 그냥 저장하는 걸로 하자.
 
-### 미니오 서버를 실행 (on node194)
 
-secret key와 access key를 볼수 있다. 
+
+halyard 컨테이너로 간다. 
+
 ```bash
-mkdir -p /data/minio
-mkdir -p /data/minio-config
-cd
-wget https://dl.minio.io/server/minio/release/linux-amd64/minio
-chmod +x minio
-mv minio /usr/bin/
-minio server --address ":9001" --config-dir /data/minio-config /data/minio
-
-> Endpoint:  http://192.168.0.194:9001  http://172.17.0.1:9001  http://127.0.0.1:9001
-> AccessKey: OS2PVUL53ZTSNMJOWOWR
-> SecretKey: kLP1IdRqS+WqaLJ6WOXjrq80LptXy+j9SoeqXRLs
-> 
-> Browser Access:
->    http://192.168.0.194:9001  http://172.17.0.1:9001  http://127.0.0.1:9001
-> 
-```
-
-서버가 실행되게 둔상태에서 halyard 컨테이너로 간다. 
-
-```
-MINIO_ACCESS_KEY=OS2PVUL53ZTSNMJOWOWR
-MINIO_SECRET_KEY=kLP1IdRqS+WqaLJ6WOXjrq80LptXy+j9SoeqXRLs
+MINIO_ACCESS_KEY=AQK7HV1837P6O28RRZ5F
+MINIO_SECRET_KEY=47hRElDafsrr+W5Y+Ssp+lNO7WokBhYcLUbZbcIW
 ENDPOINT=http://192.168.0.194:9001
 
 echo $MINIO_SECRET_KEY | hal config storage s3 edit --endpoint $ENDPOINT \
     --access-key-id $MINIO_ACCESS_KEY \
     --secret-access-key 
 
-hal config storage edit --type s3
+# hal config storage edit --type s3
 ```
 
 s3로 하는 이유는 아마존과는 상관이 없고 minio가 s3와 compatible 하기 때문이다. 
@@ -1546,9 +1521,9 @@ s3로 하는 이유는 아마존과는 상관이 없고 minio가 s3와 compatibl
 그래서 node194로 터미널을 하나더 열어서 다음을 실행한다.
 
 ```
-mkdir -p ~/.hal/default/profiles/
-vi ~/.hal/default/profiles/front50-local.yml
-spinnaker.s3.versioning: false
+mkdir -p /data/docker/hal/default/profiles/
+vi /data/docker/hal/default/profiles/front50-local.yml
+> spinnaker.s3.versioning: false
 ```
 
 ### Deploy Spinnaker and Connect to the UI 
@@ -1558,7 +1533,7 @@ spinnaker.s3.versioning: false
 docker exec -it halyard bash
 hal version list #사용할 버전을 고른다. 난 1.11.x
 
-hal config version edit --version 1.11.x
+hal config version edit --version 1.11.4
 
 hal deploy apply
 ```
@@ -1576,21 +1551,11 @@ kubectl get svc -n spinnaker
 2. 서비스 타입을 바꿔서 외부에 오픈하는 방법 spin-deck 와 spin-gate를 LoadBalancer나 NodePort로  바꿔 주면 된다.
 3. Ingress 를 하나 만들어서 백앤드 서비스로 spin-deck 와 spin-gate를 붙여주면 된다. 
 
-3번이 제일 쉽니다.
-
-2 3 번은 설정 변경후 아래 커맨드를 실행해줘서 컨테이너들에 알맞는 설정이 들어가야한다. 
-
-```bash
-docker exec -it halyard bash
-
-hal config security ui edit --override-base-url http://spinnaker-ui
-hal config security api edit --override-base-url http://spinnaker-gate
-hal deploy apply
-```
+3번으로 진행
 
 그럼 인그레스를 이용해서 해보자. 
 
-### ingress 이용
+### ingress 이용 (on master)
 
 vi ingress-spin.yml
 
@@ -1649,11 +1614,20 @@ spec:
 kubectl create -f ingress-spin.yml
 ```
 
-hosts파일에 설정을 하자.
+hosts파일에 설정을 하자. (on laptop)
 
 vi /etc/hosts
 ```
 192.168.0.84 spinnaker-ui spinnaker-gate
+```
+halyard에서 설정을 업데이트해서 클러스터로 넣어준다. 
+
+```bash
+docker exec -it halyard bash
+
+hal config security ui edit --override-base-url http://spinnaker-ui
+hal config security api edit --override-base-url http://spinnaker-gate
+hal deploy apply
 ```
 
 http://spinnaker-ui
@@ -1673,6 +1647,8 @@ spin-front50-fcdbb667c-fk8kz        0/1     CrashLoopBackOff   18         74m
 ```
 
 minio server실행이 되있는지 확인한다.
+
+
 
 
 ## blue green 배포 적용 
@@ -1748,6 +1724,32 @@ ${trigger["tag"]} 이 부분이 트리거에서 넘겨주는 값을 가지고 �
 파이프라인을 빌드하면 서비스가 생성되고 기존 서비스는 disable된다. 
 
 2개 이상의 pod들은 전부 삭제된다.
+
+
+
+### docker private registry enable (on minio server node194)
+```bash
+su -
+
+docker exec -it halyard bash
+
+CONTEXT=$(kubectl config current-context)
+
+hal config provider docker-registry enable
+
+ADDRESS=registry.publishapi.com:5000 
+REPOSITORIES="my-repository"
+USERNAME=ur-username #docker registry id/pass
+
+hal config provider docker-registry account add my-registry \
+    --repositories $REPOSITORIES \
+    --address $ADDRESS \
+    --username $USERNAME \
+    --password 
+# password는 프롬프트로 물어본다.
+
+hal config provider kubernetes account add my-k8s-v2-account 
+```
 
 끝
 
