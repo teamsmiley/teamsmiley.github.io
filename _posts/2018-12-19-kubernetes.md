@@ -52,19 +52,19 @@ brew cask install vagrant
 
 | | |
 |---|---|
-192.168.0.191 | master  |
-192.168.0.192 | node192 |
-192.168.0.193 | node193 |
-192.168.0.194 | node194(minio storage, docker registry| 
+192.168.86.191 | master  |
+192.168.86.192 | node192 |
+192.168.86.193 | node193 |
+192.168.86.194 | node194(minio storage, docker registry| 
 | | |
 
-## 맥북 wifi를 192.168.0.1로 지정
-기존 사용하는 네트워크와 별개의 네트워크를 사용합니다. 혹시 공유기를 사용하시는분들중에 192.168.0.1 대역을 사용하시면 아마 안해도 되지 않을가 싶습니다. 
+## 맥북 wifi를 192.168.86.1로 지정
+기존 사용하는 네트워크와 별개의 네트워크를 사용합니다. 혹시 공유기를 사용하시는분들중에 192.168.86.1 대역을 사용하시면 아마 안해도 되지 않을가 싶습니다. 
 
 ```bash
-sudo ifconfig en0 alias 192.168.0.1/24 up
-sudo route -nv add -net 192.168.0 -interface en0
-#sudo route delete -net 192.168.0 -interface en0 #해제
+sudo ifconfig en0 alias 192.168.86.1/24 up
+sudo route -nv add -net 192.168.86 -interface en0
+#sudo route delete -net 192.168.86 -interface en0 #해제
 ```
 
 ## 설치 - Master,Node192,Node193,Node194 
@@ -90,7 +90,7 @@ Vagrantfile 파일을 수정하면 됩니다.
 Vagrant.configure("2") do |config|
   config.vm.box = "centos/7"
   config.vm.hostname = "master"
-  config.vm.network "public_network", ip: "192.168.0.191", bridge: "en0: Wi-Fi (AirPort)"
+  config.vm.network "public_network", ip: "192.168.86.191", bridge: "en0: Wi-Fi (AirPort)"
   config.vm.synced_folder "./data/", "/data/"
   config.vm.provider "virtualbox" do |vb|
     vb.customize ["modifyvm", :id, "--memory", "4000"]
@@ -147,10 +147,10 @@ modprobe br_netfilter
 * host 파일 설정
 ```bash
 vi /etc/hosts
-> 192.168.0.101 master 
-> 192.168.0.192 node192
-> 192.168.0.193 node193
-> 192.168.0.194 node194
+> 192.168.86.101 master 
+> 192.168.86.192 node192
+> 192.168.86.193 node193
+> 192.168.86.194 node194
 ```
 
 * swap off
@@ -205,7 +205,7 @@ vi Vagrantfile
 Vagrant.configure("2") do |config|
   config.vm.box = "kube-default"
   config.vm.hostname = "node192"
-  config.vm.network "public_network", ip: "192.168.0.192", bridge: "en0: Wi-Fi (AirPort)"
+  config.vm.network "public_network", ip: "192.168.86.192", bridge: "en0: Wi-Fi (AirPort)"
   config.vm.provider "virtualbox" do |vb|
     vb.customize ["modifyvm", :id, "--memory", "4000"]
     vb.customize ["modifyvm", :id, "--cpus", "2"]
@@ -238,7 +238,7 @@ vi Vagrantfile
 Vagrant.configure("2") do |config|
   config.vm.box = "kube-default"
   config.vm.hostname = "node193"
-  config.vm.network "public_network", ip: "192.168.0.193", bridge: "en0: Wi-Fi (AirPort)"
+  config.vm.network "public_network", ip: "192.168.86.193", bridge: "en0: Wi-Fi (AirPort)"
   config.vm.provider "virtualbox" do |vb|
     vb.customize ["modifyvm", :id, "--memory", "4000"]
     vb.customize ["modifyvm", :id, "--cpus", "2"]
@@ -283,7 +283,7 @@ vi Vagrantfile
 Vagrant.configure("2") do |config|
   config.vm.box = "kube-default"
   config.vm.hostname = "minio"
-  config.vm.network "public_network", ip: "192.168.0.194", bridge: "en0: Wi-Fi (AirPort)"
+  config.vm.network "public_network", ip: "192.168.86.194", bridge: "en0: Wi-Fi (AirPort)"
   config.vm.network "forwarded_port", host: 5000, guest: 5000 # docker registry
   config.vm.network "forwarded_port", host: 8084, guest: 8084 # halyard 포트
   config.vm.network "forwarded_port", host: 9000, guest: 9000 # halyard 포트
@@ -490,16 +490,16 @@ cat /proc/sys/net/ipv4/ip_forward
 
 ```bash
 #route del default eth0 # 기본 라우터를 eth1 192로 한다.
-#route add default gw 192.168.0.1 netmask 0.0.0.0 dev eth1 # default gw 추가 
+#route add default gw 192.168.86.1 netmask 0.0.0.0 dev eth1 # default gw 추가 
 
-kubeadm init --apiserver-advertise-address 192.168.0.191 --pod-network-cidr 10.1.0.0/16
+kubeadm init --apiserver-advertise-address 192.168.86.191 --pod-network-cidr 10.1.0.0/16
 ```
 결과값을 잘 복사해두자. 나중에 이 값을 이용해서 노드를 마스터에 연결해준다.
 
 ```
 You can now join any number of machines by running the following on each node
 as root:
-kubeadm join 192.168.0.191:6443 --token oqwu2g.qjbgsr7vi5ic7ona --discovery-token-ca-cert-hash sha256:29df177eabedb6fefae643df034705ba4453fb01837487c66e252ef42e5748bc
+kubeadm join 192.168.86.191:6443 --token oqwu2g.qjbgsr7vi5ic7ona --discovery-token-ca-cert-hash sha256:29df177eabedb6fefae643df034705ba4453fb01837487c66e252ef42e5748bc
 ```
 
 ```bash
@@ -540,7 +540,7 @@ cat /proc/sys/net/ipv4/ip_forward
 echo '1' > /proc/sys/net/ipv4/ip_forward
 cat /proc/sys/net/ipv4/ip_forward
 
-sudo kubeadm join 192.168.0.191:6443 --token lr98l5.962xm2vi5pznrdhz --discovery-token-ca-cert-hash sha256:d1ffcec6e71cc2be3105adf450d80f179462db35abe47155820bab852ce1d6f5
+sudo kubeadm join 192.168.86.191:6443 --token lr98l5.962xm2vi5pznrdhz --discovery-token-ca-cert-hash sha256:d1ffcec6e71cc2be3105adf450d80f179462db35abe47155820bab852ce1d6f5
 ```
 
 ## 클러스터 연결 확인
@@ -701,7 +701,7 @@ hello-node   1/1       Running   0          13s
 $ kubectl describe pods hello-node
 
 # localhost:8080에 접속해서 Hello World! 가 출력됨을 확인한다.
-$ curl http://192.168.0.192:30001
+$ curl http://192.168.86.192:30001
 Hello World!
 ```
 
@@ -736,8 +736,8 @@ nodeport는 전체 노드에 특정 포트 (30000번부터-)를 외부에 오픈
 
 그러므로 다음 두 커맨드는 모두 동작한다.
 ```
-curl http://192.168.0.192:30001
-curl http://192.168.0.193:30001
+curl http://192.168.86.192:30001
+curl http://192.168.86.193:30001
 ```
 
 클러스터의 모든 서버 아이피에 포트를 연다.
@@ -776,7 +776,7 @@ kubectl apply -f https://raw.githubusercontent.com/google/metallb/v0.7.3/manifes
 
 설정을 하자
 
-vi mt-config.yml
+vi metallb-config.yml
 
 ```yml
 ---
@@ -791,60 +791,59 @@ data:
     - name: my-ip-space
       protocol: layer2
       addresses:
-      - 192.168.0.80/28 
+      - 192.168.86.80/28 
 ```
-서비스에 줄 아이피를 정해뒀다 사용 가능한 아이피는 192.168.0.81 - 192.168.0.94 가 된다. 적용해보자.
+서비스에 줄 아이피를 정해뒀다 사용 가능한 아이피는 192.168.86.81 - 192.168.86.94 가 된다. 적용해보자.
 
 ```bash
-kubectl create -f  mt-config.yml
+kubectl create -f  metallb-config.yml
 # 상태를 확인해보자.
 kubectl get pods -n metallb-system
 kubectl logs -l component=speaker -n metallb-system
 kubectl get svc -n metallb-system
 ```
 
-이제 hello-node.yml을 수정해서 loadbalance로 변경해보자.
+이제 metallb-nginx.yml을 수정해서 loadbalance로 변경해보자.
 
 ```yml
----
-apiVersion: v1
-kind: Pod 
+apiVersion: apps/v1beta2
+kind: Deployment
 metadata:
-  name: hello-node
-  labels:
-    service-name: hello-node
+  name: nginx
 spec:
-  containers:
-  - name: hello-node
-    image: asbubam/hello-node
-    readinessProbe:
-      httpGet:
-        path: /
-        port: 8080
-    livenessProbe:
-      httpGet:
-        path: /
-        port: 8080
+  selector:
+    matchLabels:
+      app: nginx
+  template:
+    metadata:
+      labels:
+        app: nginx
+    spec:
+      containers:
+      - name: nginx
+        image: nginx:1
+        ports:
+        - name: http
+          containerPort: 80
 
 ---
 apiVersion: v1
-kind: Service # service생성
+kind: Service
 metadata:
-  name: hello-node
+  name: nginx
 spec:
-  type: LoadBalancer                # 여기만 수정
-  loadBalancerIP: 192.168.0.81     # 여기만 수정
   ports:
-  - port: 8080
-    nodePort: 30001
-    targetPort: 8080
+  - name: http
+    port: 80
+    protocol: TCP
+    targetPort: 80
   selector:
-    service-name: hello-node
+    app: nginx
+  type: LoadBalancer
 ```
 
 ```bash
-kubectl delete -f hello-node.yml
-kubectl create -f hello-node.yml
+kubectl create -f metallb-nginx.yml
 ```
 
 ```bash
@@ -859,28 +858,21 @@ type이 loadbalancer로 바귀었고 external-ip가 pending인것을 알수 있�
 ```
 $ kubectl  get svc
 NAME         TYPE           CLUSTER-IP       EXTERNAL-IP    PORT(S)          AGE
-hello-node   LoadBalancer   10.110.182.246   192.168.0.81   8080:30001/TCP   4s
+hello-node   LoadBalancer   10.110.182.246   192.168.86.240   8080:30001/TCP   4s
 kubernetes   ClusterIP      10.96.0.1        <none>         443/TCP          77m
 ```
 
 외부 아이피를 잘 받았다. 이제 이 아이피를 호출해보면된다. 
 ```bash
-curl http://192.168.0.81:8080 # 포트가 서비스 자체 포트로 바귀었다.
+curl http://192.168.86.240 # 포트가 서비스 자체 포트로 바귀었다.
 ```
 
-### metallb 삭제하고 싶으면 다음처럼 하면된다. 
-
+### metallb 삭제하고 싶으면 다음처럼 하면된다.
 ```
 kubectl delete -f https://raw.githubusercontent.com/google/metallb/v0.7.3/manifests/metallb.yaml
-kubectl delete -f mt-config.yml
+kubectl delete -f metallb-config.yml
 kubectl get configmap -n metallb-system
-kubectl get svc
-```
-
-### sample pod and service 삭제 
-```bash
-kubectl delete -f hello-node.yml
-
+kubectl get svc -n metallb-system
 ```
 
 ## kube dashboard 
@@ -1039,7 +1031,7 @@ metadata:
   namespace: kube-system
 spec:
   type: LoadBalancer
-  loadBalancerIP: 192.168.0.81
+  loadBalancerIP: 192.168.86.250
   ports:
     - port: 443
       targetPort: 8443
@@ -1060,12 +1052,12 @@ kubectl apply -f kubernetes-dashboard.yaml
 kubectl get svc -n kube-system
 > NAME                   TYPE           CLUSTER-IP      EXTERNAL-IP    PORT(S)         AGE
 > kube-dns               ClusterIP      10.96.0.10      <none>         53/UDP,53/TCP   98m
-> kubernetes-dashboard   LoadBalancer   10.107.42.182   192.168.0.81   443:32134/TCP   13s
+> kubernetes-dashboard   LoadBalancer   10.107.42.182   192.168.86.81   443:32134/TCP   13s
 ```
 
 외부 아이피 할당받았다 확인하자 
 
-https://192.168.0.81
+https://192.168.86.81
 
 ### 계정 추가 
 
@@ -1181,7 +1173,7 @@ metadata:
   namespace: dev
 spec:
   type: LoadBalancer
-  loadBalancerIP: 192.168.0.82
+  loadBalancerIP: 192.168.86.82
   ports:
   - port: 3306
     targetPort: 3306
@@ -1320,11 +1312,11 @@ kubectl create -f ingress-config.yml
 
 확인해보자. 
 
-curl http://192.168.0.191:8080 ==> 404 not found 
+curl http://192.168.86.191:8080 ==> 404 not found 
 
 vi /etc/hosts
 ```
-192.168.0.192 publishapi.com
+192.168.86.192 publishapi.com
 ```
 curl http://publishapi.com:32565 
 
@@ -1353,7 +1345,7 @@ metadata:
     app.kubernetes.io/part-of: ingress-nginx # 이부분 아래 설명 참고 - A
 spec:
   type: LoadBalancer               # 이부분만 수정됨
-  loadBalancerIP: 192.168.0.83     # 이부분만 수정됨
+  loadBalancerIP: 192.168.86.83     # 이부분만 수정됨
   ports:
     - name: http
       port: 80
@@ -1376,10 +1368,10 @@ kubectl get svc -n ingress-nginx
 
 vi /etc/hosts
 ```
-192.168.0.83 publishapi.com
+192.168.86.83 publishapi.com
 ```
 
-curl http://192.168.0.83  not working
+curl http://192.168.86.83  not working
 
 curl http://publishapi.com 
 
@@ -1505,7 +1497,7 @@ halyard 컨테이너로 간다.
 ```bash
 MINIO_ACCESS_KEY=AQK7HV1837P6O28RRZ5F
 MINIO_SECRET_KEY=47hRElDafsrr+W5Y+Ssp+lNO7WokBhYcLUbZbcIW
-ENDPOINT=http://192.168.0.194:9001
+ENDPOINT=http://192.168.86.194:9001
 
 echo $MINIO_SECRET_KEY | hal config storage s3 edit --endpoint $ENDPOINT \
     --access-key-id $MINIO_ACCESS_KEY \
@@ -1595,7 +1587,7 @@ metadata:
     app.kubernetes.io/part-of: ingress-nginx
 spec:
   type: LoadBalancer
-  loadBalancerIP: 192.168.0.84
+  loadBalancerIP: 192.168.86.84
   ports:
     - name: http
       port: 80
@@ -1618,7 +1610,7 @@ hosts파일에 설정을 하자. (on laptop)
 
 vi /etc/hosts
 ```
-192.168.0.84 spinnaker-ui spinnaker-gate
+192.168.86.84 spinnaker-ui spinnaker-gate
 ```
 halyard에서 설정을 업데이트해서 클러스터로 넣어준다. 
 
