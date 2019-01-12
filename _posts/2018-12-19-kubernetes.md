@@ -1684,7 +1684,7 @@ configurtion ==> 트리거 적용 >> docker registry  >> name >> image >> enable
 
 2. 스테이지 추가 
 
-add stage >> deploy >> Manifest Source >> text 
+add stage >> Deploy(Manifest) >> text 
 
 ```yml
 apiVersion: apps/v1
