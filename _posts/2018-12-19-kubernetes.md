@@ -1741,7 +1741,17 @@ hal config provider docker-registry account add my-registry \
 # password는 프롬프트로 물어본다.
 
 hal config provider kubernetes account add my-k8s-v2-account 
+hal deploy apply
 ```
 
+registry 추가 
+
+```
+docker exec -it halyard bash
+hal config provider docker-registry account list
+hal config provider docker-registry account  edit  --repositories="aaa,bbb"
+
+hal deploy apply
+```
 끝
 
