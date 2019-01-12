@@ -1718,6 +1718,7 @@ ${trigger["tag"]} 이 부분이 트리거에서 넘겨주는 값을 가지고 �
 2개 이상의 pod들은 전부 삭제된다.
 
 ### add disable(manifest) 
+add stage >> disable(manifest) >> edit json
 ```
 {
   "account": "my-k8s-v2-account",
