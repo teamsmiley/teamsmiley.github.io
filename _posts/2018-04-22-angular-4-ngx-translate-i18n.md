@@ -1,6 +1,6 @@
 ---
 layout: post
-title: 'Angular i18n' 
+title: 'Angular 4 i18n with ngx-translate' 
 author: teamsmiley 
 date: 2018-04-22
 tags: [angular]
@@ -9,6 +9,10 @@ category: {program}
 ---
 
 # angular i18n 지원 
+
+angular 6와 ngx를 사용하지않고 기본 패키지를 사용해서 i18n을 구현은 다음 링크를 보세요
+
+<https://teamsmiley.github.io/2018/07/29/angular6-i18n-ssr-aot/>
 
 ## i18n 지원 
 
@@ -210,5 +214,6 @@ Http를 쓰지말고 HttpClient를 사용하면된다.
 <https://github.com/fulls1z3/ngx-translate/tree/4.x.x/packages/%40ngx-universal/translate-loader>
 
 위에서 수정된 코드로 진행
+
 
 
