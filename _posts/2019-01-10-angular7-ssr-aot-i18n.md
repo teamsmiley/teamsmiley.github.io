@@ -120,8 +120,8 @@ src/app/app.component.html에서 다국어를 원하는 곳에 i18n을 붙인다
 
 ```
 mkdir src/locale
-ng xi18n --output-path src/locale
-cp src/locale/messages.xlf src/locale/messages.ko.xlf
+ng xi18n --output-path src/locale --out-file messages.en.xlf
+cp src/locale/messages.en.xlf src/locale/messages.ko.xlf
 ```
 
 기본 파일을 앵귤러가 자동으로 생성해준다.
