@@ -119,9 +119,8 @@ src/app/app.component.html에서 다국어를 원하는 곳에 i18n을 붙인다
 ### generate language file 
 
 ```
-ng xi18n
 mkdir src/locale
-mv src/messages.xlf src/locale
+ng xi18n --output-path src/locale
 cp src/locale/messages.xlf src/locale/messages.ko.xlf
 ```
 
