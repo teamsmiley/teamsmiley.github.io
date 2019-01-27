@@ -157,7 +157,7 @@ Distributed installation 을 사용할 것이다.
 hal config deploy edit --type distributed --account-name my-k8s-v2-account
 ```
 
-### docker private registry enable (on node194)
+* docker private registry enable (on node194)
 ```bash
 docker exec -it halyard bash
 CONTEXT=$(kubectl config current-context)
@@ -176,13 +176,12 @@ hal config provider docker-registry account add my-registry \
 hal deploy apply
 ```
 
-registry 추가 
+* 나중에 registry 추가 
 
-```
+```bash
 docker exec -it halyard bash
 hal config provider docker-registry account list
-hal config provider docker-registry account  edit  --repositories="aaa,bbb"
-
+hal config provider docker-registry account  edit  my-registry --repositories="aaa,bbb"
 hal deploy apply
 ```
 
@@ -205,15 +204,18 @@ hal deploy apply
 halyard 컨테이너에서 다음 실행
 
 ```bash
-AccessKey=6K3MW29PYQHC4W39E03D
-SecretKey=kuOkqn3y6UKvmHvC0DgoLyb+fDstDJFZV3NBwtZ1
+docker exec -it halyard bash
+
+MINIO_ACCESS_KEY=6K3MW29PYQHC4W39E03D
+MINIO_SECRET_KEY=kuOkqn3y6UKvmHvC0DgoLyb+fDstDJFZV3NBwtZ1
 ENDPOINT=http://192.168.0.194:9001
 
 echo $MINIO_SECRET_KEY | hal config storage s3 edit --endpoint $ENDPOINT \
     --access-key-id $MINIO_ACCESS_KEY \
     --secret-access-key 
 
-hal config storage edit --type s3
+# hal config storage edit --type s3
+hal deploy apply
 ```
 s3로 하는 이유는 아마존과는 상관이 없고 minio가 s3와 compatible 하기 때문이다.
 
@@ -249,9 +251,6 @@ kubectl get svc -n spinnaker
 
 화면을 보는 방법은 여러가지가 있다.
 1. ssh tunneling을 이용해서 보는 방법 - spinnaker는 기본으로 이것만 사용할수 있게 되있다.
-
-ssh -L 9000:127.0.0.1:9000 -L 8084:127.0.0.1:8084 204.16.116.91
-
 2. 서비스 타입을 바꿔서 외부에 오픈하는 방법 spin-deck 와 spin-gate를 LoadBalancer나 NodePort로  바꿔 주면 된다.
 3. Ingress 를 하나 만들어서 백앤드 서비스로 spin-deck 와 spin-gate를 붙여주면 된다. 
 
@@ -261,7 +260,7 @@ ssh -L 9000:127.0.0.1:9000 -L 8084:127.0.0.1:8084 204.16.116.91
 
 ### ingress 이용 (on master)
 
-vi ingress-spin.yml
+vi spinnaker-ingress.yml
 
 ```yml
 ---
@@ -292,7 +291,7 @@ spec:
 apiVersion: v1
 kind: Service
 metadata:
-  name: ingress-spin
+  name: spinnaker-ingress
   namespace: ingress-nginx
   labels:
     app.kubernetes.io/name: ingress-nginx
@@ -315,28 +314,30 @@ spec:
 ```
 
 ```
-kubectl create -f ingress-spin.yml
+kubectl create -f spinnaker-ingress.yml
 ```
 
 hosts파일에 설정을 하자. (on laptop)
 
 vi /etc/hosts
 ```
-192.168.0.84 spinnaker-ui spinnaker-gate
+204.16.116.86 spin.publishapi.com 
+204.16.116.86 spin-gate.publishapi.com
 ```
-halyard에서 설정을 업데이트해서 클러스터로 넣어준다. 
+
+halyard에서 설정을 업데이트해서 클러스터로 밀어 넣어준다. 
 
 ```bash
 docker exec -it halyard bash
 
-hal config security ui edit --override-base-url http://spinnaker-ui
-hal config security api edit --override-base-url http://spinnaker-gate
+hal config security ui edit --override-base-url http://spin.publishapi.com 
+hal config security api edit --override-base-url http://spin-gate.publishapi.com
 hal deploy apply
 ```
 
-http://spinnaker-ui
+http://spin.publishapi.com
 
-드디어 화면이 보인다. 
+드디어 화면이 보인다.
 
 인그레스 서비스를 사용하여 바꿔서 외부로 오픈하고 외부에서 사용하는 url을  override-base-url을 써서 설정을 바꿔준후  hal deploy apply를 하면 클러스터로 설정이 넘어간다. 
 
@@ -351,9 +352,6 @@ spin-front50-fcdbb667c-fk8kz        0/1     CrashLoopBackOff   18         74m
 ```
 
 minio server실행이 되있는지 확인한다.
-
-
-
 
 ## blue green 배포 적용 
 
