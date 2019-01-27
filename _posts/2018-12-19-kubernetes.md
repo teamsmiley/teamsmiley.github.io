@@ -8,39 +8,8 @@ image: /files/covers/blog.jpg
 category: {kubernetes}
 ---
 
-# kubernetes 와 spinnaker를 설치하고 사용해봅니다.
+# kubernetes와 spinnaker를 설치 사용
 
-맥북에서 virtualbox를 사용하여 여러개의 가상머신을 만든후 거기에 설치를 진행할 것입니다 그래서 다음처럼 기본 설치 프로그램을 설치합니다.
-
-## homebrew install
-https://brew.sh/index_ko
-
-```bash
-/usr/bin/ruby -e "$(curl -fsSL https://raw.githubusercontent.com/Homebrew/install/master/install)"
-```
-
-## home brew cask 
-
-Homebrew-Cask은 Google 크롬 또는 Atom과 같은 GUI 응용 프로그램을 설치하는 Homebrew의 확장 프로그램입니다. 
-
-독립적으로 시작되었지만 유지 보수 담당자는 Homebrew의 핵심 팀과 긴밀하게 협력합니다.
-
-```bash
-brew install brew-cask
-```
-
-## virtualbox install
-가상머신을 설치하기 위한 프로그램입니다.
-```bash
-brew cask install virtualbox
-```
-
-## vagrant install
-virtual box를 관리하기 위해서 사용합니다. 조금 쉽게 virtualbox를 사용가능합니다.
-
-```bash
-brew cask install vagrant
-```
 
 ## kubernetes 설치 
 
@@ -52,67 +21,15 @@ brew cask install vagrant
 
 | | |
 |---|---|
-192.168.86.191 | master  |
-192.168.86.192 | node192 |
-192.168.86.193 | node193 |
-192.168.86.194 | node194(minio storage, docker registry| 
+192.168.0.195 | master  |
+192.168.0.192 | node192 |
+192.168.0.193 | node193 |
+192.168.0.194 | node194(minio storage, docker registry)| 
 | | |
 
-## 맥북 wifi를 192.168.86.1로 지정
-기존 사용하는 네트워크와 별개의 네트워크를 사용합니다. 혹시 공유기를 사용하시는분들중에 192.168.86.1 대역을 사용하시면 아마 안해도 되지 않을가 싶습니다. 
+## 테스트랩 준비
 
-```bash
-sudo ifconfig en0 alias 192.168.86.1/24 up
-sudo route -nv add -net 192.168.86 -interface en0
-#sudo route delete -net 192.168.86 -interface en0 #해제
-```
-
-## 설치 - Master,Node192,Node193,Node194 
-
-## 가상머신 만들기 
-
-마스터 서버를 설치해봅니다.
-
-```
-mkdir -p ~/Desktop/kube/master
-cd ~/Desktop/kube/master
-vagrant init centos/7 --minimal
-vagrant up
-```
-
-virtual box를 실행해서 vm 이 만들어진것을 확인한다.
-
-이제 vm에 이름과 아이피를 지정하자. 
-
-Vagrantfile 파일을 수정하면 됩니다. 
-
-```ini
-Vagrant.configure("2") do |config|
-  config.vm.box = "centos/7"
-  config.vm.hostname = "master"
-  config.vm.network "public_network", ip: "192.168.86.191", bridge: "en0: Wi-Fi (AirPort)"
-  config.vm.synced_folder "./data/", "/data/"
-  config.vm.provider "virtualbox" do |vb|
-    vb.customize ["modifyvm", :id, "--memory", "4000"]
-    vb.customize ["modifyvm", :id, "--cpus", "4"]
-    vb.customize ["modifyvm", :id, "--ioapic", "on"]
-  end
-end
-```
-
-vagrant 로 다시 vm을 시작해봅니다.
-
-```bash
-vagrant halt # vm을 정지시킵니다.
-vagrant up # 새로운 설정으로 vm 을 부팅시킵니다.
-vagrant ssh # 가상머신으로 접속합니다.
-
-su - 
-> vagrant
-
-yum update && yum -y install kernel-headers kernel-devel 
-yum install net-tools wget git -y # ifconfig git wget를 설치합니다. 
-```
+centos7을 4대의 서버에 설치한다.
 
 kubernetes를 설치하기전 해야할 일이 있습니다. 
 
@@ -120,10 +37,15 @@ kubernetes를 설치하기전 해야할 일이 있습니다.
 
 문서를 참고하시면되는데요 진행해보겠습니다. 
 
+저는 root로 로그인하여 진행하였습니다.
+
 ## before you begin kubernetes
 
 ```bash
-su -
+# 기본 프로그램 설치
+yum update && yum -y install kernel-headers kernel-devel 
+yum install net-tools wget git -y # ifconfig git wget를 설치합니다. 
+
 # selinux off
 setenforce 0
 sed -i 's/^SELINUX=enforcing$/SELINUX=permissive/' /etc/selinux/config
@@ -147,10 +69,10 @@ modprobe br_netfilter
 * host 파일 설정
 ```bash
 vi /etc/hosts
-> 192.168.86.101 master 
-> 192.168.86.192 node192
-> 192.168.86.193 node193
-> 192.168.86.194 node194
+> 192.168.0.195 master 
+> 192.168.0.192 node192
+> 192.168.0.193 node193
+> 192.168.0.194 node194
 ```
 
 * swap off
@@ -180,84 +102,10 @@ exit
 
 exit
 ```
-이렇게 하면 kubernetes설치까지 마무리 된것이다. 이제 이 vm을 이미지로 만들어서 node192 node193 node194을 만들어보자.
+이렇게 하면 kubernetes설치까지 마무리 된것이다. 
 
-## vm이미지 만들어서 나머지 노드들 만들기
+node192 node193 을 위와 똑같이 만듭니다.(ansible을 사용하면 편리합니다.)
 
-위처럼 똑같이 2개를 더 만들어서 설치하면되긴 하는데 귀찮아서 이미지로 만들어서 바로 로딩해서 사용할수 있게 합니다.
-
-```bash
-vagrant package # package.box가 생성됩니다. 
-vagrant box add kube-default package.box --force # package.box를 이름으로 등록합니다.
-#rm -f package.box # 다른 컴퓨터에서 사용하려면 옮겨 둬야 한다.
-```
-
-## node192 setup 
-192노드를 셋업합니다.
-
-```bash
-mkdir -p ~/Desktop/kube/node192
-cd ~/Desktop/kube/node192
-vi Vagrantfile
-```
-
-```ini
-Vagrant.configure("2") do |config|
-  config.vm.box = "kube-default"
-  config.vm.hostname = "node192"
-  config.vm.network "public_network", ip: "192.168.86.192", bridge: "en0: Wi-Fi (AirPort)"
-  config.vm.provider "virtualbox" do |vb|
-    vb.customize ["modifyvm", :id, "--memory", "4000"]
-    vb.customize ["modifyvm", :id, "--cpus", "2"]
-    vb.customize ["modifyvm", :id, "--ioapic", "on"]
-  end
-end
-```
-
-```bash
-vagrant up
-vagrant ssh 
-su -
-echo '1' > /proc/sys/net/bridge/bridge-nf-call-iptables #vagrant 를 재시작하면 값이 항상 0으로 바뀐다. 매번 1로 설정해줘야한다.
-
-ifconfig # ip 확인
-kubectl --help
-```
-kubectl이 설치되있는것을 확인할수 있습니다.
-
-
-## node193을 설치
-
-```bash
-mkdir -p ~/Desktop/kube/node193
-cd ~/Desktop/kube/node193
-vi Vagrantfile
-```
-
-```ini
-Vagrant.configure("2") do |config|
-  config.vm.box = "kube-default"
-  config.vm.hostname = "node193"
-  config.vm.network "public_network", ip: "192.168.86.193", bridge: "en0: Wi-Fi (AirPort)"
-  config.vm.provider "virtualbox" do |vb|
-    vb.customize ["modifyvm", :id, "--memory", "4000"]
-    vb.customize ["modifyvm", :id, "--cpus", "2"]
-    vb.customize ["modifyvm", :id, "--ioapic", "on"]
-  end
-end
-```
-
-```bash
-vagrant up
-vagrant ssh
-
-su -
-echo '1' > /proc/sys/net/bridge/bridge-nf-call-iptables #vagrant 를 재시작하면 값이 항상 0으로 바뀐다. 매번 1로 설정해줘야한다.
-
-ifconfig # ip 확인
-kubectl --help
-```
-kubectl이 설치되있는것을 확인할수 있습니다. 
 
 ## node 194
 
@@ -266,44 +114,15 @@ kubectl이 설치되있는것을 확인할수 있습니다.
 * halyard : spinnaker installer - docker
 
 ```bash
-mkdir -p ~/Desktop/kube/node194/data/auth # registry 인증 정보 저장
-mkdir -p ~/Desktop/kube/node194/data/docker # docker-compose 위치
-mkdir -p ~/Desktop/kube/node194/data/registry # docker image 저장위치
-mkdir -p ~/Desktop/kube/node194/data/minio # minio file 저장 위치
-mkdir -p ~/Desktop/kube/node194/data/minio-config # minio 설정 저장위치 
-mkdir -p ~/Desktop/kube/node194/data/docker/hal # halyard 설정 저장위치
-mkdir -p ~/Desktop/kube/node194/data/docker/kube # master config파일을 복사해둘 위치 halyard에서 이 파일을 참조해서 기본 설정을 만들기 때문
-
-
-cd ~/Desktop/kube/node194
-vi Vagrantfile
-```
-
-```ini
-Vagrant.configure("2") do |config|
-  config.vm.box = "kube-default"
-  config.vm.hostname = "minio"
-  config.vm.network "public_network", ip: "192.168.86.194", bridge: "en0: Wi-Fi (AirPort)"
-  config.vm.network "forwarded_port", host: 5000, guest: 5000 # docker registry
-  config.vm.network "forwarded_port", host: 8084, guest: 8084 # halyard 포트
-  config.vm.network "forwarded_port", host: 9000, guest: 9000 # halyard 포트
-  config.vm.network "forwarded_port", host: 9001, guest: 9001 # minio
-  config.vm.synced_folder "./data", "/data"
-  config.vm.synced_folder "./data/letsencrypt", "/etc/letsencrypt"
-end
-```
-
-```bash
-vagrant up
-vagrant ssh
-
-su -
-echo '1' > /proc/sys/net/bridge/bridge-nf-call-iptables #vagrant 를 재시작하면 값이 항상 0으로 바뀐다. 매번 1로 설정해줘야한다.
-echo "net.ipv4.ip_forward=1" >> /etc/sysctl.conf
-systemctl restart network
-sysctl net.ipv4.ip_forward
-
-ifconfig # ip 확인
+mkdir -p /data/auth # registry 인증 정보 저장
+mkdir -p /data/docker # docker-compose 위치
+mkdir -p /data/registry # docker image 저장위치
+mkdir -p /data/minio # minio file 저장 위치
+mkdir -p /data/minio-config # minio 설정 저장위치 
+mkdir -p /data/docker/registry # registry docker compose
+mkdir -p /data/docker/halyard # halyard docker compose
+mkdir -p /data/halyard # halyard 설정 저장위치
+mkdir -p /data/kube # master config파일을 복사해둘 위치 halyard에서 이 파일을 참조해서 기본 설정을 만들기 때문
 ```
 
 ### minio 
@@ -314,12 +133,13 @@ wget https://dl.minio.io/server/minio/release/linux-amd64/minio
 chmod +x minio
 mv minio /usr/local/bin/minio
 minio server --address ":9001" --config-dir /data/minio-config /data/minio
+
+Endpoint:  http://192.168.0.194:9001  http://172.17.0.1:9001  http://127.0.0.1:9001
+AccessKey: OS2PVUL53ZTSNMJOWOWR
+SecretKey: kLP1IdRqS+WqaLJ6WOXjrq80LptXy+j9SoeqXRLs
 ```
 
 화면에 Access key와 secret key가 보인다 복사해두고 다음 커맨들를 사용하자. 
-
-AccessKey: 6K3MW29PYQHC4W39E03D
-SecretKey: kuOkqn3y6UKvmHvC0DgoLyb+fDstDJFZV3NBwtZ1
 
 ctrl+c로 멈춘다. 
 
@@ -341,10 +161,9 @@ EOT
 # Download minio.service in /etc/systemd/system/
 ( cd /etc/systemd/system/; curl -O https://raw.githubusercontent.com/minio/minio-service/master/linux-systemd/minio.service )
 
-vi /etc/systemd/system/minio.service 
-# user와 그룹을 수정한다. 난 루트를 사용
-# User=root
-# Group=root
+vi /etc/systemd/system/minio.service # user와 그룹을 수정한다. 난 루트를 사용
+User=root
+Group=root
 
 systemctl start minio
 systemctl enable minio
@@ -352,7 +171,7 @@ systemctl enable minio
 
 http://localhost:9001 으로 확인한다. 파일도 넣어보고 폴더도 만들어보기 바란다.
 
-### private repositry와 halyard를 도커를 이용하여 실행해보자. 
+### private repositry 실행 
 
 <https://teamsmiley.github.io/2018/12/22/docker-private-registry/>
 
@@ -376,7 +195,7 @@ cd certbot
 --agree-tos \
 --debug \
 --no-bootstrap \
--d registry.publishapi.com
+-d registry.xgridcolo.com
 ```
 
 _acme-challenge.registry txt 형태로 도메인에 등록요청
@@ -398,11 +217,6 @@ Before continuing, verify the record is deployed.
 
 잘 생성되었습니다.
 
-나중에 혹시 필요할지 몰라서  vm에서 랩탑으로 옮겨두겠습니다. 
-```bash
-cp -R /etc/letsencrypt/ /data/
-```
-
 #### registry 유저 생성
 
 ```bash
@@ -413,25 +227,13 @@ docker run \
 
 #### registry 실행
 ```
-vi /data/docker/docker-compose.yml
+vi /data/docker/registry/docker-compose.yml
 ```
 
 ```yml
 ---
 version: "3.3"
 services:
-  halyard:
-    container_name: halyard
-    restart: always
-    image: gcr.io/spinnaker-marketplace/halyard:stable
-    volumes:
-      - ./hal:/home/spinnaker/.hal
-      - ./kube:/home/spinnaker/.kube
-      - /data:/data
-    ports:
-      - 8084:8084
-      - 9000:9000
-
   registry:
     container_name: 'registry'
     restart: always
@@ -454,52 +256,54 @@ services:
       - /data/auth:/auth
 ```
 
-docker-compose파일을 경로는 vm의 경로를 도커의 경로로 매핑하는것이다.
-
-이제 도커를 실행해보자.
 
 ```bash
-cd /data/docker && docker-compose up -d
-docker ps 
+cd /data/docker/registry && docker-compose up -d
+```
+
+
+### halyard 실행 (spinnaker를 설치하기 위해 필요)
+
+vi /data/docker/halyard/docker-compose.yml
+
+```yml
+---
+version: "3.3"
+services:
+  halyard:
+    container_name: halyard
+    restart: always
+    image: gcr.io/spinnaker-marketplace/halyard:stable
+    volumes:
+      - ./hal:/home/spinnaker/.hal
+      - ./kube:/home/spinnaker/.kube
+      - /data:/data
+    ports:
+      - 8084:8084
+      - 9000:9000
+```
+
+```bash
+cd /data/docker/halyard && docker-compose up -d
 
 docker exec -it halyard bash
 source <(hal --print-bash-completion) # 탭 완성 기능
 exit
 ```
 
-
-
 ## init kubenetes - master
 
-이제 쿠버네티스를 셋업해보자. 
-
 ```bash
-vagrant ssh 
-su -
-
-cat /proc/sys/net/bridge/bridge-nf-call-iptables
 echo '1' > /proc/sys/net/bridge/bridge-nf-call-iptables
-cat /proc/sys/net/bridge/bridge-nf-call-iptables
-
-cat /proc/sys/net/ipv4/ip_forward
-echo '1' > /proc/sys/net/ipv4/ip_forward
-cat /proc/sys/net/ipv4/ip_forward
-```
-
-위부분은 virtual box를 재시작할때마다. 새로 세팅해줘야한다.
-
-```bash
-#route del default eth0 # 기본 라우터를 eth1 192로 한다.
-#route add default gw 192.168.86.1 netmask 0.0.0.0 dev eth1 # default gw 추가 
-
-kubeadm init --apiserver-advertise-address 192.168.86.191 --pod-network-cidr 10.1.0.0/16
+kubeadm init --apiserver-advertise-address 192.168.0.195 --pod-network-cidr 10.1.0.0/16
 ```
 결과값을 잘 복사해두자. 나중에 이 값을 이용해서 노드를 마스터에 연결해준다.
 
 ```
 You can now join any number of machines by running the following on each node
 as root:
-kubeadm join 192.168.86.191:6443 --token oqwu2g.qjbgsr7vi5ic7ona --discovery-token-ca-cert-hash sha256:29df177eabedb6fefae643df034705ba4453fb01837487c66e252ef42e5748bc
+
+kubeadm join 192.168.0.195:6443 --token mcwwrn.12whl3ln7wxeoj2l --discovery-token-ca-cert-hash sha256:db16581f1259e99adbc2450a7e009835781aaa1a365d6abe762514075ac4485f
 ```
 
 ```bash
@@ -527,20 +331,10 @@ kubectl apply -f "https://cloud.weave.works/k8s/net?k8s-version=$(kubectl versio
 
 위에 복사해둔 스크립트를 노드에 실행을 해준다.
 ```
-vagrant up
-vagrant ssh
-
-su -
-
-cat /proc/sys/net/bridge/bridge-nf-call-iptables
 echo '1' > /proc/sys/net/bridge/bridge-nf-call-iptables
-cat /proc/sys/net/bridge/bridge-nf-call-iptables
-
-cat /proc/sys/net/ipv4/ip_forward
 echo '1' > /proc/sys/net/ipv4/ip_forward
-cat /proc/sys/net/ipv4/ip_forward
 
-sudo kubeadm join 192.168.86.191:6443 --token lr98l5.962xm2vi5pznrdhz --discovery-token-ca-cert-hash sha256:d1ffcec6e71cc2be3105adf450d80f179462db35abe47155820bab852ce1d6f5
+kubeadm join 192.168.0.195:6443 --token mcwwrn.12whl3ln7wxeoj2l --discovery-token-ca-cert-hash sha256:db16581f1259e99adbc2450a7e009835781aaa1a365d6abe762514075ac4485f
 ```
 
 ## 클러스터 연결 확인
@@ -636,14 +430,14 @@ kubectl delete secret --all
 ## yml 생성 (pod , service)를 만들어야한다. 마스터에서
 
 ```
-cd /data/
+cd /data/git/kube
 vi hello-node.yml
 ```
 
 ```yml
 ---
 apiVersion: v1
-kind: Pod  # pod 생성 
+kind: Pod
 metadata:
   name: hello-node
   labels:
@@ -670,8 +464,8 @@ spec:
   type: NodePort
   ports:
   - port: 8080
-    nodePort: 30001
     targetPort: 8080
+    nodePort: 30100
   selector:
     service-name: hello-node
 ```
@@ -701,7 +495,7 @@ hello-node   1/1       Running   0          13s
 $ kubectl describe pods hello-node
 
 # localhost:8080에 접속해서 Hello World! 가 출력됨을 확인한다.
-$ curl http://192.168.86.192:30001
+$  curl http://192.168.0.192:30100
 Hello World!
 ```
 
@@ -725,19 +519,19 @@ service type은 다음중 하나 고를수 있다.
 위 예제에서는 nodeport로 오픈하고 있는것을 알수 있다. 
 
 ```
-$kubectl get svc -o wide
+kubectl get svc -o wide
 NAME         TYPE        CLUSTER-IP      EXTERNAL-IP   PORT(S)          AGE    SELECTOR
 hello-node   NodePort    10.103.218.93   <none>        8080:30001/TCP   6m9s   service-name=hello-node
 kubernetes   ClusterIP   10.96.0.1       <none>        443/TCP          38m    <none>
 ```
 
 ### node port
-nodeport는 전체 노드에 특정 포트 (30000번부터-)를 외부에 오픈한다. yml을 한번 보기 바란다. 
+nodeport는 전체 노드에 특정 포트 (30000–32767)를 외부에 오픈한다.
 
 그러므로 다음 두 커맨드는 모두 동작한다.
 ```
-curl http://192.168.86.192:30001
-curl http://192.168.86.193:30001
+curl http://192.168.0.192:30100
+curl http://192.168.0.193:30100
 ```
 
 클러스터의 모든 서버 아이피에 포트를 연다.
@@ -747,11 +541,12 @@ curl http://192.168.86.193:30001
 ### ClusterIP
 clusterip가 기본값이다. 처음에는 이걸 왜 쓰냐고 생각햇는데 내부 서비스끼리 연결될때 이걸 사용한다. 
 
-예를 들면 워드프레스와 mysql 두개의 서비스가 돌고 잇을때 mysql은 외부에 오픈할 필요없이 워드프레스 pod에만 연결이 되면 되므로 mysql 서비스를만들어서 cluster ip로 하면된다. 
+예를 들면 워드프레스와 mysql 두개의 서비스가 돌고 잇을때 mysql은 외부에 오픈할 필요없이 워드프레스 pod에만 연결이 되면 되므로 mysql 서비스를 만들어서 cluster ip로 하면된다.
 
-그럼 워드프레스에서 mysql에 어떻게 연결하나? - 나중에 해보다 //todo 
+dns를 이용하여 내부적으로 이름만 가지면 아이피를 찾아서 연결해준다.
 
 ### Load Balance 
+
 이것은 외부에서 아이피를 매핑해주는것으로 볼수 있다. 아마존이나 구글 클라우드는 자동으로 되는데 여기서는 베어메탈이므로 metallb라는 로드발란스를 설치를 해서 테스트해볼수 있다. 
 
 
@@ -791,9 +586,9 @@ data:
     - name: my-ip-space
       protocol: layer2
       addresses:
-      - 192.168.86.80/28 
+      - 192.168.0.80/28 
 ```
-서비스에 줄 아이피를 정해뒀다 사용 가능한 아이피는 192.168.86.81 - 192.168.86.94 가 된다. 적용해보자.
+서비스에 줄 아이피를 정해뒀다 사용 가능한 아이피는 192.168.0.81 - 192.168.0.94 가 된다. 적용해보자.
 
 ```bash
 kubectl create -f  metallb-config.yml
@@ -847,7 +642,8 @@ kubectl create -f metallb-nginx.yml
 ```
 
 ```bash
-$ kubectl  get svc
+kubectl  get svc
+
 NAME         TYPE           CLUSTER-IP      EXTERNAL-IP   PORT(S)          AGE
 hello-node   LoadBalancer   10.106.215.59   <pending>     8080:30001/TCP   9s
 kubernetes   ClusterIP      10.96.0.1       <none>        443/TCP          74m
@@ -858,13 +654,13 @@ type이 loadbalancer로 바귀었고 external-ip가 pending인것을 알수 있�
 ```
 $ kubectl  get svc
 NAME         TYPE           CLUSTER-IP       EXTERNAL-IP    PORT(S)          AGE
-hello-node   LoadBalancer   10.110.182.246   192.168.86.240   8080:30001/TCP   4s
+hello-node   LoadBalancer   10.110.182.246   192.168.0.80   8080:30001/TCP   4s
 kubernetes   ClusterIP      10.96.0.1        <none>         443/TCP          77m
 ```
 
 외부 아이피를 잘 받았다. 이제 이 아이피를 호출해보면된다. 
 ```bash
-curl http://192.168.86.240 # 포트가 서비스 자체 포트로 바귀었다.
+curl http://192.168.0.80 
 ```
 
 ### metallb 삭제하고 싶으면 다음처럼 하면된다.
@@ -1031,7 +827,7 @@ metadata:
   namespace: kube-system
 spec:
   type: LoadBalancer
-  loadBalancerIP: 192.168.86.250
+  loadBalancerIP: 192.168.0.81
   ports:
     - port: 443
       targetPort: 8443
@@ -1052,12 +848,12 @@ kubectl apply -f kubernetes-dashboard.yaml
 kubectl get svc -n kube-system
 > NAME                   TYPE           CLUSTER-IP      EXTERNAL-IP    PORT(S)         AGE
 > kube-dns               ClusterIP      10.96.0.10      <none>         53/UDP,53/TCP   98m
-> kubernetes-dashboard   LoadBalancer   10.107.42.182   192.168.86.81   443:32134/TCP   13s
+> kubernetes-dashboard   LoadBalancer   10.107.42.182   192.168.0.81   443:32134/TCP   13s
 ```
 
 외부 아이피 할당받았다 확인하자 
 
-https://192.168.86.81
+https://192.168.0.81
 
 ### 계정 추가 
 
@@ -1103,10 +899,10 @@ kubectl -n kube-system describe secret $(kubectl -n kube-system get secret | gre
 
 ## mysql 서비스 설치하기 (namespace 꼭 사용하기)
 
-kubernetes를사용할때는 꼭 name space를 쓰기를 추천드립니다.
+kubernetes를사용할때는 꼭 namespace를 쓰기를 추천드립니다.
 ```bash
-kubectl create namespace dev
-kubectl create namespace live
+kubectl create namespace auth-dev
+kubectl create namespace auth-live
 kubectl get namespaces
 ```
 
@@ -1117,14 +913,14 @@ mysql은 pv,pvc생성 >> pod 생성 >> 서비스 생성 이런식으로 됩니�
 ```bash
 mkdir -p /data/git/kube
 cd /data/git/kube
-vi dev-mysql-pv-pvc.yml
+vi auth-dev-mysql-pv-pvc.yml
 ```
 ```yml
 ---
 kind: PersistentVolume
 apiVersion: v1
 metadata:
-  name: dev-mysql-pv-volume
+  name: auth-dev-mysql-pv-volume
   namespace: dev
   labels:
     type: local
@@ -1135,7 +931,7 @@ spec:
   accessModes:
     - ReadWriteOnce
   hostPath:
-    path: "/data/dev-mysql"
+    path: "/data/auth-dev-mysql"
   nodeAffinity:
     required:
       nodeSelectorTerms:
@@ -1143,12 +939,12 @@ spec:
         - key: kubernetes.io/hostname
           operator: In
           values:
-          - node192 #호스트이름이 192번인 노드에 /data/dev-mysql이라고 만들어라.
+          - node192 #호스트이름이 192번인 노드에 /data/auth-dev-mysql이라고 만들어라.
 ---
 apiVersion: v1
 kind: PersistentVolumeClaim
 metadata:
-  name: dev-mysql-pv-claim
+  name: auth-dev-mysql-pv-claim
   namespace: dev
 spec:
   storageClassName: slow
@@ -1162,91 +958,89 @@ spec:
       storage: 20Gi
 ```
 ```bash
-vi dev-mysql-deployment.yml
+vi auth-dev-mysql-deployment.yml
 ```
 ```yml
 ---
 apiVersion: v1
 kind: Service
 metadata:
-  name: dev-mysql
+  name: mysql
   namespace: dev
 spec:
   type: LoadBalancer
-  loadBalancerIP: 192.168.86.82
+  loadBalancerIP: 192.168.0.82
   ports:
   - port: 3306
     targetPort: 3306
   selector:
-    app: dev-mysql
+    app: mysql
 ---
 apiVersion: apps/v1 # for versions before 1.9.0 use apps/v1beta2
 kind: Deployment
 metadata:
-  name: dev-mysql
+  name: mysql
   namespace: dev
 spec:
   selector:
     matchLabels:
-      app: dev-mysql
+      app: mysql
   strategy:
     type: Recreate
   template:
     metadata:
       labels:
-        app: dev-mysql
+        app: mysql
     spec:
       containers:
       - image: mysql:5.6
-        name: dev-mysql
+        name: mysql
         env:
         - name: MYSQL_ROOT_PASSWORD
           value:
             password
         ports:
         - containerPort: 3306
-          name: dev-mysql
+          name: mysql
         volumeMounts:
-        - name: dev-mysql-persistent-storage
+        - name: mysql-persistent-storage
           mountPath: /var/lib/mysql
       volumes:
-      - name: dev-mysql-persistent-storage
+      - name: mysql-persistent-storage
         persistentVolumeClaim:
-          claimName: dev-mysql-pv-claim
+          claimName: mysql-pv-claim
 ```
 ```
-kubectl create -f dev-mysql-pv-pvc.yml 
-kubectl get pv -n dev
-kubectl get pvc -n dev
-kubectl create -f dev-mysql-deployment.yml
-kubectl get pods -n dev
-kubectl get services -n dev
+kubectl create -f auth-dev-mysql-pv-pvc.yml 
+kubectl create -f auth-dev-mysql-deployment.yml
+kubectl get pods --all-namespaces
+kubectl get services --all-namespaces
 ```
 
-Node192 번에 /data/dev-mysql폴더가 없으면 만들어 줘야한다. 
+Node192 번에 /data/auth-dev-mysql폴더가 없으면 만들어 줘야한다. 
 
 여기에 데이터를 저장하게 해두었으나 실제로는 nfs등에 저장하면될듯 
 
 개발디비여서 외부에서 접속할 필요가 있으면 loadbalancer 를 서비스 타입으로 사용하나 서비스 디비는 외부에 오픈될 필요가 없으면 cluseterip를 사용해도 될듯 싶다. 
 
-## ingress-nginx 
+## ingress-nginx (로드발란스 타입)
+위에서 사용한 metallb가 꼭 필요합니다. 
+```
+kubectl create namespace ingress-nginx
+vi hello-ingress.yml
+```
 
-하나의 아이피에 각각의 서비스로 보내주고 싶다.
-
-인그레스에 연결될 서비스를 하나 만들어 보자. 위에서 사용한 hello-node.yml을 사용한다.
-
-vi hello-node.yml
 ```yml
 ---
 apiVersion: v1
 kind: Pod
 metadata:
-  name: hello-node
+  name: hello-node-ingress
   labels:
-    service-name: hello-node
+    service-name: hello-node-ingress
 spec:
   containers:
-  - name: hello-node
+  - name: hello-node-ingress
     image: asbubam/hello-node
     readinessProbe:
       httpGet:
@@ -1261,91 +1055,26 @@ spec:
 apiVersion: v1
 kind: Service # service생성
 metadata:
-  name: hello-node
+  name: hello-node-ingress
 spec:
   ports:
   - port: 8080
     targetPort: 8080
   selector:
-    service-name: hello-node
-```
+    service-name: hello-node-ingress
 
-kubectl create -f hello-node.yml
-
-서비스 타입은 기본값인 clusterip를 사용햇다.
-
-인그레스를 nodeport type의 서비스로 만들어보자.
-
-```bash
-kubectl apply -f https://raw.githubusercontent.com/kubernetes/ingress-nginx/master/deploy/mandatory.yaml
-kubectl apply -f https://raw.githubusercontent.com/kubernetes/ingress-nginx/master/deploy/provider/baremetal/service-nodeport.yaml
-```
-잘됬는지 체크 
-```bash
-kubectl get pods --all-namespaces -l app.kubernetes.io/name=ingress-nginx 
-kubectl get svc -n ingress-nginx  #open된 포트 확인하자 32565
-```
-
-설정을 추가하자.
-
-vi ingress-config.yml
-```yml
----
-apiVersion: extensions/v1beta1
-kind: Ingress
-metadata:
-  name: ingress-nginx
-  annotations:
-    nginx.ingress.kubernetes.io/rewrite-target: /
-spec:
-  rules:
-  - host: publishapi.com
-    http:
-      paths:
-      - path: /
-        backend:
-          serviceName: hello-node
-          servicePort: 8080
-```
-kubectl create -f ingress-config.yml
-
-
-확인해보자. 
-
-curl http://192.168.86.191:8080 ==> 404 not found 
-
-vi /etc/hosts
-```
-192.168.86.192 publishapi.com
-```
-curl http://publishapi.com:32565 
-
-동작한다.
-
-## 로드발란스 타입의 ingress 서비스로 바꿔보자. 
-
-위에서 사용한 metallb가 꼭 필요합니다. 
-
-기존 서비스를 지우자.
-```
-kubectl delete -f https://raw.githubusercontent.com/kubernetes/ingress-nginx/master/deploy/provider/baremetal/service-nodeport.yaml
-
-vi ingress-service.yml
-```
-
-```yml
 ---
 apiVersion: v1
 kind: Service
 metadata:
-  name: ingress-xxx  
+  name:  hello-node-ingress  
   namespace: ingress-nginx # 이부분 아래 설명 참고 - A
   labels:
     app.kubernetes.io/name: ingress-nginx # 이부분 아래 설명 참고 - A
     app.kubernetes.io/part-of: ingress-nginx # 이부분 아래 설명 참고 - A
 spec:
   type: LoadBalancer               # 이부분만 수정됨
-  loadBalancerIP: 192.168.86.83     # 이부분만 수정됨
+  loadBalancerIP: 192.168.0.84     # 이부분만 수정됨
   ports:
     - name: http
       port: 80
@@ -1358,20 +1087,36 @@ spec:
   selector:
     app.kubernetes.io/name: ingress-nginx # 이부분 아래 설명 참고 - A
     app.kubernetes.io/part-of: ingress-nginx # 이부분 아래 설명 참고 - A
+  
+---
+apiVersion: extensions/v1beta1
+kind: Ingress
+metadata:
+  name: hello-node-ingress
+  annotations:
+    nginx.ingress.kubernetes.io/rewrite-target: /
+spec:
+  rules:
+  - host: hello-node-ingress.local
+    http:
+      paths:
+      - backend:
+          serviceName: hello-node-ingress
+          servicePort: 8080
 ```
 
 적용하고 확인해보자.
 ```
-kubectl create -f ingress-service.yml
+kubectl create -f hello-ingress.yml
 kubectl get svc -n ingress-nginx 
 ```
 
 vi /etc/hosts
 ```
-192.168.86.83 publishapi.com
+192.168.0.83 publishapi.com
 ```
 
-curl http://192.168.86.83  not working
+curl http://192.168.0.83  not working
 
 curl http://publishapi.com 
 
@@ -1497,7 +1242,7 @@ halyard 컨테이너로 간다.
 ```bash
 MINIO_ACCESS_KEY=AQK7HV1837P6O28RRZ5F
 MINIO_SECRET_KEY=47hRElDafsrr+W5Y+Ssp+lNO7WokBhYcLUbZbcIW
-ENDPOINT=http://192.168.86.194:9001
+ENDPOINT=http://192.168.0.194:9001
 
 echo $MINIO_SECRET_KEY | hal config storage s3 edit --endpoint $ENDPOINT \
     --access-key-id $MINIO_ACCESS_KEY \
@@ -1587,7 +1332,7 @@ metadata:
     app.kubernetes.io/part-of: ingress-nginx
 spec:
   type: LoadBalancer
-  loadBalancerIP: 192.168.86.84
+  loadBalancerIP: 192.168.0.84
   ports:
     - name: http
       port: 80
@@ -1610,7 +1355,7 @@ hosts파일에 설정을 하자. (on laptop)
 
 vi /etc/hosts
 ```
-192.168.86.84 spinnaker-ui spinnaker-gate
+192.168.0.84 spinnaker-ui spinnaker-gate
 ```
 halyard에서 설정을 업데이트해서 클러스터로 넣어준다. 
 
@@ -1738,7 +1483,6 @@ add stage >> disable(manifest) >> edit json
 
 ### docker private registry enable (on minio server node194)
 ```bash
-su -
 
 docker exec -it halyard bash
 
