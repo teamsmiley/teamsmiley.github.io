@@ -262,34 +262,6 @@ cd /data/docker/registry && docker-compose up -d
 ```
 
 
-### halyard 실행 (spinnaker를 설치하기 위해 필요)
-
-vi /data/docker/halyard/docker-compose.yml
-
-```yml
----
-version: "3.3"
-services:
-  halyard:
-    container_name: halyard
-    restart: always
-    image: gcr.io/spinnaker-marketplace/halyard:stable
-    volumes:
-      - ./hal:/home/spinnaker/.hal
-      - ./kube:/home/spinnaker/.kube
-      - /data:/data
-    ports:
-      - 8084:8084
-      - 9000:9000
-```
-
-```bash
-cd /data/docker/halyard && docker-compose up -d
-
-docker exec -it halyard bash
-source <(hal --print-bash-completion) # 탭 완성 기능
-exit
-```
 
 ## init kubenetes - master
 
@@ -1023,128 +995,52 @@ Node192 번에 /data/auth-dev-mysql폴더가 없으면 만들어 줘야한다.
 
 개발디비여서 외부에서 접속할 필요가 있으면 loadbalancer 를 서비스 타입으로 사용하나 서비스 디비는 외부에 오픈될 필요가 없으면 cluseterip를 사용해도 될듯 싶다. 
 
-## ingress-nginx (로드발란스 타입)
-위에서 사용한 metallb가 꼭 필요합니다. 
-```
-kubectl create namespace ingress-nginx
-vi hello-ingress.yml
-```
-
-```yml
----
-apiVersion: v1
-kind: Pod
-metadata:
-  name: hello-node-ingress
-  labels:
-    service-name: hello-node-ingress
-spec:
-  containers:
-  - name: hello-node-ingress
-    image: asbubam/hello-node
-    readinessProbe:
-      httpGet:
-        path: /
-        port: 8080
-    livenessProbe:
-      httpGet:
-        path: /
-        port: 8080
-
----
-apiVersion: v1
-kind: Service # service생성
-metadata:
-  name: hello-node-ingress
-spec:
-  ports:
-  - port: 8080
-    targetPort: 8080
-  selector:
-    service-name: hello-node-ingress
-
----
-apiVersion: v1
-kind: Service
-metadata:
-  name:  hello-node-ingress  
-  namespace: ingress-nginx # 이부분 아래 설명 참고 - A
-  labels:
-    app.kubernetes.io/name: ingress-nginx # 이부분 아래 설명 참고 - A
-    app.kubernetes.io/part-of: ingress-nginx # 이부분 아래 설명 참고 - A
-spec:
-  type: LoadBalancer               # 이부분만 수정됨
-  loadBalancerIP: 192.168.0.84     # 이부분만 수정됨
-  ports:
-    - name: http
-      port: 80
-      targetPort: 80
-      protocol: TCP
-    - name: https
-      port: 443
-      targetPort: 443
-      protocol: TCP
-  selector:
-    app.kubernetes.io/name: ingress-nginx # 이부분 아래 설명 참고 - A
-    app.kubernetes.io/part-of: ingress-nginx # 이부분 아래 설명 참고 - A
-  
----
-apiVersion: extensions/v1beta1
-kind: Ingress
-metadata:
-  name: hello-node-ingress
-  annotations:
-    nginx.ingress.kubernetes.io/rewrite-target: /
-spec:
-  rules:
-  - host: hello-node-ingress.local
-    http:
-      paths:
-      - backend:
-          serviceName: hello-node-ingress
-          servicePort: 8080
-```
-
-적용하고 확인해보자.
-```
-kubectl create -f hello-ingress.yml
-kubectl get svc -n ingress-nginx 
-```
-
-vi /etc/hosts
-```
-192.168.0.83 publishapi.com
-```
-
-curl http://192.168.0.83  not working
-
-curl http://publishapi.com 
-
-로드발란스로 동작한다.
-
-* 중요 
-
-헷갈린 부분이 있어서 정리해둔다. 
-
-일단 서비스로 올리는 컨테이너는 # 이부분 아래 설명 참고 - A 이부분을 바꾸지 말기 바란다. 
-
-바꿀수도 있지만 일이 복잡해진다.  이름만 바꾸고 쓰자. 
-
-그러나 실제 연결 되는 서비스는 namespace가 위와 달라도  서비스명으로 그냥 연결할수 있다. 아래 스피네커 붙이는 부분 참고 
-
 ## Spinnaker
 
-스피네커는 젠킨스와 비슷한 역할을 수행한다. halyard가 kubernetes cluser에 접속해서 설치를 진행한다. 그러므로 kubernetes config파일을 복사해서 halyard노드에 추가해야한다.
-
+### halyard 
+```
+mkdir /data/docker/halyard/hal
+mkdir /data/docker/halyard/kube
+```
 * on master
 ```
 cat ~/.kube/config
 ```
-복사해서 194번 서버 /data/docker/kube/ 에 넣어둔다.
+복사해서 node194 에  /data/docker/halyard/kube/config 넣어둔다.
+```
+vi /data/docker/halyard/docker-compose.yml
+```
 
-쿠버네티스 클러스터가 현재 존재하고 이제 halyard를 설치할 서버를 준비하자. node194(minio) 에서 다음 작업을 진행한다.
+```yml
+---
+version: "3.3"
+services:
+  halyard:
+    container_name: halyard
+    restart: always
+    image: gcr.io/spinnaker-marketplace/halyard:stable
+    volumes:
+      - ./hal:/home/spinnaker/.hal
+      - ./kube:/home/spinnaker/.kube
+      - /data:/data
+    ports:
+      - 8084:8084
+      - 9000:9000
+```
 
+```bash
+cd /data/docker/halyard && docker-compose up -d
 
+docker exec -it halyard bash
+source <(hal --print-bash-completion) # 탭 완성 기능
+exit
+```
+
+스피네커는 젠킨스와 비슷한 역할을 수행한다. halyard가 kubernetes cluser에 접속해서 설치를 진행한다. 그러므로 kubernetes config파일을 복사해서 halyard노드에 추가해야한다.
+
+쿠버네티스 클러스터가 현재 존재하고 이제 halyard를 설치할 서버를 준비하자. 
+
+node194(minio) 에서 다음 작업을 진행한다.
 
 ### kubernetes-v2 를 대상으로 배포해야하므로 master에 작업을 한다. 
 
@@ -1209,6 +1105,7 @@ kubectl create -f spinnaker.yml
 
 First, make sure that the provider is enabled:
 ```
+docker exec -it halyard bash
 hal config provider kubernetes enable
 ```
 
@@ -1235,20 +1132,18 @@ hal config deploy edit --type distributed --account-name my-k8s-v2-account
 
 s3도 안쓰고 node194에 로컬에 그냥 저장하는 걸로 하자.
 
-
-
-halyard 컨테이너로 간다. 
+halyard 컨테이너로 간다. 기존에 복사해둔 minio정보를 사용한다.
 
 ```bash
-MINIO_ACCESS_KEY=AQK7HV1837P6O28RRZ5F
-MINIO_SECRET_KEY=47hRElDafsrr+W5Y+Ssp+lNO7WokBhYcLUbZbcIW
+AccessKey=6K3MW29PYQHC4W39E03D
+SecretKey=kuOkqn3y6UKvmHvC0DgoLyb+fDstDJFZV3NBwtZ1
 ENDPOINT=http://192.168.0.194:9001
 
 echo $MINIO_SECRET_KEY | hal config storage s3 edit --endpoint $ENDPOINT \
     --access-key-id $MINIO_ACCESS_KEY \
     --secret-access-key 
 
-# hal config storage edit --type s3
+hal config storage edit --type s3
 ```
 
 s3로 하는 이유는 아마존과는 상관이 없고 minio가 s3와 compatible 하기 때문이다. 
@@ -1270,7 +1165,7 @@ vi /data/docker/hal/default/profiles/front50-local.yml
 docker exec -it halyard bash
 hal version list #사용할 버전을 고른다. 난 1.11.x
 
-hal config version edit --version 1.11.4
+hal config version edit --version 1.11.x
 
 hal deploy apply
 ```
@@ -1284,7 +1179,10 @@ kubectl get svc -n spinnaker
 ```
 
 화면을 보는 방법은 여러가지가 있다.
-1. ssh tunneling을 이용해서 보는 방법 - spinnaker는 기본으로 이것만 사용할수 있게 되있다. 
+1. ssh tunneling을 이용해서 보는 방법 - spinnaker는 기본으로 이것만 사용할수 있게 되있다.
+
+ssh -L 9000:127.0.0.1:9000 -L 8084:127.0.0.1:8084 204.16.116.91
+
 2. 서비스 타입을 바꿔서 외부에 오픈하는 방법 spin-deck 와 spin-gate를 LoadBalancer나 NodePort로  바꿔 주면 된다.
 3. Ingress 를 하나 만들어서 백앤드 서비스로 spin-deck 와 spin-gate를 붙여주면 된다. 
 
@@ -1516,3 +1414,111 @@ hal deploy apply
 ```
 끝
 
+## ingress-nginx (로드발란스 타입)
+위에서 사용한 metallb가 꼭 필요합니다. 
+```
+kubectl create namespace ingress-nginx
+vi hello-ingress.yml
+```
+
+```yml
+---
+apiVersion: v1
+kind: Pod
+metadata:
+  name: hello-node-ingress
+  labels:
+    service-name: hello-node-ingress
+spec:
+  containers:
+  - name: hello-node-ingress
+    image: asbubam/hello-node
+    readinessProbe:
+      httpGet:
+        path: /
+        port: 8080
+    livenessProbe:
+      httpGet:
+        path: /
+        port: 8080
+
+---
+apiVersion: v1
+kind: Service # service생성
+metadata:
+  name: hello-node-ingress
+spec:
+  ports:
+  - port: 8080
+    targetPort: 8080
+  selector:
+    service-name: hello-node-ingress
+
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name:  hello-node-ingress  
+  namespace: ingress-nginx # 이부분 아래 설명 참고 - A
+  labels:
+    app.kubernetes.io/name: ingress-nginx # 이부분 아래 설명 참고 - A
+    app.kubernetes.io/part-of: ingress-nginx # 이부분 아래 설명 참고 - A
+spec:
+  type: LoadBalancer               # 이부분만 수정됨
+  loadBalancerIP: 192.168.0.84     # 이부분만 수정됨
+  ports:
+    - name: http
+      port: 80
+      targetPort: 80
+      protocol: TCP
+    - name: https
+      port: 443
+      targetPort: 443
+      protocol: TCP
+  selector:
+    app.kubernetes.io/name: ingress-nginx # 이부분 아래 설명 참고 - A
+    app.kubernetes.io/part-of: ingress-nginx # 이부분 아래 설명 참고 - A
+  
+---
+apiVersion: extensions/v1beta1
+kind: Ingress
+metadata:
+  name: hello-node-ingress
+  annotations:
+    nginx.ingress.kubernetes.io/rewrite-target: /
+spec:
+  rules:
+  - host: hello-node-ingress.local
+    http:
+      paths:
+      - backend:
+          serviceName: hello-node-ingress
+          servicePort: 8080
+```
+
+적용하고 확인해보자.
+```
+kubectl create -f hello-ingress.yml
+kubectl get svc -n ingress-nginx 
+```
+
+vi /etc/hosts
+```
+192.168.0.83 publishapi.com
+```
+
+curl http://192.168.0.83  not working
+
+curl http://publishapi.com 
+
+로드발란스로 동작한다.
+
+* 중요 
+
+헷갈린 부분이 있어서 정리해둔다. 
+
+일단 서비스로 올리는 컨테이너는 # 이부분 아래 설명 참고 - A 이부분을 바꾸지 말기 바란다. 
+
+바꿀수도 있지만 일이 복잡해진다.  이름만 바꾸고 쓰자. 
+
+그러나 실제 연결 되는 서비스는 namespace가 위와 달라도  서비스명으로 그냥 연결할수 있다. 아래 스피네커 붙이는 부분 참고 
