@@ -249,20 +249,41 @@ halyard가 쿠베에 접속해서 디플로이를 순서대로 한다.
 kubectl get svc -n spinnaker
 ```
 
-화면을 보는 방법은 여러가지가 있다.
-1. ssh tunneling을 이용해서 보는 방법 - spinnaker는 기본으로 이것만 사용할수 있게 되있다.
-2. 서비스 타입을 바꿔서 외부에 오픈하는 방법 spin-deck 와 spin-gate를 LoadBalancer나 NodePort로  바꿔 주면 된다.
-3. Ingress 를 하나 만들어서 백앤드 서비스로 spin-deck 와 spin-gate를 붙여주면 된다. 
+Ingress 를 하나 만들어서 백앤드 서비스로 spin-deck 와 spin-gate를 붙여주면 된다. 
 
-3번으로 진행
+인그레스 서비스를 사용하여 바꿔서 외부로 오픈하고 외부에서 사용하는 url을  override-base-url을 써서 설정을 바꿔준후  hal deploy apply를 하면 클러스터로 설정이 넘어간다. 
 
-그럼 인그레스를 이용해서 해보자. 
+그 후 웹브라우저로 접속해보면 된다.
 
 ### ingress 이용 (on master)
 
 vi spinnaker-ingress.yml
 
 ```yml
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: ingress-spin
+  namespace: ingress-nginx
+  labels:
+    app.kubernetes.io/name: ingress-nginx
+    app.kubernetes.io/part-of: ingress-nginx
+spec:
+  type: LoadBalancer
+  loadBalancerIP: 192.168.0.84
+  ports:
+    - name: http
+      port: 80
+      targetPort: 80
+      protocol: TCP
+    - name: https
+      port: 443
+      targetPort: 443
+      protocol: TCP
+  selector:
+    app.kubernetes.io/name: ingress-nginx
+    app.kubernetes.io/part-of: ingress-nginx
 ---
 apiVersion: extensions/v1beta1
 kind: Ingress
@@ -286,43 +307,18 @@ spec:
       - backend:
           serviceName: spin-gate
           servicePort: 8084
-
----
-apiVersion: v1
-kind: Service
-metadata:
-  name: spinnaker-ingress
-  namespace: ingress-nginx
-  labels:
-    app.kubernetes.io/name: ingress-nginx
-    app.kubernetes.io/part-of: ingress-nginx
-spec:
-  type: LoadBalancer
-  loadBalancerIP: 192.168.0.84
-  ports:
-    - name: http
-      port: 80
-      targetPort: 80
-      protocol: TCP
-    - name: https
-      port: 443
-      targetPort: 443
-      protocol: TCP
-  selector:
-    app.kubernetes.io/name: ingress-nginx
-    app.kubernetes.io/part-of: ingress-nginx
 ```
 
 ```
-kubectl create -f spinnaker-ingress.yml
+kubectl apply -f spinnaker-ingress.yml
 ```
 
 hosts파일에 설정을 하자. (on laptop)
 
 vi /etc/hosts
 ```
-204.16.116.86 spin.publishapi.com 
-204.16.116.86 spin-gate.publishapi.com
+204.16.116.84 spin.publishapi.com 
+204.16.116.84 spin-gate.publishapi.com
 ```
 
 halyard에서 설정을 업데이트해서 클러스터로 밀어 넣어준다. 
@@ -339,19 +335,22 @@ http://spin.publishapi.com
 
 드디어 화면이 보인다.
 
-인그레스 서비스를 사용하여 바꿔서 외부로 오픈하고 외부에서 사용하는 url을  override-base-url을 써서 설정을 바꿔준후  hal deploy apply를 하면 클러스터로 설정이 넘어간다. 
-
-그 후 웹브라우저로 접속해보면 된다.
-
-## spin-front50 crash 발생
+## spin-front50 crash 
 ```bash
 $ kubectl get pods -n spinnaker
 NAME                                READY   STATUS             RESTARTS   AGE
 spin-front50-7cf9844bcb-hf8fg       0/1     CrashLoopBackOff   15         61m
 spin-front50-fcdbb667c-fk8kz        0/1     CrashLoopBackOff   18         74m
 ```
+minio server 실행이 되었는지 정보(엑세스키 시크릿키) 정확한지 확인한다.
 
-minio server실행이 되있는지 확인한다.
+
+
+
+
+
+
+
 
 ## blue green 배포 적용 
 
