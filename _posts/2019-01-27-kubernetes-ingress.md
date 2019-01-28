@@ -148,14 +148,5 @@ Hello World!
 
 ![]({{site_baseurl}}/assets/ingress-3.png)
 
-
-
-
-
-
-
-
-
-
-
+나머지는 ingress-lb.yml 에서 Ingress Rule만 계속 추가하면 된다.
 
