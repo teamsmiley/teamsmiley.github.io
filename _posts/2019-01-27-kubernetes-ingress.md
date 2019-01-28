@@ -68,7 +68,7 @@ kubectl apply -f https://raw.githubusercontent.com/kubernetes/ingress-nginx/mast
 metallb를 꼭 설치하시기바랍니다.
 
 * ingress-nginx 서비스는 namespace가 꼭 ingress-nginx 로 해야한다.
-* 인그레서 설정에서 연결하는 서비스에 namespace와 같은 곳에 인그레스를 설치해야한다. 
+* ingress 설정에서 연결하는 서비스에 namespace와 같은 곳에 ingress를 설치해야한다. 
 
 ```
 vi ingress-lb.yml
