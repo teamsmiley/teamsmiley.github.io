@@ -123,6 +123,8 @@ kubectl create -f ingress-lb.yml
 ```
 vi /etc/hosts
 ```
+
+```
 192.168.0.84 lb.publishapi.com
 ```
 
