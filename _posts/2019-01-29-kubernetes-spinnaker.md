@@ -75,7 +75,7 @@ docker-compose파일이 kube 볼륨 매핑을 하고 있어 컨테이너가 이 
 
 ```bash
 kubectl create namespace spinnaker
-vi /data/git/kube/spinnaker.yml
+vi /data/git/kube/spinnaker-rabc.yml
 ```
 ```yml
 apiVersion: rbac.authorization.k8s.io/v1
