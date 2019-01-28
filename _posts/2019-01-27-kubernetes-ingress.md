@@ -229,10 +229,10 @@ kubectl get svc -n ingress-nginx
 
 vi /etc/hosts
 ```
-192.168.0.83 lb.publishapi.com
+192.168.0.84 lb.publishapi.com
 ```
 
-curl http://192.168.0.83  not working
+curl http://192.168.0.84  not working
 
 curl http://lb.publishapi.com 
 
