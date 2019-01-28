@@ -133,7 +133,7 @@ curl http://np.publishapi.com:31000 (ok)
 metallb를 꼭 설치하시기바랍니다.
 
 ```
-vi ingress-loadbalance.yml
+vi ingress-lb.yml
 ```
 ```yml
 ---
@@ -155,18 +155,6 @@ spec:
       httpGet:
         path: /
         port: 8080
-
----
-apiVersion: v1
-kind: Service # service생성
-metadata:
-  name: ingress-loadbalance
-spec:
-  ports:
-  - port: 8080
-    targetPort: 8080
-  selector:
-    service-name: ingress-loadbalance
 
 ---
 apiVersion: v1
@@ -196,11 +184,11 @@ spec:
 
 적용
 ```
-kubectl create -f ingress-loadbalance.yml
+kubectl create -f ingress-lb.yml
 ```
 
 ```
-vi ingress-loadbalance-config.yml
+vi ingress-lb-config.yml
 ```
 ```yml
 ---
@@ -215,16 +203,17 @@ spec:
   - host: lb.publishapi.com
     http:
       paths:
-      - path: /
-        backend:
+      -  backend:
           serviceName: ingress-loadbalance
           servicePort: 8080
 ```
 
 적용
 ```
-kubectl create -f ingress-loadbalance-config.yml
-kubectl get svc -n ingress-nginx 
+kubectl create -f ingress-lb-config.yml
+kubectl get svc --all-namespaces
+kubectl get ing -n ingress-nginx
+kubectl describe ing ingress-nginx
 ```
 
 vi /etc/hosts
