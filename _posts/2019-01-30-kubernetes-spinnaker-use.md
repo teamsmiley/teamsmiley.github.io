@@ -111,11 +111,20 @@ ${trigger["tag"]} 이 부분이 트리거에서 넘겨주는 값을 가지고 �
 
 2개 이상의 pod들은 전부 삭제된다.
 
-### add stage for  disable(manifest)
+### add stage for disable(manifest)
 
 add stage >> disable(manifest) 
 
 ![]({{site_baseurl}}/assets/spinnaker-11.png)
 ![]({{site_baseurl}}/assets/spinnaker-12.png)
 
+### manual run 
 
+이제 실행해본다.
+
+## Error
+* ImagePullError : 노드가 도커 레지스트리에 접근을 못해서 생김 
+```bash
+docker login registry.publishapi.com:5000 
+docker pull registry.publishapi.com:5000/auth:100 #100번째 이미지 다운되는지 확인
+```
