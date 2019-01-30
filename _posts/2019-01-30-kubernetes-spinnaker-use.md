@@ -113,7 +113,9 @@ ${trigger["tag"]} 이 부분이 트리거에서 넘겨주는 값을 가지고 �
 
 ### add stage for  disable(manifest)
 
+add stage >> disable(manifest) 
+
 ![]({{site_baseurl}}/assets/spinnaker-11.png)
 ![]({{site_baseurl}}/assets/spinnaker-12.png)
 
-add stage >> disable(manifest) 
+
