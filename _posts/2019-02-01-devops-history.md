@@ -12,6 +12,10 @@ category: {devops}
 
 하나씩 나눠져 있는것들을 흐름이 있게 정리해보았습니다. 
 
+## 구조 
+
+![]({{site_baseurl}}/assets/devops-kube.png)
+
 ## docker 
 * docker-01 <https://teamsmiley.github.io/2018/06/27/docker-tip-01/>
 * docker-02 - <https://teamsmiley.github.io/2018/06/27/docker-tip-02/>
