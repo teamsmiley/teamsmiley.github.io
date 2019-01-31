@@ -122,9 +122,13 @@ add stage >> disable(manifest)
 
 이제 실행해본다.
 
-## Error
-* ImagePullError : 노드가 도커 레지스트리에 접근을 못해서 생김 
-```bash
-docker login registry.publishapi.com:5000 
-docker pull registry.publishapi.com:5000/auth:100 #100번째 이미지 다운되는지 확인
-```
+## Error 참고 
+* ImagePullError : 노드가 도커 레지스트리에 접근을 못해서 생김 다음 글 참고 
+
+kubectl create secret docker-registry my-registry \
+--docker-server=https://registry.xgridcolo.com:5000 \
+--docker-username=ragon \
+--docker-password=kimchi66 \
+--docker-email=brian@xgridcolo.com \
+--namespace auth-live
+

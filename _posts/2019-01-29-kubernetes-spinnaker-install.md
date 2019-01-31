@@ -163,7 +163,7 @@ docker exec -it halyard bash
 CONTEXT=$(kubectl config current-context)
 hal config provider docker-registry enable
 ADDRESS=registry.xgridcolo.com:5000 
-REPOSITORIES="auth-server aaa bbb "
+REPOSITORIES=""
 USERNAME=ragon #docker registry id/pass
 
 hal config provider docker-registry account add my-registry \
