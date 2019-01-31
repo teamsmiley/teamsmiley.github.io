@@ -129,9 +129,9 @@ add stage >> disable(manifest)
 ![]({{site_baseurl}}/assets/spinnaker-11.png)
 ![]({{site_baseurl}}/assets/spinnaker-12.png)
 
-### manual run 
+여기에서 클러스터 부분이 드롭다운이 안나타나면  일단 disable 없이 파이프라인을 실행한 후 로드발란스에 replica set이 생긴 후 다시 이부분을 진행해보면 리스트가 나오는것을 볼수 있을것이다.
 
-이제 실행해본다.
-
+### 실행 
+docker image를 새로운 태그로 푸시하면 스피네커가 인식하여  트리거가 동작하고 배포를 시작하면 완료된 것이다.
 
 
