@@ -1,6 +1,6 @@
 ---
 layout: post
-title: 'devops' 
+title: 'devops list' 
 author: teamsmiley
 date: 2019-02-01
 tags: [devops]
