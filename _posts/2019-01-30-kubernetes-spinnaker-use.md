@@ -1,11 +1,11 @@
 ---
 layout: post
-title: 'kubernetes spinnaker 사용' 
+title: 'spinnaker 사용' 
 author: teamsmiley
 date: 2019-01-30
 tags: [devops]
 image: /files/covers/blog.jpg
-category: {kubernetes}
+category: {kubernetes,spinnaker}
 ---
 
 # Spinnaker 사용

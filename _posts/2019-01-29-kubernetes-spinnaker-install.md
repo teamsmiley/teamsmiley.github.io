@@ -1,11 +1,11 @@
 ---
 layout: post
-title: 'kubernetes spinnaker 설치' 
+title: 'spinnaker 설치' 
 author: teamsmiley
 date: 2019-01-29
 tags: [devops]
 image: /files/covers/blog.jpg
-category: {kubernetes}
+category: {kubernetes,spinnaker}
 ---
 
 # Spinnaker 설치 

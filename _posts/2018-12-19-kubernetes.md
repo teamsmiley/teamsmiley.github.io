@@ -1,6 +1,6 @@
 ---
 layout: post
-title: 'kubernetes spinnaker 초급 - 설치하고 사용하기' 
+title: 'kubernetes 기본' 
 author: teamsmiley
 date: 2018-12-19
 tags: [devops]
