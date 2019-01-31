@@ -195,7 +195,7 @@ cd certbot
 --agree-tos \
 --debug \
 --no-bootstrap \
--d registry.xgridcolo.com
+-d registry.publishapi.com
 ```
 
 _acme-challenge.registry txt 형태로 도메인에 등록요청

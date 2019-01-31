@@ -25,4 +25,35 @@ kubectl create secret docker-registry <secret-name> \
 --namespace=<namespace-name> 
 ```
 
-이렇게 하면 스피네커가 배포하고 나면 쿠베가 레지스트리에서 잘 가져온다. 
+이렇게 하면 스피네커가 배포하고 나면 쿠베가 레지스트리에서 잘 가져온다.
+
+쿠버네티스 yml은 다음처럼 imagepullsecret 추가되야함. 
+
+```yml
+apiVersion: apps/v1
+kind: ReplicaSet
+metadata:
+  annotations:
+    strategy.spinnaker.io/max-version-history: '2'
+    traffic.spinnaker.io/load-balancers: '["service auth"]'
+  labels:
+    tier: auth
+  name: auth
+  namespace: auth-live
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      tier: auth
+  template:
+    metadata:
+      labels:
+        tier: auth
+    spec:
+      containers:
+        - image: 'registry.publishapi.com:5000/auth-server:${trigger["tag"]}'
+          imagePullPolicy: Always
+          name: auth
+      imagePullSecrets:   # 이부분 추가
+        - name: my-registry
+```

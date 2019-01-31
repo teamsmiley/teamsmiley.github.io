@@ -101,15 +101,26 @@ spec:
         tier: auth
     spec:
       containers:
-        - image: 'registry.xgridcolo.com:5000/auth-server:${trigger["tag"]}' # 이거 중요 트리거에서 넘겨준 정보를 가지고 빌드한다.
+        - image: 'registry.publishapi.com:5000/auth-server:${trigger["tag"]}' # 이거 중요 트리거에서 넘겨준 정보를 가지고 빌드한다.
           name: auth
+      imagePullSecrets:   # 이부분 추가
+        - name: my-registry # 이부분 추가
 ```
 
 ${trigger["tag"]} 이 부분이 트리거에서 넘겨주는 값을 가지고 빌드를 하는 부분
 
-파이프라인을 빌드하면 서비스가 생성되고 기존 서비스는 disable된다.
+kubernetes secret를 만든다. namespace를 잊지말것
 
-2개 이상의 pod들은 전부 삭제된다.
+```
+kubectl create secret docker-registry my-registry \
+--docker-server=https://registry.publishapi.com:5000 \
+--docker-username=ragon \
+--docker-password=kimchi66 \
+--docker-email=brian@publishapi.com \
+--namespace auth-live
+```
+
+이제 파이프라인을 빌드하면 서비스가 생성되고 기존 replicaset,pod들은 전부 삭제하자.
 
 ### add stage for disable(manifest)
 
@@ -122,13 +133,5 @@ add stage >> disable(manifest)
 
 이제 실행해본다.
 
-## Error 참고 
-* ImagePullError : 노드가 도커 레지스트리에 접근을 못해서 생김 다음 글 참고 
 
-kubectl create secret docker-registry my-registry \
---docker-server=https://registry.xgridcolo.com:5000 \
---docker-username=ragon \
---docker-password=kimchi66 \
---docker-email=brian@xgridcolo.com \
---namespace auth-live
 
