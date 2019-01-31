@@ -1,6 +1,6 @@
 ---
 layout: post
-title: 'kubernetes private registry' 
+title: 'kubernetes private registry(ImagePullError)' 
 author: teamsmiley
 date: 2019-01-31
 tags: [devops]
