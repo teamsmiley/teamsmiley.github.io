@@ -55,5 +55,5 @@ spec:
           imagePullPolicy: Always
           name: auth
       imagePullSecrets:   # 이부분 추가
-        - name: my-registry
+        - name: my-registry # 이부분 추가
 ```
