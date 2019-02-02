@@ -117,9 +117,10 @@ var renderer = ProductPreviewDto.Create(entity);
 이러면 매핑이 되서 나온다.
 
 Automapper를 왜 안쓴느지는 더 확인이 필요. 아래 링크에서보면 코드가 완전 간단해지는것을 알수 있다. 나도 써야겟다.
-<https://github.com/JasonGT/NorthwindTraders/commit/a8356a945387e732a7db622fc7ea4bb51e690339>
 
-### infrastructure에 nofifyService
+* <https://github.com/JasonGT/NorthwindTraders/commit/a8356a945387e732a7db622fc7ea4bb51e690339>
+
+### infrastructure에 INotificationService
 
 이것이 어떻게 동작하는지 궁금햇다. 확인해보니 application layer에 interface를 만들고 application은 이 인터페이스로만 코딩을 한다. 
 
@@ -127,10 +128,13 @@ infrastructure에서 이 인터페이스를 구현해서 클래스로 만든다.
 
 나중에 이걸 di해주면 잘 동작한다.
 
+## automapper 적용
+* 확인해보니 최신코드는 automapper는 들어가 있는것도 같다. ==> 적용 완료
 ## 궁금증
 
 * authmapper를 왜 안쓰는가? 
 * 인증은 webapi단에서 하는가? 아니면 application layer에서 해야하는것인가?
 * 페이징은 webapi단에서 하는가? 아니면 application layer에서 해야하는것인가?
 * ddd에서 entity와 vo의 차이는 무엇인가?(immutable)?
-* 확인해보니 최신코드는 automapper는 들어가 있는것도 같다.
+
+
