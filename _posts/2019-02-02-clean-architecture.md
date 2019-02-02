@@ -34,7 +34,7 @@ category: {clean architect}
   * Entities 
   * Value 
   * Objects 
-  * Enumerations 
+  * Enumerations (꼭 생성자에서 초기화를 하자)
   * Logic 
   * Exceptions
 
