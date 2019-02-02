@@ -116,7 +116,8 @@ var renderer = ProductPreviewDto.Create(entity);
 
 이러면 매핑이 되서 나온다.
 
-Automapper를 왜 안쓴느지는 더 확인이 필요.
+Automapper를 왜 안쓴느지는 더 확인이 필요. 아래 링크에서보면 코드가 완전 간단해지는것을 알수 있다. 나도 써야겟다.
+<https://github.com/JasonGT/NorthwindTraders/commit/a8356a945387e732a7db622fc7ea4bb51e690339>
 
 ### infrastructure에 nofifyService
 
