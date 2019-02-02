@@ -132,3 +132,4 @@ infrastructure에서 이 인터페이스를 구현해서 클래스로 만든다.
 * 인증은 webapi단에서 하는가? 아니면 application layer에서 해야하는것인가?
 * 페이징은 webapi단에서 하는가? 아니면 application layer에서 해야하는것인가?
 * ddd에서 entity와 vo의 차이는 무엇인가?(immutable)?
+* 확인해보니 최신코드는 automapper는 들어가 있는것도 같다.
