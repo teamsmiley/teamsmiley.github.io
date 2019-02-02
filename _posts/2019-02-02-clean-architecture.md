@@ -5,7 +5,7 @@ author: teamsmiley
 date: 2019-02-02
 tags: [devops]
 image: /files/covers/blog.jpg
-category: {Clean Architecture}
+category: {clean architect}
 ---
 
 # Clean Architecture
