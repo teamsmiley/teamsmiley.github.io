@@ -130,6 +130,7 @@ infrastructure에서 이 인터페이스를 구현해서 클래스로 만든다.
 
 ## automapper 적용
 * 확인해보니 최신코드는 automapper는 들어가 있는것도 같다. ==> 적용 완료
+
 ## 궁금증
 
 * authmapper를 왜 안쓰는가? 
