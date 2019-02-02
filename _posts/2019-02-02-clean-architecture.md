@@ -14,7 +14,7 @@ category: {clean architect}
 
 ## uncle bob martin 
 * <https://www.youtube.com/watch?v=o_TH-Y78tt4&t=1113s>
-
+* <http://blog.cleancoder.com/uncle-bob/2012/08/13/the-clean-architecture.html>
 ### 정리
 
 ![]({{site_baseurl}}/assets/clean-architecture-bob.png)
