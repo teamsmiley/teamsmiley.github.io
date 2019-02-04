@@ -26,6 +26,9 @@ category: {clean architect}
 ## Clean Architecture with ASP.NET Core 2.1
 * <https://www.youtube.com/watch?v=_lwCVE_XgqI&t=496s>
 
+* old version
+  * <https://www.youtube.com/watch?v=fAJrVf8f6M4>
+
 ### 정리
 
 ![]({{site_baseurl}}/assets/clean-architecture-dotnet.png)
