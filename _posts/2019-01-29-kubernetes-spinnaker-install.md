@@ -166,7 +166,7 @@ CONTEXT=$(kubectl config current-context)
 hal config provider docker-registry enable
 ADDRESS=registry.publishapi.com:5000 
 REPOSITORIES=""
-USERNAME=ragon #docker registry id/pass
+USERNAME=USERID #docker registry id/pass
 
 hal config provider docker-registry account add my-registry \
     --repositories $REPOSITORIES \
