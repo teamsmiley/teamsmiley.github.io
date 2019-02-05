@@ -158,7 +158,9 @@ hal config deploy edit --type distributed --account-name my-k8s-v2-account
 ```
 
 * docker private registry enable (on node194)
+
 ```bash
+
 docker exec -it halyard bash
 CONTEXT=$(kubectl config current-context)
 hal config provider docker-registry enable
