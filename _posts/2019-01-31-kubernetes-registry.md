@@ -10,6 +10,10 @@ category: {kubernetes}
 
 # kubernetes 에서 private registry 사용 (ImagePullError)
 
+## container image url
+잘못된 경우 이미지를 가져올수 없다.
+
+## 비밀번호를 설정해줘야할수 있다.
 노드에 접속해서 docker-login을 하고 터미널에서 docker pull을 하면 이미지를 가져온다.
 
 그런데 스피네커를 통해서 디플로이만 하면 ImagePullError 에러 발생 

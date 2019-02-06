@@ -95,13 +95,13 @@ mkdir -p /data/mirror/centos
 mkdir -p /data/mirror/epel
 
 # 5
-rsync -avSHP --progress --exclude "local*" --exclude "isos" -e ssh root@yum.xgridcolo.com:/data/mirror/centos_vault/ /data/mirror/centos_vault >> rsync-repo.log
+rsync -avSHP --progress --exclude "local*" --exclude "isos" -e ssh root@yum.publishapi.com:/data/mirror/centos_vault/ /data/mirror/centos_vault >> rsync-repo.log
 
 #7
-rsync -avSHP --progress --exclude "local*" --exclude "isos" -e ssh root@yum.xgridcolo.com:/data/mirror/centos/ /data/mirror/centos >> rsync-repo.log
+rsync -avSHP --progress --exclude "local*" --exclude "isos" -e ssh root@yum.publishapi.com:/data/mirror/centos/ /data/mirror/centos >> rsync-repo.log
 
 # epel 
-rsync -avSHP --progress --exclude "local*" --exclude "isos" -e ssh root@yum.xgridcolo.com:/data/mirror/epel/ /data/mirror/epel >> rsync-repo.log
+rsync -avSHP --progress --exclude "local*" --exclude "isos" -e ssh root@yum.publishapi.com:/data/mirror/epel/ /data/mirror/epel >> rsync-repo.log
 ```
 
 ## dell linux repo mirror
