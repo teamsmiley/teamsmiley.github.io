@@ -19,15 +19,15 @@ dotnet new 해서 반복되는 코드를 자동으로 생성해서 프로젝트�
 ### 템플릿 만들기
 폴더 생성 
 ```bash
-mkdir -p C:\Users\ragon\Desktop\smiley-template
-cd C:\Users\ragon\Desktop\smiley-template
+mkdir -p C:\Users\<your-id>\Desktop\smiley-template
+cd C:\Users\<your-id>\Desktop\smiley-template
 ```
 
 aaa.cs를 생성 - 이 파일이 나중에 생성될 파일이다. 
 
 ```
-mkdir -p C:\Users\ragon\Desktop\smiley-template\.template.config
-cd C:\Users\ragon\Desktop\smiley-template\.template.config
+mkdir -p C:\Users\<your-id>\Desktop\smiley-template\.template.config
+cd C:\Users\<your-id>\Desktop\smiley-template\.template.config
 ```
 설정 파일 template.json 생성 
 ```json
@@ -51,7 +51,7 @@ cd C:\Users\ragon\Desktop\smiley-template\.template.config
 
 ### 템플릿 설치하기 
 ```bash
-dotnet new --install C:\Users\ragon\Desktop\smiley-template
+dotnet new --install C:\Users\<your-id>\Desktop\smiley-template
 ```
 결과가 다음처럼 보인다 smiley가 포함된걸 알수 있다. 
 ```
@@ -64,8 +64,8 @@ Unit Test Project                                 mstest           [C#], F#, VB 
 
 ### 템플릿 실행하기
 ```bash
-mkdir -p C:\Users\ragon\Desktop\newfolder
-cd C:\Users\ragon\Desktop\newfolder
+mkdir -p C:\Users\<your-id>\Desktop\newfolder
+cd C:\Users\<your-id>\Desktop\newfolder
 dotnet new smiley
 ```
 폴더에 가보면 aaa.cs가 들어잇는걸 확인할수 있다. 
@@ -73,7 +73,7 @@ dotnet new smiley
 ### 템플릿 삭제하기
 
 ```bash
-dotnet new --uninstall C:\Users\ragon\Desktop\smiley-template
+dotnet new --uninstall C:\Users\<your-id>\Desktop\smiley-template
 ```
 
 ## 고급기능

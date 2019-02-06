@@ -47,7 +47,7 @@ interface NodeModule {
 ## model을 만들자.
 
 ```
-cd c:\Users\ragon\Desktop\Github\rc4_console\console\src\app\board\models
+cd c:\Users\<your-id>\Desktop\Github\rc4_console\console\src\app\board\models
 
 ng g class Post --type=model
 

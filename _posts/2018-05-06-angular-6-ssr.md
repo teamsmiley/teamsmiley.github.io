@@ -16,7 +16,7 @@ https://angular.io/guide/universal 여기에서 Download the finished sample cod
 
 ## package.json update
 
-cd C:\Users\ragon\Desktop\universal
+cd C:\Users\<your-id>\Desktop\universal
 
 code . 
 

@@ -22,7 +22,7 @@ sudo docker pull microsoft/mssql-server-linux:2017-latest
 ```
 
 ### mssql run
-데이터 저장할 폴더를 만들고 사용합니다. 저는 Users/ragon/Desktop/mssql/data 여기로 정했습니다.
+데이터 저장할 폴더를 만들고 사용합니다. 저는 Users/<your-id>/Desktop/mssql/data 여기로 정했습니다.
 
 ```
 mkdir -p ~/Desktop/mssql

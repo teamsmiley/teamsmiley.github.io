@@ -1,6 +1,6 @@
 # SSH Default User 세팅 
 
-맥을 사용하면서 기본 유저이름을 ragon으로 쓰다보니 ssh로 접근할 때 마다 username을 적어 줘야해서 불편햇다.
+맥을 사용하면서 기본 유저이름을 rrrrr으로 쓰다보니 ssh로 접근할 때 마다 username을 적어 줘야해서 불편햇다.
 
 예를 들면 
 ```
@@ -30,7 +30,7 @@ ssh my-server
 ```
 Host aaa
     HostName aaa.net
-    User ragon
+    User rrrrr
 
 Host bbb
     HostName bbb.net
