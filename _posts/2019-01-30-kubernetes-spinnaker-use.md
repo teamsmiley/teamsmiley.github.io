@@ -114,8 +114,8 @@ kubernetes secret를 만든다. namespace를 잊지말것
 ```
 kubectl create secret docker-registry my-registry \
 --docker-server=https://registry.publishapi.com:5000 \
---docker-username=ragon \
---docker-password=kimchi66 \
+--docker-username=<your-id> \
+--docker-password=<your-pass> \
 --docker-email=brian@publishapi.com \
 --namespace auth-live
 ```
