@@ -42,16 +42,16 @@ category: {kubernetes,spinnaker}
 
 ```yml
 kind: Service
-  apiVersion: v1
-  metadata:
-    name: auth
-    namespace: auth-live
-  spec:
-    selector:
-      app: auth
-    ports:
-    - protocol: TCP
-      port: 80
+apiVersion: v1
+metadata:
+  name: auth
+  namespace: auth-live
+spec:
+  selector:
+    app: auth
+  ports:
+  - protocol: TCP
+    port: 80
 ```
 
 ## 파이프 라인을 추가하자. 
