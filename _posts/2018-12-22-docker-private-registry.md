@@ -60,7 +60,7 @@ h1vJeUEv6AYJu5stnwlLy-xxx
 Before continuing, verify the record is deployed.
 ```
 
-도메인에 txt 레코드 등록하고 나서 엔터 
+도메인에 txt 레코드 등록하고 조금기다려서 dns가 업데이트가 되고 나면  엔터 
 
 ```
 Press Enter to Continue
