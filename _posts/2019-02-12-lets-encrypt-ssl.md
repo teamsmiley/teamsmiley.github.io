@@ -1,23 +1,18 @@
 ---
 layout: post
-title: 'ingress nginx ssl' 
+title: 'let's encrypt with wildcard cert' 
 author: teamsmiley
 date: 2019-02-07
 tags: [devops]
 image: /files/covers/blog.jpg
-category: {kubernetes}
+category: {ssl}
 ---
 
-# kubernetes ingress nginx with ssl (let's encrypt)
+# let's encrypt with wildcard cert
 
-ingress nginx에 ssl을 추가해보자.
-
-먼저 master에서 ssl을 만들어야한다. let's encrypt를 이용하여 ssl을 만들자. 
-
-## let's encrypt 
+let's encrypt 인증서에 와일드카드 도메인을 적용해보자.
 
 ```bash
-# domain 셋업
 UR_DOMAIN=aaa.com
 
 sudo yum update
@@ -31,16 +26,17 @@ cd /tmp
 git clone https://github.com/certbot/certbot.git 
 cd certbot
 
-/tmp/certbot/certbot-auto certonly \
+./certbot-auto certonly \
 --manual \
 --preferred-challenges=dns \
---email ${UR-EMAIL} \
+--email brian@rendercore.com \
 --server https://acme-v02.api.letsencrypt.org/directory \
 --agree-tos \
 --debug \
 --no-bootstrap \
--d ${UR-DOMAIN}
+-d *.UR_DOMAIN # 이게 중요
 ```
+
 
 _acme-challenge txt 도메인에 등록하라고 나옴
 
@@ -75,70 +71,25 @@ IMPORTANT NOTES:
    Donating to EFF:                    https://eff.org/donate-le
 ```
 
-발급 됬음 
+발급 위치 : /etc/letsencrypt/live/UR-DOMAIN/
 
-## kube secret등록
+확인
 
 ```bash
-CERT_NAME=AAA
-UR_NAMESPACE=AAA
-KEY_FILE=/etc/letsencrypt/live/${UR-DOMAIN}/privkey.pem
-CERT_FILE=/etc/letsencrypt/live/${UR-DOMAIN}/fullchain.pem
-
-kubectl create secret tls ${CERT_NAME} --key ${KEY_FILE} --cert ${CERT_FILE} -n ${UR_NAMESPACE} #인그레스 네임 스페이스를 꼭 넣어주자.
+/tmp/certbot/certbot-auto certificates
 ```
 
-## ingress를 만들자. 
+*로 발급된걸 알수있다.
 
-```yml
----
-apiVersion: extensions/v1beta1
-kind: Ingress
-metadata:
-  name: auth-live
-  namespace: auth-live
-  annotations:
-    kubernetes.io/ingress.class: "nginx"
-    kubernetes.io/tls-acme: "true"
-    kubernetes.io/ingress.allow-http: "false"
-    nginx.ingress.kubernetes.io/ssl-redirect: "true"
-    nginx.ingress.kubernetes.io/force-ssl-redirect: "true"
-    nginx.ingress.kubernetes.io/rewrite-target: /
-spec:
-  tls:
-    - hosts: 
-      - UR-DOMAIN
-      secretName: CERT_NAME
-    - hosts:
-      - UR-DOMAIN2
-      secretName: CERT_NAME2
+웹서버에 적용하면된다.
 
-  rules:
-  - host: UR-DOMAIN
-    http:
-      paths:
-      - backend:
-          serviceName: echo-service
-          servicePort: 80
-  - host: UR-DOMAIN2
-    http:
-      paths:
-      - backend:
-          serviceName: echo-service
-          servicePort: 80
+## 윈도우 
+<https://github.com/PKISharp/win-acme/releases> 를 사용하자.
+
+
+## 기타 사용법
+
+```bash
+sudo /tmp/certbot/certbot-auto renew --dry-run
+sudo /tmp/certbot/certbot delete --cert-name example.com
 ```
-
-## kubernetes에 적용한다.
-
-``` 
-kubectl apply -f ingress.yml
-```
-
-
-
-
-
-
-
-
-
