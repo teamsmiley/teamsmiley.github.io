@@ -29,7 +29,7 @@ cd certbot
 ./certbot-auto certonly \
 --manual \
 --preferred-challenges=dns \
---email brian@rendercore.com \
+--email UR_EMAIL \
 --server https://acme-v02.api.letsencrypt.org/directory \
 --agree-tos \
 --debug \
@@ -71,7 +71,7 @@ IMPORTANT NOTES:
    Donating to EFF:                    https://eff.org/donate-le
 ```
 
-발급 위치 : /etc/letsencrypt/live/UR-DOMAIN/
+발급 위치 : /etc/letsencrypt/live/UR_DOMAIN/
 
 확인
 
@@ -91,5 +91,6 @@ IMPORTANT NOTES:
 
 ```bash
 sudo /tmp/certbot/certbot-auto renew --dry-run
+/tmp/certbot/certbot-auto check 
 sudo /tmp/certbot/certbot delete --cert-name example.com
 ```
