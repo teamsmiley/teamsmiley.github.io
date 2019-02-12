@@ -39,14 +39,14 @@ cd certbot
 --agree-tos \
 --debug \
 --no-bootstrap \
--d ${UR-DOMAIN}
+-d ${UR_DOMAIN}
 ```
 
 _acme-challenge txt 도메인에 등록하라고 나옴
 
 ```
 Please deploy a DNS TXT record under the name
-_acme-challenge.UR-DOMAIN with the following value:
+_acme-challenge.UR_DOMAIN with the following value:
 
 h1vJeUEv6AYJu5stnwlLy-xxx
 
@@ -62,9 +62,9 @@ Cleaning up challenges
 
 IMPORTANT NOTES:
  - Congratulations! Your certificate and chain have been saved at:
-   /etc/letsencrypt/live/UR-DOMAIN/fullchain.pem
+   /etc/letsencrypt/live/UR_DOMAIN/fullchain.pem
    Your key file has been saved at:
-   /etc/letsencrypt/live/UR-DOMAIN/privkey.pem
+   /etc/letsencrypt/live/UR_DOMAIN/privkey.pem
    Your cert will expire on 2019-03-23. To obtain a new or tweaked
    version of this certificate in the future, simply run certbot-auto
    again. To non-interactively renew *all* of your certificates, run
@@ -82,8 +82,8 @@ IMPORTANT NOTES:
 ```bash
 CERT_NAME=AAA
 UR_NAMESPACE=AAA
-KEY_FILE=/etc/letsencrypt/live/${UR-DOMAIN}/privkey.pem
-CERT_FILE=/etc/letsencrypt/live/${UR-DOMAIN}/fullchain.pem
+KEY_FILE=/etc/letsencrypt/live/${UR_DOMAIN}/privkey.pem
+CERT_FILE=/etc/letsencrypt/live/${UR_DOMAIN}/fullchain.pem
 
 kubectl create secret tls ${CERT_NAME} --key ${KEY_FILE} --cert ${CERT_FILE} -n ${UR_NAMESPACE} #인그레스 네임 스페이스를 꼭 넣어주자.
 ```
@@ -107,20 +107,20 @@ metadata:
 spec:
   tls:
     - hosts: 
-      - UR-DOMAIN
+      - UR_DOMAIN
       secretName: CERT_NAME
     - hosts:
-      - UR-DOMAIN2
+      - UR_DOMAIN2
       secretName: CERT_NAME2
 
   rules:
-  - host: UR-DOMAIN
+  - host: UR_DOMAIN
     http:
       paths:
       - backend:
           serviceName: echo-service
           servicePort: 80
-  - host: UR-DOMAIN2
+  - host: UR_DOMAIN2
     http:
       paths:
       - backend:
@@ -134,8 +134,33 @@ spec:
 kubectl apply -f ingress.yml
 ```
 
+## 와일드카드 도메인 발급 
 
+<https://teamsmiley.github.io/2019/02/07/lets-encrypt-ssl/> 참고해서 발급하면된다.
 
+## 이제 ingress에 적용해보자. 
+
+```yml
+spec:
+  tls:
+    - secretName: UR_DOMAIN
+      hosts:
+        - "*.UR_DOMAIN"
+
+rules:
+  - host: "*.UR_DOMAIN"
+    http:
+      paths:
+      - backend:
+          serviceName: UR_SERVICE
+          servicePort: 80
+```
+
+양쪽에 따옴표를 붙이는것이 중요하다.
+
+*.aaa.com은 되지만 auth.*.aaa.com은 안된다.  도메인에서 설정도 안됨.
+
+*는 항상 왼쪽 첫번째에 나와야한다. 
 
 
 
