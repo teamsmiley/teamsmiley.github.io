@@ -1,6 +1,6 @@
 ---
 layout: post
-title: 'let's encrypt with wildcard cert' 
+title: 'lets encrypt with wildcard cert' 
 author: teamsmiley
 date: 2019-02-07
 tags: [devops]
