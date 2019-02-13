@@ -514,7 +514,7 @@ Company Advance
 
 아이디를 같이 넣는걸 추천한다.
 
-```
+```html
 <h1 i18n="@@introductionHeader">Hello i18n!</h1>
 ```
 이렇게 되면 앞에 글처럼 영어를 기본으로 해두는 설정은 필요가 없을듯.
