@@ -419,16 +419,61 @@ app.component.html
 ```
 
 테스트 하자
+
 ```
 npm run build:prod  && npm run server
 ```
 
 
-## ssr시 언어도 바뀌면 좋겠음.
+## ssr에서 언어도 바뀌면 좋겠음.
 
 여전히 문제가 하나 있다 ssr시 화면에 언어별로  잘보이나  소스보기를 하면 영어로 나온다. 
 
-이부분은 서버를 실행할때 언어를 넣어줘야한다. 
+일단 서버도 언어를 넣어서 빌드해야한다.
+
+angular.json을 수정한다.
+```json
+"server": {
+  "builder": "@angular-devkit/build-angular:server",
+  "options": {
+    "main": "src/main.server.ts",
+    "tsConfig": "src/tsconfig.server.json",
+    "outputPath": "dist/server/en",
+    "i18nFile": "src/locale/messages.en.xlf",
+    "i18nFormat": "xlf",
+    "i18nLocale": "en",
+    "i18nMissingTranslation": "error"
+    }
+  },
+
+"server-ko": {
+  "builder": "@angular-devkit/build-angular:server",
+  "options": {
+    "main": "src/main.server.ts",
+    "tsConfig": "src/tsconfig.server.json",
+    "outputPath": "dist/server/ko",
+    "i18nFile": "src/locale/messages.ko.xlf",
+    "i18nFormat": "xlf",
+    "i18nLocale": "ko",
+    "i18nMissingTranslation": "error"
+    }
+  }
+```
+
+서버 빌드를 해보자.
+
+package.json
+```json
+// 기존코드
+// "build:server:prod": "ng run my-app:server && webpack --config webpack.server.config.js --progress --colors",
+
+"build:server:prod": "ng run my-app:server && ng run my-app:server  && webpack --config webpack.server.config.js --progress --colors",
+```
+
+이부분은 서버를 실행할때 언어를 넣어줘야한다.
+```
+npm run build:server:prod
+```
 
 server.ts에서 
 ```ts
@@ -444,5 +489,33 @@ const { AppServerModuleNgFactory, LAZY_MODULE_MAP } = require('./dist/server/mai
 <https://github.com/teamsmiley/angular7-i18n-ssr>
 
 
+## 참고사항 
 
+일단 기본 페이지에는 다음처럼 코딩한다. 
+
+```html
+<div>
+Company Advance
+<div> 
+```
+
+그리고 언어파일로 변경한후 그 언어파일에 구체적인 내용을 적는다.  
+
+그리고 나면 angular.json에서 production에서 언어 파일 내용을 추가해준다. 
+
+그래야 한다. 
+
+또 알아둬야할것은 보통 이렇게 사용한다.
+``html
+<h1 i18n>Hello i18n!</h1>
+```
+
+그런데 이렇게 되면 앞뒤에 파일이 바뀌면 아이디가 바뀌게 된다. 나중에 복잡해진다.
+
+아이디를 같이 넣는걸 추천한다.
+
+```
+<h1 i18n="@@introductionHeader">Hello i18n!</h1>
+```
+이렇게 되면 앞에 글처럼 영어를 기본으로 해두는 설정은 필요가 없을듯.
 
