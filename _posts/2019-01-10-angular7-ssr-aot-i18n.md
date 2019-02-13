@@ -506,7 +506,7 @@ Company Advance
 그래야 한다. 
 
 또 알아둬야할것은 보통 이렇게 사용한다.
-``html
+```html
 <h1 i18n>Hello i18n!</h1>
 ```
 
