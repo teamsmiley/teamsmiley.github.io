@@ -48,33 +48,47 @@ vi app.component.html 에 다음 추가
 
 ## SSR 을 설정하자
 
+server side rendering이란 초기 요청은 서버에서 랜더링을 해서 보내주고 그 후 부터는 spa로 동작한다.  ssr이 되면 검색엔진에 웹사이트 내용이 나오므로 seo에 도움이 된다.
+
 https://github.com/maciejtreder/ng-toolkit
 
-```
+```bash
 ng add @ng-toolkit/universal
 npm run build:prod
-npm run server
+npm run server # ssr test
+npm serve -o # spa test
 ```
 
 설명을 조금 하면 ng add @ng-toolkit/universal 를 하면 기존에 하나씩 파일을 추가해주던 것을 자동으로 해준다. 여러 매뉴얼을 보면 이 자동 작업을 수동으로 하는 매뉴얼들이 있다 필요하면 참고하기 바란다. 
 
 관련 파일들이 설치되면 npm run build:prod 를 실행하는데 이것은 package.json에서 확인가능하다 코드는 다음과 같다.
 ```json
-"build:server:prod": "ng run renderfarm-app:server && webpack --config webpack.server.config.js --progress --colors",
+"build:server:prod": "ng run YOUR_APP:server && webpack --config webpack.server.config.js --progress --colors",
+
 "build:browser:prod": "ng build --prod",
+
 "build:prod": "npm run build:server:prod && npm run build:browser:prod",
+    
 ```
 
 build:prod 를 실행하면 npm run build:server:prod (서버)이것이 실행되고 그다음에 npm run build:browser:prod (로컬)이것이 실행된다. 빌드 된 파일을 dist에 browser 와 server라는 폴더를 생성해서 거기에 넣어둔다.
+
+![]({{site_baseurl}}/assets/angular7-ssr-01.png)
 
 --prod는 기본으로 --aot를 가지고 있다. angular.json에서 확인 가능
 
 http://localhost:8080/에 접속해서 소스보기를 하면 ssr이 된것을 알수 있다.  컨텐츠 내용이 보이면 성공 
 
-## 이제 실서버에 올려서 확인을 해보자. docker and nginx 
+소스보기를 보면 차이점을 알수 있다.
 
-vi dockerignore
-```
+![]({{site_baseurl}}/assets/angular7-ssr-03.png)
+
+![]({{site_baseurl}}/assets/angular7-ssr-02.png)
+
+## 이제 실서버에 올려서 확인을 해보자. docker (nodejs)
+
+vi .dockerignore
+```ini
 node_modules
 dist
 e2e
@@ -86,6 +100,7 @@ README.md
 vi Dockerfile
 
 ```ini
+# stage 1
 FROM node:10 as node
 WORKDIR /app
 COPY . .
@@ -96,17 +111,91 @@ CMD [ "node", "local.js" ]
 ```
 
 도커 빌드후 실행 
+```
+docker build . -t my-app
+docker run -it  -p 80:8080 my-app
+```
 
 처음 요청시 소스코드를 보면 전체 내용이 있는것을 알수 있다. 그러나 링크를 클릭하면 페이지가 다 로드되는것이 아니라 싱글페이지앱으로 동작한다. 
 
 결론은 첫 요청은 server side rendering으로 돌고  그 후 요청은 전부 spa로 동작한다.  seo가 잘 될듯.
 
+## environment 사용
 
+users.component.ts수정 
+```ts
+export class UsersComponent implements OnInit {
+  isProduction: boolean = environment.production; //추가
+  ngOnInit() {
+  }
+}
+```
+
+users.component.html
+```html
+<p>
+  {{ isProduction }} users works!
+</p>
+```
+
+spa로 확인해보자.
+```
+ng serve -o
+```
+잘된다. 이제 ssr로 빌드 해보자. 
+
+```
+npm run build:server:prod
+```
+
+`error TS2307: Cannot find module 'src/environments/environment'.` 에러가 난다.
+
+고쳐보자. 
+
+tsconfig.json 을 수정하자. 
+
+```ini
+//...
+"baseUrl": "./src", #맨윗줄 수정
+"paths": {
+  "@environments/*": [
+    "environments/*"
+  ]
+}
+//...
+```
+
+users.components.ts 수정 
+```ts
+// import { environment } from 'src/environments/environment';
+import { environment } from '@environments/environment';
+```
+
+다시 빌드해보자.
+```
+npm run build:server:prod
+```
+에러없이 빌드는 된다.
+
+도커 빌드후 테스트
+```
+docker build . -t my-app
+docker run -it  -p 80:8080 my-app
+```
+동작한다.
+
+SPA로 테스트
+```
+ng serve -o
+```
+동작한다.
 
 
 ## i18n 
 
 앵귤러 빌드를 언어별로 해서 각각의 dist폴더를 만들어서 넣어서 고객의 언어에 따라서 /ko 등으로 보내주려고 한다.
+
+한가지 주의할점은 언어변환은 사이트가 끝나면 해야할듯 싶다. html내용에 줄바꿈등이 잇으면 아이디가 달라져버린다.. 이걸 다들 어떻게 처리하는지 모르겟음.
 
 ### 필요한 화면에 표시를 한다.
 
@@ -120,7 +209,7 @@ src/app/app.component.html에서 다국어를 원하는 곳에 i18n을 붙인다
 
 ```
 mkdir src/locale
-ng xi18n --output-path src/locale --out-file messages.en.xlf
+ng xi18n --output-path locale --out-file messages.en.xlf
 cp src/locale/messages.en.xlf src/locale/messages.ko.xlf
 ```
 
@@ -134,18 +223,6 @@ messages.ko.xlf
 <xliff version="1.2" xmlns="urn:oasis:names:tc:xliff:document:1.2">
   <file source-language="en" datatype="plaintext" original="ng2.template">
     <body>
-      <trans-unit id="1e9a15da9ecb3574be8b466c285ed4aca1d89e4b" datatype="html">
-        <source>
-    Welcome to <x id="INTERPOLATION" equiv-text="{{ title }}"/>!
-  </source>
-  <target>
-    환영합니다 <x id="INTERPOLATION" equiv-text="{{ title }}"/>!
-  </target>
-        <context-group purpose="location">
-          <context context-type="sourcefile">app/app.component.html</context>
-          <context context-type="linenumber">3</context>
-        </context-group>
-      </trans-unit>
       <trans-unit id="54f29f9a6da150fc7c4fcd0b7e6d9a1b0314fd35" datatype="html">
         <source>Here are some links to help you start: </source>
         <target>당신이 시작하는데 도움이 될 만한 링크입니다. </target>
@@ -154,38 +231,18 @@ messages.ko.xlf
           <context context-type="linenumber">8</context>
         </context-group>
       </trans-unit>
-      <trans-unit id="170b2bb80cfeeaf71c71cd4b56d240fdda4dfc0b" datatype="html">
-        <source>Tour of Heroes</source>
-        <target>영웅 여행</target>
-        <context-group purpose="location">
-          <context context-type="sourcefile">app/app.component.html</context>
-          <context context-type="linenumber">12</context>
-        </context-group>
-      </trans-unit>
-      <trans-unit id="4446b939821a1c94d99d8f88ebf5c67844d48d08" datatype="html">
-        <source>CLI Documentation</source>
-        <target>CLI 문서들</target>
-        <context-group purpose="location">
-          <context context-type="sourcefile">app/app.component.html</context>
-          <context context-type="linenumber">17</context>
-        </context-group>
-      </trans-unit>
-      <trans-unit id="f7b003c76057ba9ff6d99232971f826d015eaf54" datatype="html">
-        <source>Angular blog</source>
-        <target>앵귤러 블로그</target>
-        <context-group purpose="location">
-          <context context-type="sourcefile">app/app.component.html</context>
-          <context context-type="linenumber">22</context>
-        </context-group>
-      </trans-unit>
     </body>
   </file>
 </xliff>
 ```
 
+### spa 언어 적용 (ssr은 안됨)
+
 angular.json 수정하자 
 
-architect >> build >> configurations >> production을 복사해서 붙여넣기한후 이름을 ko로 바꾼다. 
+ng build와 ng serve를 한글로 서비스할수 있게 처리하려고 한다.
+
+architect >> build >> configurations >> production을 복사해서 붙여넣기한후 이름을 ko로 바꾼다.  
 ```json
 "production-ko": {
   "fileReplacements": [
@@ -211,7 +268,7 @@ architect >> build >> configurations >> production을 복사해서 붙여넣기�
     }
   ],
   //아래추가
-  "outputPath": "dist/ko/browser",
+  "outputPath": "dist/browser/ko",
   "i18nFile": "src/locale/message.ko.xlf",
   "i18nFormat": "xlf",
   "i18nLocale": "ko",
@@ -230,76 +287,59 @@ architect >> serve >> configurations >> production을 복사해서 ko를 만든�
 }
 ```
 
-package.json에 start 다음에 추가
-```json
-"start": "ng serve",
-"start:ko": "ng serve --configuration=ko",
+영어는?
+```ts
+"outputPath": "dist/browser/en",
+"baseHref": "/en/",
+"i18nFile": "src/locale/messages.en.xlf",
+"i18nFormat": "xlf",
+"i18nLocale": "en",
+"i18nMissingTranslation": "error"
 ```
+
+기존 `build` >> `configurations` >> `production` 에 위를 추가한다.
+
+### 빌드해보자.
+```bash
+ng build  # 언어 적용 안된것
+ng build --configuration=production # 영어 적용
+ng build --configuration=production-ko # 한글 적용
+```
+
+![]({{site_baseurl}}/assets/angular7-i18n-1.png)
 
 실행 
-```
-npm run start:ko
+```bash
+ng serve # 언어 적용 안된것
+ng serve --configuration=production # 영어 적용
+ng serve --configuration=production-ko # 한글 적용
 ```
 
-http://localhost:4200/ 해보면 한글로 바귀어 나온다. 
+ng build 를 하면 언어 설정이 없이 사이트가 돌아가기 때문에 빼야할듯 싶다. 
+
+http://localhost:4200/ 해보면 한글로 바뀌어 나온다. 
 
 ![]({{site_baseurl}}/assets/angular-ssr-05.PNG)
 
 i18n은 잘된것을 알수 있다. 이제 다른언어들도 다 변환하여 package.json에 추가하면 될 것이다.
 
-### build ko (ssr없이)
-
-package.json을 수정하여 build를 복사하여 build:ko를 만든다.
-```
-"build:ko": "ng build --configuration=ko",
-```
-
-npm run build:ko
-
-### build ko (ssr)
-
 package.json 에 추가하자.
 
 ```json
-"build:browser:prod": "ng build --prod && ng build --configuration=production-ko",
+//"build:browser:prod": "ng build --prod",
+"build:browser:prod": "ng build --configuration=production && ng build --configuration=production-ko",
 ```
 
 빌드해보자.
-
-npm run build:prod
-
-## server.ts에 local 추가 
-
-기존 파일에 다음을 추가한다. 
-
-```ts
-app.get('/*', (req, res) => {
-  //this is for i18n
-  const supportedLocales = ['', 'ko'];
-  const defaultLocale = '';
-  const matches = req.url.match(/^\/([a-z]{2}(?:-[A-Z]{2})?)\//);
-  //check if the requested url has a correct format '/locale' and matches any of the supportedLocales
-  const locale = (matches && supportedLocales.indexOf(matches[1]) !== -1) ? matches[1] : defaultLocale;
-
-  res.render(`${locale}/index`, { req, res }, (err, html) => { // 여기 중요
-    if (html) {
-      res.send(html);
-    } else {
-      console.error(err);
-      res.send(err);
-    }
-  });
+```
+npm run build:browser:prod
+```
+서버 빌드를 해보자.
+```
+npm run build:server:prod
 ```
 
-리퀘스트가 들어오면 로케일을 추가해서 처리한다. 
-
-```bash
-npm run build:prod  && npm run server
-```
-
-테스트 가능 
-
-## 이제 /로 접속시 고객의 언어에 따라서 각 페이지로 보내보자. 
+## /로 접속시 고객의 언어에 따라서 각 페이지로 보내보자. 
 
 브라우저 언어가 한글이면 /ko로 다른거는 전부 /로 
 ```ts
@@ -340,22 +380,7 @@ app.get('/*', (req, res) => {
 npm run build:prod  && npm run server
 ```
 
-## ssr시 언어도 바뀌면 좋겠음.
-
-여전히 문제가 하나 있다 ssr시 화면에 언어별로  잘보이나  소스보기를 하면 영어로 나온다. 
-
-이부분은 서버를 실행할때 언어를 넣어줘야한다. 
-
-server.ts에서 
-```ts
-const { AppServerModuleNgFactory, LAZY_MODULE_MAP } = require('./dist/server/main');
-
-// const { AppServerModuleNgFactory, LAZY_MODULE_MAP } = require('./dist/server/ko/main');
-```
-
-위 코드를 주석처리하고 아래코드를 사용하면 소스보기를해도 한글이 잘 보인다. 
-
-현재 동적으로 되는건 아직 해결 못함.
+테스트 가능 
 
 ### 페이지에서 언어를 선택할수 있게 하기 
 
@@ -366,16 +391,8 @@ const { AppServerModuleNgFactory, LAZY_MODULE_MAP } = require('./dist/server/mai
 app.components.ts 
 
 ```ts
-import { Component, LOCALE_ID, Inject, OnInit } from "@angular/core";
-
-@Component({
-  selector: "app-root",
-  templateUrl: "./app.component.html",
-  styleUrls: ["./app.component.css"]
-})
 export class AppComponent {
-  title = "app";
-
+  //..
   currentLanguageCode: string = "en";
 
   languages = [
@@ -396,7 +413,7 @@ app.component.html
 ```html
 <div class="mr-md-3">
   <select name="select" class="btn btn-outline-warning btn-sm" onchange="window.open(value,'_self');">
-    <option *ngFor="let language of languages" value="/{{language.code}}/home" [selected]="language.code==currentLanguageCode">{{language.label}}</option>
+    <option *ngFor="let language of languages" value="/{{language.code}}/" [selected]="language.code==currentLanguageCode">{{language.label}}</option>
   </select>
 </div>
 ```
@@ -405,4 +422,27 @@ app.component.html
 ```
 npm run build:prod  && npm run server
 ```
+
+
+## ssr시 언어도 바뀌면 좋겠음.
+
+여전히 문제가 하나 있다 ssr시 화면에 언어별로  잘보이나  소스보기를 하면 영어로 나온다. 
+
+이부분은 서버를 실행할때 언어를 넣어줘야한다. 
+
+server.ts에서 
+```ts
+const { AppServerModuleNgFactory, LAZY_MODULE_MAP } = require('./dist/server/main');
+
+// const { AppServerModuleNgFactory, LAZY_MODULE_MAP } = require('./dist/server/ko/main');
+```
+
+위 코드를 주석처리하고 아래코드를 사용하면 소스보기를해도 한글이 잘 보인다. 
+
+현재 동적으로 되는건 아직 해결 못함.
+
+<https://github.com/teamsmiley/angular7-i18n-ssr>
+
+
+
 
