@@ -56,7 +56,7 @@ https://github.com/maciejtreder/ng-toolkit
 ng add @ng-toolkit/universal
 npm run build:prod
 npm run server # ssr test
-npm serve -o # spa test
+ng serve -o # spa test
 ```
 
 설명을 조금 하면 ng add @ng-toolkit/universal 를 하면 기존에 하나씩 파일을 추가해주던 것을 자동으로 해준다. 여러 매뉴얼을 보면 이 자동 작업을 수동으로 하는 매뉴얼들이 있다 필요하면 참고하기 바란다. 
