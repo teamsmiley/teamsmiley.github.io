@@ -13,7 +13,7 @@ category: {angular}
 현재 만들고 잇는 프로젝트가 로그인 전과 로그인 후가 레이아웃이 많이 다른다. 그래서 한번 만들어보았다. 
 
 
-![]({{site_baseurl}}/assets/images/2019-02-15-16-51-35.png)
+![]({{site_baseurl}}/assets/2019-02-15-16-51-35.png)
 
 화면이 두개가 다른경우가 있다. 일단 로그인 전 화면과 로그인 후 화면은 화면구성이 아주 다르다.
 
@@ -106,8 +106,8 @@ const routes: Routes = [
 
 결과
 
-![]({{site_baseurl}}/assets/images/2019-02-15-16-49-51.png) 
-![]({{site_baseurl}}/assets/images/2019-02-15-16-50-17.png)
+![]({{site_baseurl}}/assets/2019-02-15-16-49-51.png) 
+![]({{site_baseurl}}/assets/2019-02-15-16-50-17.png)
 
 잘된다.
 
