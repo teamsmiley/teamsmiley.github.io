@@ -2,12 +2,12 @@
 layout: post
 title: 'vscode paste image' 
 author: teamsmiley
-date: 2019-02-07
+date: 2019-02-14
 tags: [devops]
 image: /files/covers/blog.jpg
 category: {ssl}
 ---
-## vs code 마크다운문서에 그림 붙여 넣기
+# vs code 마크다운문서에 그림 붙여 넣기
 
 코드는 구글 드라이브보다 그림 붙여넣는게 불편하다. 그런데 생각해보면 코드도 크롬이므로 될것도 같아서 찾아봄
 
