@@ -22,7 +22,7 @@ Debugger for Chrome 플러그인을 설치한다.
 
 ## 디버그 에서 세팅을 하자.
 
-![]({{site_baseurl}}/assets/images/2019-02-22-07-40-10.png)
+![]({{site_baseurl}}/assets/2019-02-22-07-40-10.png)
 
 옵션 버튼을 누르면 화면이 열리는데 다음처럼 세팅하자.
 
@@ -55,7 +55,7 @@ Debugger for Chrome 플러그인을 설치한다.
 
 다시 프로젝트를 오픈하고 debug로 가면 조금전 세팅해둔 디버거 에이전트가 보인다. 
 
-![]({{site_baseurl}}/assets/images/2019-02-22-07-41-39.png)
+![]({{site_baseurl}}/assets/2019-02-22-07-41-39.png)
 
 ## 프로젝트 실행
 
@@ -65,7 +65,7 @@ Debugger for Chrome 플러그인을 설치한다.
 ng serve
 ```
 
-![]({{site_baseurl}}/assets/images/2019-02-22-07-42-35.png)
+![]({{site_baseurl}}/assets/2019-02-22-07-42-35.png)
 
 ## 디버거를 실행
 
@@ -76,13 +76,13 @@ ng serve
 
 ## break point 설정 
 
-![]({{site_baseurl}}/assets/images/2019-02-22-07-44-14.png)
+![]({{site_baseurl}}/assets/2019-02-22-07-44-14.png)
 
 원하는 곳에 브레이크 포인트를 설정한다. 
 
 이제 앱을 실행시키면 그곳에서 디버깅이 걸리면서 값들을 확인할수 있다.
 
-![]({{site_baseurl}}/assets/images/2019-02-22-07-45-46.png)
+![]({{site_baseurl}}/assets/2019-02-22-07-45-46.png)
 
 
 아주 편하다.
