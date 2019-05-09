@@ -20,13 +20,9 @@ sudo yum install epel-release git -y
 sudo yum install python-pip -y
 sudo yum install python-virtualenv -y
 
-sudo pip install requests urllib3 pyOpenSSL --force --upgrade
+sudo yum install certbot
 
-cd /tmp
-git clone https://github.com/certbot/certbot.git 
-cd certbot
-
-./certbot-auto certonly \
+certbot certonly \
 --manual \
 --preferred-challenges=dns \
 --email UR_EMAIL \
@@ -34,7 +30,7 @@ cd certbot
 --agree-tos \
 --debug \
 --no-bootstrap \
--d *.UR_DOMAIN # 이게 중요
+-d *.${UR_DOMAIN} # 이게 중요
 ```
 
 
