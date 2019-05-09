@@ -19,6 +19,7 @@ ingress nginx에 ssl을 추가해보자.
 ```bash
 # domain 셋업
 UR_DOMAIN=aaa.com
+UR-EMAIL=support@aaa.com
 
 sudo yum update
 sudo yum install epel-release git -y
@@ -27,11 +28,9 @@ sudo yum install python-virtualenv -y
 
 sudo pip install requests urllib3 pyOpenSSL --force --upgrade
 
-cd /tmp
-git clone https://github.com/certbot/certbot.git 
-cd certbot
+yum install certonly
 
-/tmp/certbot/certbot-auto certonly \
+certbot certonly \
 --manual \
 --preferred-challenges=dns \
 --email ${UR-EMAIL} \
