@@ -1,6 +1,6 @@
 ---
 layout: post
-title: 'GlusterFS' 
+title: 'GlusterFS Upgrade' 
 author: teamsmiley
 date: 2019-05-14
 tags: [devops]
