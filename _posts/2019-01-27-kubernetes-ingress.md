@@ -78,8 +78,8 @@ vi ingress-service.yml
 apiVersion: v1
 kind: Service
 metadata:
-  name: ingress-test
-  namespace: ingress-nginx # 이부분 수정 하지 말자.
+  name: ingress-service # 이부분 수정 하지 말자.
+  namespace: ingress-nginx 
   labels:
     app.kubernetes.io/name: ingress-nginx # 이부분 수정 하지 말자.
     app.kubernetes.io/part-of: ingress-nginx # 이부분 수정 하지 말자.
