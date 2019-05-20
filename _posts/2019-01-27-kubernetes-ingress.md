@@ -104,7 +104,7 @@ kubectl create -f ingress-service.yml
 ```
 
 ```
-vi ingress-config-default.yml
+vi dev-ingress.yml
 ```
 ```yml
 ---
@@ -125,7 +125,7 @@ spec:
           servicePort: 8080
 ```
 ```
-kubectl create -f ingress-config-default.yml
+kubectl create -f ingress-domain-config.yml
 ```
 
 ```
