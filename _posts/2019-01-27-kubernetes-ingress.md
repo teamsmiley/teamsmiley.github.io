@@ -104,7 +104,7 @@ kubectl create -f ingress-service.yml
 ```
 
 ```
-vi dev-ingress.yml
+vi ingress-domain-config.yml
 ```
 ```yml
 ---
