@@ -52,7 +52,7 @@ systemctl start glusterd
 systemctl enable glusterd
 ```
 
-## Add storage pool
+## Add storage pool (on gluster00)
 ```
 gluster peer probe gluster05
 gluster peer probe gluster06
