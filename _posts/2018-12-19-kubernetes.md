@@ -543,7 +543,7 @@ kubectl apply -f https://raw.githubusercontent.com/google/metallb/v0.7.3/manifes
 
 설정을 하자
 
-vi metallb-config.yml
+vi metallb-ConfigMap.yml
 
 ```yml
 ---
@@ -558,12 +558,12 @@ data:
     - name: my-ip-space
       protocol: layer2
       addresses:
-      - 192.168.0.80/28 
+      - 192.168.167.0/24
 ```
 서비스에 줄 아이피를 정해뒀다 사용 가능한 아이피는 192.168.0.81 - 192.168.0.94 가 된다. 적용해보자.
 
 ```bash
-kubectl create -f  metallb-config.yml
+kubectl create -f  metallb-ConfigMap.yml
 # 상태를 확인해보자.
 kubectl get pods -n metallb-system
 kubectl logs -l component=speaker -n metallb-system
@@ -638,7 +638,7 @@ curl http://192.168.0.80
 ### metallb 삭제하고 싶으면 다음처럼 하면된다.
 ```
 kubectl delete -f https://raw.githubusercontent.com/google/metallb/v0.7.3/manifests/metallb.yaml
-kubectl delete -f metallb-config.yml
+kubectl delete -f metallb-ConfigMap.yml
 kubectl get configmap -n metallb-system
 kubectl get svc -n metallb-system
 ```
