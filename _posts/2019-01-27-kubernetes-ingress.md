@@ -156,5 +156,5 @@ Hello World!
 
 ![]({{site_baseurl}}/assets/ingress-3.png)
 
-나머지는 ingress-service.yml 에서 Ingress Rule 만 계속 추가하면 된다.
+나머지는 ingress-domain-config.yml 에서 Ingress Rule 만 계속 추가하면 된다.
 
