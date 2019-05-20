@@ -558,7 +558,7 @@ data:
     - name: my-ip-space
       protocol: layer2
       addresses:
-      - 192.168.167.0/24
+      - 192.168.0.0/24
 ```
 서비스에 줄 아이피를 정해뒀다 사용 가능한 아이피는 192.168.0.81 - 192.168.0.94 가 된다. 적용해보자.
 
@@ -930,7 +930,7 @@ spec:
       storage: 20Gi
 ```
 ```bash
-vi dev-mysql-deployment.yml
+vi dev-mysql.yml
 ```
 ```yml
 ---
@@ -984,7 +984,7 @@ spec:
 ```
 ```
 kubectl create -f dev-mysql-pv-pvc.yml 
-kubectl create -f dev-mysql-deployment.yml
+kubectl create -f dev-mysql.yml
 kubectl get pods --all-namespaces
 kubectl get services --all-namespaces
 ```
