@@ -873,8 +873,8 @@ kubectl -n kube-system describe secret $(kubectl -n kube-system get secret | gre
 
 kubernetes를사용할때는 꼭 namespace를 쓰기를 추천드립니다.
 ```bash
-kubectl create namespace auth-dev
-kubectl create namespace auth-live
+kubectl create namespace dev
+kubectl create namespace prod
 kubectl get namespaces
 ```
 
@@ -885,14 +885,14 @@ mysql은 pv,pvc생성 >> pod 생성 >> 서비스 생성 이런식으로 됩니�
 ```bash
 mkdir -p /data/git/kube
 cd /data/git/kube
-vi auth-dev-mysql-pv-pvc.yml
+vi dev-mysql-pv-pvc.yml
 ```
 ```yml
 ---
 kind: PersistentVolume
 apiVersion: v1
 metadata:
-  name: auth-dev-mysql-pv-volume
+  name: dev-mysql-pv-volume
   namespace: dev
   labels:
     type: local
@@ -903,7 +903,7 @@ spec:
   accessModes:
     - ReadWriteOnce
   hostPath:
-    path: "/data/auth-dev-mysql"
+    path: "/data/dev-mysql"
   nodeAffinity:
     required:
       nodeSelectorTerms:
@@ -911,12 +911,12 @@ spec:
         - key: kubernetes.io/hostname
           operator: In
           values:
-          - node192 #호스트이름이 192번인 노드에 /data/auth-dev-mysql이라고 만들어라.
+          - node192 #호스트이름이 192번인 노드에 /data/dev-mysql이라고 만들어라.
 ---
 apiVersion: v1
 kind: PersistentVolumeClaim
 metadata:
-  name: auth-dev-mysql-pv-claim
+  name: dev-mysql-pv-claim
   namespace: dev
 spec:
   storageClassName: slow
@@ -930,7 +930,7 @@ spec:
       storage: 20Gi
 ```
 ```bash
-vi auth-dev-mysql-deployment.yml
+vi dev-mysql-deployment.yml
 ```
 ```yml
 ---
@@ -983,13 +983,13 @@ spec:
           claimName: mysql-pv-claim
 ```
 ```
-kubectl create -f auth-dev-mysql-pv-pvc.yml 
-kubectl create -f auth-dev-mysql-deployment.yml
+kubectl create -f dev-mysql-pv-pvc.yml 
+kubectl create -f dev-mysql-deployment.yml
 kubectl get pods --all-namespaces
 kubectl get services --all-namespaces
 ```
 
-Node192 번에 /data/auth-dev-mysql폴더가 없으면 만들어 줘야한다. 
+Node192 번에 /data/dev-mysql폴더가 없으면 만들어 줘야한다. 
 
 여기에 데이터를 저장하게 해두었으나 실제로는 nfs등에 저장하면될듯 
 

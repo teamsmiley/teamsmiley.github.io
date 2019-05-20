@@ -94,8 +94,8 @@ kubectl create secret tls ${CERT_NAME} --key ${KEY_FILE} --cert ${CERT_FILE} -n 
 apiVersion: extensions/v1beta1
 kind: Ingress
 metadata:
-  name: auth-live
-  namespace: auth-live
+  name: prod
+  namespace: prod
   annotations:
     kubernetes.io/ingress.class: "nginx"
     kubernetes.io/tls-acme: "true"

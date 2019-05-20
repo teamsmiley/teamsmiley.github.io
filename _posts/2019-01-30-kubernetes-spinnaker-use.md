@@ -45,7 +45,7 @@ kind: Service
 apiVersion: v1
 metadata:
   name: auth
-  namespace: auth-live
+  namespace: prod
 spec:
   selector:
     app: auth
@@ -89,7 +89,7 @@ metadata:
   labels:
     tier: auth
   name: auth
-  namespace: auth-live
+  namespace: prod
 spec:
   replicas: 3
   selector:
@@ -117,7 +117,7 @@ kubectl create secret docker-registry my-registry \
 --docker-username=<your-id> \
 --docker-password=<your-pass> \
 --docker-email=brian@publishapi.com \
---namespace auth-live
+--namespace prod
 ```
 
 이제 파이프라인을 빌드하면 서비스가 생성되고 기존 replicaset,pod들은 전부 삭제하자.

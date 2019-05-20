@@ -43,7 +43,7 @@ metadata:
   labels:
     tier: auth
   name: auth
-  namespace: auth-live
+  namespace: prod
 spec:
   replicas: 1
   selector:
