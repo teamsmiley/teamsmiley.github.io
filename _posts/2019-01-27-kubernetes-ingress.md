@@ -10,7 +10,7 @@ category: {kubernetes}
 
 # ingress-nginx
 
-하나의 아이피에 각각의 도메인마다 각자의 서비스로 보내주고 싶다. 구성은 다음 그림과 같다. 
+하나의 아이피에 각각의 서비스로 보내주고 싶다. 구성은 다음 그림과 같다. 
 
 ![]({{site_baseurl}}/assets/ingress-0.png)
 
