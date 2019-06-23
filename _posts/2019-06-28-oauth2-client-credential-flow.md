@@ -7,7 +7,7 @@ tags: [devops]
 image: /files/covers/blog.jpg
 category: {oauth}
 ---
-# OAuth 2 Client Credential Flow (Server to Server)
+# OAuth 2 Client Credential Flow (Server to Server or Service Account)
 
 Oauth를 공부한지 한 2년이 되가는데 제일 이해가 안되는 부분이 이부분이 였다.
 
