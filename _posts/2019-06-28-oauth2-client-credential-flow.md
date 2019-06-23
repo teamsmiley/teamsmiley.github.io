@@ -174,9 +174,70 @@ var builder = services.AddIdentityServer()
 
 이렇게 하면 벨리데이터에서 token 에 sub을 넣어서 리턴해준다.
 
-완료.
 
+console 프로그램을 만들어서 테스트해보자.
 
+```cs
+using IdentityModel.Client;
+using Newtonsoft.Json.Linq;
+using System;
+using System.Net.Http;
+using System.Threading.Tasks;
+
+namespace Client
+{
+    class Program
+    {
+        private static async Task Main()
+        {
+            // discover endpoints from metadata
+            var client = new HttpClient();
+
+            var disco = await client.GetDiscoveryDocumentAsync("http://localhost:5000");
+            if (disco.IsError)
+            {
+                Console.WriteLine(disco.Error);
+                return;
+            }
+
+            // request token
+            var tokenResponse = await client.RequestClientCredentialsTokenAsync(new ClientCredentialsTokenRequest
+            {
+                Address = disco.TokenEndpoint,
+                ClientId = "client",
+                ClientSecret = "secret",
+                Scope = "openid profile roles"
+            });
+            
+            if (tokenResponse.IsError)
+            {
+                Console.WriteLine(tokenResponse.Error);
+                return;
+            }
+
+            Console.WriteLine(tokenResponse.Json);
+            Console.WriteLine("\n\n");
+
+            // call api
+            var apiClient = new HttpClient();
+            apiClient.SetBearerToken(tokenResponse.AccessToken);
+
+            var response = await apiClient.GetAsync("http://localhost:5001/identity"); //api server
+            if (!response.IsSuccessStatusCode)
+            {
+                Console.WriteLine(response.StatusCode);
+            }
+            else
+            {
+                var content = await response.Content.ReadAsStringAsync();
+                Console.WriteLine(JArray.Parse(content));
+            }
+        }
+    }
+}
+```
+
+잘됨을 알수 있다.
 
 
 
