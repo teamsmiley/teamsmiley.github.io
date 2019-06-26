@@ -9,6 +9,8 @@ category: {oauth}
 ---
 # OAuth 2 Client Credential Flow (Server to Server or Service Account)
 
+TL;DR client가 바로 user가 되면 된다. client에 userid를 포함해뒀다가토큰에 담아서 보내주면 됨
+
 Oauth를 공부한지 한 2년이 되가는데 제일 이해가 안되는 부분이 이부분이 였다.
 
 보통 server to server에 사용된다고 나와있기는 했다. 
