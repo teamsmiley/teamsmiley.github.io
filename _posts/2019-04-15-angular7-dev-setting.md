@@ -1,6 +1,6 @@
 ---
 layout: post
-title: '게시판 만들기-01' 
+title: 'angular 7 + web api (dotnet core 2.2) 개발환경구축 ' 
 author: teamsmiley
 date: 2019-04-15
 tags: [devops]
