@@ -88,7 +88,7 @@ kubectl proxy
 
 웹사이트로 확인하자.
 
-<http://localhost:8001/api/v1/namespaces/kube-system/services/https:kubernetes-dashboard:/proxy/>
+<http://localhost:8001/api/v1/namespaces/kubernetes-dashboard/services/https:kubernetes-dashboard:/proxy/>
 
 복사해둔 토큰으로 로그인하면된다.
 
