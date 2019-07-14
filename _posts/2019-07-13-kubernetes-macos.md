@@ -80,8 +80,6 @@ kubectl -n kube-system describe secret $(kubectl -n kube-system get secret | gre
 
 생성이 잘못된 경우 전체 유저를 보여준다. 
 
-eyJhbGciOiJSUzI1NiIsImtpZCI6IiJ9.eyJpc3MiOiJrdWJlcm5ldGVzL3NlcnZpY2VhY2NvdW50Iiwia3ViZXJuZXRlcy5pby9zZXJ2aWNlYWNjb3VudC9uYW1lc3BhY2UiOiJrdWJlLXN5c3RlbSIsImt1YmVybmV0ZXMuaW8vc2VydmljZWFjY291bnQvc2VjcmV0Lm5hbWUiOiJhZG1pbi11c2VyLXRva2VuLXpnNmZ3Iiwia3ViZXJuZXRlcy5pby9zZXJ2aWNlYWNjb3VudC9zZXJ2aWNlLWFjY291bnQubmFtZSI6ImFkbWluLXVzZXIiLCJrdWJlcm5ldGVzLmlvL3NlcnZpY2VhY2NvdW50L3NlcnZpY2UtYWNjb3VudC51aWQiOiIwNzNmMTc1Yi1hZWZhLTQ4YWMtYTJiYS03M2RkM2ZmMDE3YTYiLCJzdWIiOiJzeXN0ZW06c2VydmljZWFjY291bnQ6a3ViZS1zeXN0ZW06YWRtaW4tdXNlciJ9.NImcwgUUCVj_FfB_Nzfv5rP91EIxlHDwOHPRolyNd5t-x6teH4SQTEb-4bOrk-ILtGvbDF7Nl4c6wqcO6pcujB81eG5t5F-PYH_0sQ3PF1gs3W1Eq_ZazrGi3nfqxajJcPARu7m2RgrUhoSMLaRKn2_6Lfadc4gV59AWU9lXnbQbpaarUgTDWBLCd8NGCG92X5IIS23aBGQDSXTkFQfOwI83fPeDJcwWhXs5yu-LHXHKQe7sIYV5tvQWJTyt_V2XZxjiAOW5pgiMPX8FWhZqmVbLbGtIMoFQeWi0CGFrQNoLb0X2Lb53wvSmKlFl051ItlLTyNqDuB7gO3DXYAydHQ
-
 * 랩탑과 서버 연결
 
 ```bash
@@ -91,6 +89,8 @@ kubectl proxy
 웹사이트로 확인하자.
 
 <http://localhost:8001/api/v1/namespaces/kube-system/services/https:kubernetes-dashboard:/proxy/>
+
+복사해둔 토큰으로 로그인하면된다.
 
 
 
