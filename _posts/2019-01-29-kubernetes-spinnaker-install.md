@@ -123,7 +123,7 @@ metadata:
  namespace: spinnaker
 ```
 
-kubectl create -f spinnaker.yml
+kubectl create -f spinnaker-rabc.yml
 
 * halyard 에서 
 
@@ -162,8 +162,11 @@ hal config deploy edit --type distributed --account-name my-k8s-v2-account
 
 ```bash
 docker exec -it halyard bash
+
 CONTEXT=$(kubectl config current-context)
+
 hal config provider docker-registry enable
+
 ADDRESS=registry.publishapi.com:5000 
 REPOSITORIES=""
 USERNAME=USERID #docker registry id/pass
