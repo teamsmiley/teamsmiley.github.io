@@ -202,7 +202,7 @@ hal deploy apply
 우리는 minio를 사용한다. 
 
 #### minio install 
-<https://teamsmiley.github.io/2019/01/29/minio/> 여기 참고해서 설치 가능하다.
+<https://teamsmiley.github.io/2019/01/28/minio/> 여기 참고해서 설치 가능하다.
 
 #### halyard minio 설정
 
