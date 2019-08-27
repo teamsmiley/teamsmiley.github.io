@@ -297,12 +297,11 @@ spin-front50-fcdbb667c-fk8kz        0/1     CrashLoopBackOff   18         74m
 ```
 minio server 실행이 되었는지 정보(엑세스키 시크릿키) 정확한지 확인한다.
 
-
-## backup and restore
+## halyard backup and restore
 
 halyard를 설정을 하면 일단 로컬에  config파일에 정보를 저장한다. 그러므로 도커이미지가 재시작되면 이 정보는 모두 사라져있게 된다. 
 
-그러므로 백업을 항상 받아둬야한다. 
+그러므로 백업을 항상 받아둬야한다.
 
 ```bash
 ssh node194
@@ -310,30 +309,41 @@ docker exec -it halyard bash
 hal backup create
 exit
 # 생성 완료 되었으므로 컨테이너 외부로 빼둔다.
-docker cp halyard:/home/spinnaker/halyard-2019-08-27_04-54-38-850Z.tar /glusterfs/backup/k8s/halyard/
+FILENAME=halyard-2019-08-27_05-26-14-550Z.tar
+docker cp halyard:/home/spinnaker/$FILENAME /glusterfs/backup/k8s/halyard/
 
-docker-compose down
-docker-compose up -d 
+#정리 스크립트 
+ssh minio
+docker exec halyard bash -c "hal backup create" 
+docker exec halyard bash -c "mv /home/spinnaker/*.tar /backup" 
+mv /data/git/docker/halyard/backup/*.tar /glusterfs/backup/k8s/halyard
+
+docker-compose down && docker-compose up -d 
+
 # 설정이 없어진것을 확인해라 
 ls ~/.hal
 
 # 복구하자.
-hal backup restore --backup-path /glusterfs/backup/k8s/halyard/halyard-2019-08-27_04-54-38-850Z.tar
+ssh minio
+docker-compose up -d 
+FILENAME=halyard-2019-08-27_05-26-14-550Z.tar
+cp /glusterfs/backup/k8s/halyard/$FILENAME /data/git/docker/halyard/backup
 
-This will override your entire current halconfig directory. Do you want to continue? (y/N) y
+docker exec -it halyard bash 
+hal backup restore --backup-path /backup/$FILENAME
 
-+ Restore backup
-  Success
-+ Successfully restored your backup.
+> This will override your entire current halconfig directory. Do you want to continue? (y/N) y
+> + Restore backup
+>   Success
+> + Successfully restored your backup.
 
-# 확인 정보들이 잇으면된다. 
+# 확인
 hal config provider docker-registry -o yaml
 ```
 
 그러므로 항상 백업을 해주어야한다.
 
 기본 설정 파일과 다르게 웹사이트에서 설정한 데이터는 위에서 설정한 스토리지에 (미니오) 전부 저장이 된다. 이것도 별도로 백업을 해둬야할듯 
-
 
 
 
