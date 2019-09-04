@@ -46,7 +46,6 @@ source <(hal --print-bash-completion)
 hal version list
 hal config version edit --version 1.15.3
 
-
 # setup storage : minio 
 MINIO_ACCESS_KEY=6K3MW29PYQHC4W39E03D
 MINIO_SECRET_KEY=kuOkqn3y6UKvmHvC0DgoLyb+fDstDJFZV3NBwtZ1
