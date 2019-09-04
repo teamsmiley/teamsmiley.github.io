@@ -1,3 +1,12 @@
+---
+layout: post
+title: 'angular deploy with docker (nginx)' 
+author: teamsmiley
+date: 2019-09-04
+tags: [devops]
+image: /files/covers/blog.jpg
+category: {business}
+---
 # angular deploy with docker (nginx)
 
 문제점 : angular를 도커로 패키징을 해서 사용중인데 f5를 할때마다 404에러가 난다. 
