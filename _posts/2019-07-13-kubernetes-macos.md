@@ -17,13 +17,17 @@ brew install kubernetes-cli
 
 ## zsh 플러그인들 설치한다. 
 ```bash
-cd ~/.oh-my-zsh/plugins/
+cd ~/.oh-my-zsh/custom/plugins/
 # zsh-autosuggestions
-git clone https://github.com/zsh-users/zsh-autosuggestions ${ZSH_CUSTOM:-~/.oh-my-zsh/custom}/plugins/zsh-autosuggestions
+git clone https://github.com/zsh-users/zsh-autosuggestions
 
 # zsh-syntax-highlighting
-git clone https://github.com/zsh-users/zsh-syntax-highlighting.git\necho 
-"source ${(q-)PWD}/zsh-syntax-highlighting/zsh-syntax-highlighting.zsh" >> ${ZDOTDIR:-$HOME}/.zshrc
+git clone https://github.com/zsh-users/zsh-syntax-highlighting.git
+
+# plugin 활성화 
+vi ~/.zshrc
+...
+plugins=(git zsh-syntax-highlighting zsh-autosuggestions kubectl kube-ps1) #여기에 추가한다.
 ```
 
 터미널 재시작 
