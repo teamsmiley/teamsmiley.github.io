@@ -14,16 +14,16 @@ category: {code}
 
 아무리 찾아도 이 화면이 나오지를 않았다.
 
-![]({{site_baseurl}}/_posts/images/2019-09-05-18-00-47.png)
+![]({{site_baseurl}}/assets/2019-09-05-18-00-47.png)
 
 
 search bar에서 intellicode를 치고 나오는 옵션에 들어가서 첫번재 나오는걸 선택 
 
-![]({{site_baseurl}}/_posts/images/2019-09-05-18-02-12.png)
+![]({{site_baseurl}}/assets/2019-09-05-18-02-12.png)
 
 결과적으로 option >> intellicode로 가는것이다. 
 
-![]({{site_baseurl}}/_posts/images/2019-09-05-18-03-03.png)
+![]({{site_baseurl}}/assets/2019-09-05-18-03-03.png)
 
 거기서 옵션을 전부 enabled로 바꿔졌다. 
 
@@ -33,7 +33,7 @@ search bar에서 intellicode를 치고 나오는 옵션에 들어가서 첫번�
 
 Intellicode model management를 선택하면  
 
-![]({{site_baseurl}}/_posts/images/2019-09-05-18-00-47.png)
+![]({{site_baseurl}}/assets/2019-09-05-18-00-47.png)
 
 이화면이 나온다 거기서 train을 누르면 된다. 
 
