@@ -73,7 +73,7 @@ hal config deploy edit --type distributed --account-name my-k8s-v2-account
 # docker registery
 hal config provider docker-registry enable
 
-$ACCOUNT=my-registry
+ACCOUNT=my-registry
 ADDRESS=registry.xgridcolo.com:5000
 REPOSITORIES="api,www"
 USERNAME=XXX
