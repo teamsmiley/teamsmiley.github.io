@@ -28,7 +28,7 @@ sudo yum install python-virtualenv -y
 
 sudo pip install requests urllib3 pyOpenSSL --force --upgrade
 
-yum install certonly
+sudo yum install certbot
 
 certbot certonly \
 --manual \
