@@ -396,7 +396,18 @@ A 부분을 누르시면 file을 첨부할수 있습니다.
 
 이부분과 같아야 합니다.
 
-이상 끝..
+
+서비스에 올리시려면 azure 에 로그인한후 storage account를 생성합니다.
+
+생성후 Access keys에 가면  key가 있습니다.(왜 키가 2개인지 아시는분) connection string을 복사하여 appsetting.json에 넣어주면 됩니다.
+
+```json
+//"StorageConnectionString": "UseDevelopmentStorage=true",
+"StorageConnectionString": "DefaultEndpointsProtocol=https;AccountName=sample;AccountKey=CXfaH1gSJU6Zu1bV1/44r0QpLWNIHHbCVY17lCwg5HJKBwFd8PD87jA==;EndpointSuffix=core.windows.net"
+```
+
+
+이상 끝.
 
 
 
