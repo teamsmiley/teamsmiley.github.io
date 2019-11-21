@@ -28,6 +28,8 @@ webapi로 파일을 업로드 다운로드 해볼 일이 있어서 정리해본�
 
 ![]({{ site.baseurl }}/assets/file-download-remote-server.png)
 
+파일 다운로드의 경우 다른곳에 내용이 많이있으므로 패스 azure blob storage를 이용하는것으로 해보겟다. 
+
 다운로드의 경우 1번만 해봣는데 2번은 누가 해봣으면 알려주시기 바랍니다.
 
 Azure의 경우 Azure Storage Explorer 를 제공해준다. 일단 이걸 설치하자.
@@ -405,6 +407,8 @@ A 부분을 누르시면 file을 첨부할수 있습니다.
 //"StorageConnectionString": "UseDevelopmentStorage=true",
 "StorageConnectionString": "DefaultEndpointsProtocol=https;AccountName=sample;AccountKey=CXfaH1gSJU6Zu1bV1/44r0QpLWNIHHbCVY17lCwg5HJKBwFd8PD87jA==;EndpointSuffix=core.windows.net"
 ```
+
+실제 스토리지를 확인하려면 이 키와 connection string을 이용하여 Azure Storage Explorer에서 접속이 가능합니다.
 
 
 이상 끝.
