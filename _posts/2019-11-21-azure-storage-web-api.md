@@ -26,7 +26,7 @@ webapi로 파일을 업로드 다운로드 해볼 일이 있어서 정리해본�
 
 이걸 정리하면 server가 파일을 remote storage에서 받아서 스트림으로 보내냐 요청자에게 리다이렉트를 줘서 요청자가 remote storage에서 직접 받는냐. 이런 차이가 있다.
 
-![](file-download-remote-server.png)
+![]({{ site.baseurl }}/assets/file-download-remote-server.png)
 
 다운로드의 경우 1번만 해봣는데 2번은 누가 해봣으면 알려주시기 바랍니다.
 
