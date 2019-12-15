@@ -7,20 +7,143 @@ tags: [git,terminal]
 image: /files/covers/blog.jpg
 category: {macosx}
 ---
-# 맥 새로 설치시 터미널 설정 
+# 맥 터미널 설정 
 
-## mac terminal 이쁘게 만들기 
-https://beomi.github.io/2017/07/07/Beautify-ZSH/
-
-## 깃 프롬프트 보이기 
-https://jqno.nl/post/2012/04/02/howto-display-the-current-git-branch-in-your-prompt/
-
-## host 지우기
+## homebrew
 ```
+/usr/bin/ruby -e "$(curl -fsSL https://raw.githubusercontent.com/Homebrew/install/master/install)"
+```
+
+## vscode 설치 
+```bash
+brew cask install visual-studio-code 
+```
+실행후 command shift p >> path (옵션에 나오면 선택한다. `code` 명령어를 path에 등록한다는 이야기)
+
+## zsh
+mac이 가지고 있지만 (/bin/zsh) 다시 설치하자.
+
+```bash
+brew install zsh
+which zsh
+> /usr/local/bin/zsh
+
+# standard shell로 추가
+code /etc/shells
+> /usr/local/bin/zsh # 추가
+
+# 기본쉘로 등록
+chsh -s /usr/local/bin/zsh
+```
+
+reboot
+
+```bash
+echo $SHELL
+> /usr/local/bin/zsh
+# check version
+zsh --version
+```
+
+## oh my zsh
+```bash
+sh -c "$(curl -fsSL https://raw.github.com/robbyrussell/oh-my-zsh/master/tools/install.sh)"
+# update
+upgrade_oh_my_zsh
+```
+
+## iterm2 설치
+* install
+
+```zsh
+brew cask install iterm2
+```
+
+* Theme (Oceanic Next iTerm) <https://github.com/mhartington/oceanic-next-iterm> 
+
+```
+git clone https://github.com/mhartington/oceanic-next-iterm.git
+```
+다운로드 후 더블클릭 하면 설치됨
+
+preference >> profile >> default >> color >> color presets >> oceanic-next-iterm
+preference >> profile >> default >> text >> font >> hack
+
+## zsh theme change
+vi ~/.zshrc
+```bash
+ZSH_THEME="agnoster" #상단에 있는거 수정
+```
+
+```
+source ~/.zshrc
+```
+
+### new line 
+code ~/.oh-my-zsh/themes/agnoster.zsh-theme
+
+```bash
+## Main prompt
+build_prompt() {
+  RETVAL=$?
+  prompt_status
+  prompt_virtualenv
+  prompt_aws
+  prompt_context
+  prompt_dir
+  prompt_git
+  prompt_bzr
+  prompt_hg
+  prompt_newline  # 여기 추가
+  prompt_end
+}
+
+prompt_newline() {
+  if [[ -n $CURRENT_BG ]]; then
+    echo -n "%{%k%F{$CURRENT_BG}%}$SEGMENT_SEPARATOR
+%{%k%F{blue}%}$SEGMENT_SEPARATOR"
+  else
+    echo -n "%{%k%}"
+  fi
+
+  echo -n "%{%f%}"
+  CURRENT_BG=''
+}
+```
+
+### host명 지우기 
+```bash
 echo "prompt_context() {}" >> ~/.zshrc
 ```
 
-완료 화면 
+### Syntax Hightlight 적용하기
+```bash
+brew install zsh-syntax-highlighting
+source /usr/local/share/zsh-syntax-highlighting/zsh-syntax-highlighting.zsh
+```
 
-![]({{site_baseurl}}/assets/macosx-terminal-01.png)
+## oh my zsh plugin 
+리스트 확인하기 
 
+`ls ~/.oh-my-zsh/plugins`
+
+현재는 git만 활성화 되잇는것을 알수 있다. 추가를 원하는 플러그인 이름을 적어주면된다.
+
+vi ~/.zshrc
+```
+plugins=(git)
+```
+
+```bash
+# Syntax Hightlight
+git clone https://github.com/zsh-users/zsh-syntax-highlighting.git ${ZSH_CUSTOM:-~/.oh-my-zsh/custom}/plugins/zsh-syntax-highlighting
+# autosuggestions
+git clone https://github.com/zsh-users/zsh-autosuggestions $ZSH_CUSTOM/plugins/zsh-autosuggestions
+
+ls ~/.oh-my-zsh/custom/plugins
+```
+
+vi ~/.zshrc
+```
+plugins=(git zsh-syntax-highlighting zsh-autosuggestions)
+```
