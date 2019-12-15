@@ -97,11 +97,10 @@ build_prompt() {
   prompt_newline  # 여기 추가
   prompt_end
 }
-
+{% raw %}
 prompt_newline() {
   if [[ -n $CURRENT_BG ]]; then
-    echo -n "%{%k%F{$CURRENT_BG}%}$SEGMENT_SEPARATOR
-%{%k%F{blue}%}$SEGMENT_SEPARATOR"
+    echo -n "%{%k%F{$CURRENT_BG}%}$SEGMENT_SEPARATOR%{%k%F{blue}%}$SEGMENT_SEPARATOR"
   else
     echo -n "%{%k%}"
   fi
@@ -109,6 +108,7 @@ prompt_newline() {
   echo -n "%{%f%}"
   CURRENT_BG=''
 }
+{% endraw %}
 ```
 
 ## host명 지우기 
