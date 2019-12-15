@@ -79,7 +79,7 @@ ZSH_THEME="agnoster" #상단에 있는거 수정
 source ~/.zshrc
 ```
 
-### new line 
+## new line 
 code ~/.oh-my-zsh/themes/agnoster.zsh-theme
 
 ```bash
@@ -111,12 +111,12 @@ prompt_newline() {
 }
 ```
 
-### host명 지우기 
+## host명 지우기 
 ```bash
 echo "prompt_context() {}" >> ~/.zshrc
 ```
 
-### Syntax Hightlight 적용하기
+## Syntax Hightlight 적용하기
 ```bash
 brew install zsh-syntax-highlighting
 source /usr/local/share/zsh-syntax-highlighting/zsh-syntax-highlighting.zsh
@@ -147,3 +147,5 @@ vi ~/.zshrc
 ```
 plugins=(git zsh-syntax-highlighting zsh-autosuggestions)
 ```
+
+
