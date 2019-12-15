@@ -148,4 +148,24 @@ vi ~/.zshrc
 plugins=(git zsh-syntax-highlighting zsh-autosuggestions)
 ```
 
+## 추가 program 들
+```bash
+brew cask install github
+brew cask install tunnelblick
+brew cask install sequel-pro
+# 최신버전
+brew cask install dotnet-sdk
+# 구버전
+brew tap isen-ng/dotnet-sdk-versions
+brew cask install dotnet-sdk-2.2.400
+# 확인
+dotnet --list-sdks
+brew cask install microsoft-azure-storage-explorer
+brew cask install docker
+brew cask install postman
+brew cask install grammarly
+brew cask install firefox
+brew cask install slack
+```
+
 
