@@ -100,7 +100,8 @@ build_prompt() {
 {% raw %}
 prompt_newline() {
   if [[ -n $CURRENT_BG ]]; then
-    echo -n "%{%k%F{$CURRENT_BG}%}$SEGMENT_SEPARATOR%{%k%F{blue}%}$SEGMENT_SEPARATOR"
+    echo -n "%{%k%F{$CURRENT_BG}%}$SEGMENT_SEPARATOR
+%{%k%F{blue}%}$SEGMENT_SEPARATOR"
   else
     echo -n "%{%k%}"
   fi
@@ -114,12 +115,6 @@ prompt_newline() {
 ## host명 지우기 
 ```bash
 echo "prompt_context() {}" >> ~/.zshrc
-```
-
-## Syntax Hightlight 적용하기
-```bash
-brew install zsh-syntax-highlighting
-source /usr/local/share/zsh-syntax-highlighting/zsh-syntax-highlighting.zsh
 ```
 
 ## oh my zsh plugin 

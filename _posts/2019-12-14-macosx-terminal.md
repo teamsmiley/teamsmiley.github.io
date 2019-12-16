@@ -125,8 +125,9 @@ echo "prompt_context() {}" >> ~/.zshrc
 현재는 git만 활성화 되잇는것을 알수 있다. 추가를 원하는 플러그인 이름을 적어주면된다.
 
 vi ~/.zshrc
-```
-plugins=(git)
+```bash
+#plugins=(git)
+plugins=(git kubectl kube-ps1)
 ```
 
 ```bash
