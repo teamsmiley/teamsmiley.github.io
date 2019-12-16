@@ -117,12 +117,6 @@ prompt_newline() {
 echo "prompt_context() {}" >> ~/.zshrc
 ```
 
-## Syntax Hightlight 적용하기
-```bash
-brew install zsh-syntax-highlighting
-source /usr/local/share/zsh-syntax-highlighting/zsh-syntax-highlighting.zsh
-```
-
 ## oh my zsh plugin 
 리스트 확인하기 
 
