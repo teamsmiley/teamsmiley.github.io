@@ -141,7 +141,7 @@ ls ~/.oh-my-zsh/custom/plugins
 
 vi ~/.zshrc
 ```
-plugins=(git zsh-syntax-highlighting zsh-autosuggestions)
+plugins=(git zsh-syntax-highlighting zsh-autosuggestions kubectl kube-ps1)
 ```
 
 ## 추가 program 들
