@@ -405,7 +405,7 @@ A 부분을 누르시면 file을 첨부할수 있습니다.
 
 ```json
 //"StorageConnectionString": "UseDevelopmentStorage=true",
-"StorageConnectionString": "DefaultEndpointsProtocol=https;AccountName=sample;AccountKey=CXfaH1gSJU6Zu1bV1/44r0QpLWNIHHbCVY17lCwg5HJKBwFd8PD87jA==;EndpointSuffix=core.windows.net"
+"StorageConnectionString": "DefaultEndpointsProtocol=https;AccountName=sample;AccountKey=CXfaH1xxxgZu1bV1/44r0QpLWNIHHbCVY17lCwg5HJKBwFd8PD87jA==;EndpointSuffix=core.windows.net"
 ```
 
 실제 스토리지를 확인하려면 이 키와 connection string을 이용하여 Azure Storage Explorer에서 접속이 가능합니다.
