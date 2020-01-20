@@ -59,23 +59,33 @@ k get po | grep tool
 kubectl exec -it rook-ceph-tools-6586d4859f-cd4pb bash 
 ceph status # 상태보여줌
 ceph osd statu줌 # osd상태보여줌.
-
 ```
 
 
-## dashboard를 사용하고 싶으면 
-cluster.yaml에서 
+## dashboard
+vi cluster.yaml에서 
 ```yml
 spec:
   dashboard:
     enabled: true
 ```
 
-dashboard-loadbalancer.yaml 에서 다음 추가 
+```bash
+kubectl apply -f cluster.yaml 
+kubectl -n rook-ceph get service #확인
+
+rook-ceph-mgr-dashboard    ClusterIP   10.106.86.124   <none>        8443/TCP            11m
+```
+
+vi dashboard-loadbalancer.yaml 
 ```
 loadBalancerIP: 192.168.0.100
 ```
-
+```bash
+k apply -f dashboard-loadbalancer.yaml
+kubectl -n rook-ceph get service
+rook-ceph-mgr-dashboard-loadbalancer   LoadBalancer   10.104.37.219   192.168.0.100   8443:31518/TCP      5m53s
+```
 <https://192.168.0.100:8443> 으로 들어가면 볼수 있다.
 
 크롬에서는 ssl validate 하면서 안될수도 있다. 파이어폭스나 다른 브라우저로 일단 해본다.
@@ -113,17 +123,27 @@ spec:
 
 http://192.168.0.100:7000 된다.
 
-host파일 변경하여 
+host파일 변경하자
+
+vi /etc/hosts 
+```
+192.168.0.105 ceph
+``` 
 http://ceph:7000 도 가능하게 한다.
 
 
 ## 하드나 노드들 추가.
-cluster.yaml을 수정한후 
-kubectl apply -f cluster.yaml 을 하면 된다.
+cluster.yaml을 수정한후 `kubectl apply -f cluster.yaml` 을 한다.
 
-전체 노드를 설정해두면 어떻게 되는지는 확인못햇음.
+전체 노드를 설정해두면 어떻게 되는지는 확인못햇음. 자동으로 추가할가?
 
 ## 사용
+
+
+
+
+
+
 CephBlockPool 을 만들어서 사용한다. 다른 타입도 있다.
 
 pool.yaml
