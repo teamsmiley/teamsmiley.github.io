@@ -1,6 +1,6 @@
 ---
 layout: post
-title: 'Prometheus redis' 
+title: 'Prometheus 모니터링' 
 author: teamsmiley
 date: 2020-01-17
 tags: [Prometheus]
@@ -37,7 +37,7 @@ vi /etc/hosts
 prometheus 192.168.0.100
 node01 192.168.0.101
 
-![](./images/2020-01-11-09-21-28.png)
+![]({{ site.baseurl }}/assets/2020-01-11-09-21-28.png)
 
 서버에 직접 설치하고 docker를 사용해서 설치한다.
 
@@ -75,13 +75,13 @@ docker run \
 
 이제 웹브라우저를 통해 http://prometheus:9090 을 확인해보면 알수 있다.
 
-![](./images/2019-11-25-15-25-24.png)
+![]({{ site.baseurl }}/assets/2019-11-25-15-25-24.png)
 
 이제 확인해보자.
 
 다음그림처럼 up을 넣고 엔터를 처보면 
 
-![](./images/2019-11-25-15-29-07.png)
+![]({{ site.baseurl }}/assets/2019-11-25-15-29-07.png)
 
 up은 Prometheus가 추가하는 특별한 형태의 메트릭이다. 1은 성공이라는 의미이다.
 
@@ -176,7 +176,7 @@ systemctl status node_exporter
 
 이제 http://prometheus:9090/graph 에서 up을 확인해보자 내려갔다가 올라온것을 확인할수 있다.
 
-![](./images/2020-01-11-09-53-36.png)
+![]({{ site.baseurl }}/assets/2020-01-11-09-53-36.png)
 
 Prometheus 잘 동작하고 node exporter도 잘 동작하는것을 알수가 있다. 
 
@@ -243,7 +243,7 @@ admin/admin
 
 url : http://prometheus_prometheus_1:9090
 
-![](./images/2020-01-11-10-34-23.png)
+![]({{ site.baseurl }}/assets/2020-01-11-10-34-23.png)
 
 * create dashboard for node exporter
 
@@ -251,7 +251,7 @@ create dashboard (+ 메뉴 )> import 1860 > prometheus > prometheus select > imp
 
 https://grafana.com/grafana/dashboards/1860
 
-![](./images/2020-01-11-10-36-28.png)
+![]({{ site.baseurl }}/assets/2020-01-11-10-36-28.png)
 
 여기까지 하면 기본 모니터링은 다 할수 있다 
 
@@ -267,7 +267,7 @@ https://grafana.com/grafana/dashboards/2129 theme
 
 https://github.com/martinlindhe/wmi_exporter/releases 다운후 설치하면 서비스로 설치 완료 
 
-![](./images/2019-12-07-07-21-23.png)
+![]({{ site.baseurl }}/assets/2019-12-07-07-21-23.png)
 
 msi download후 노드에 설치 
 
@@ -309,7 +309,7 @@ http://prometheus:9090/targets 에서 체크해보면 꺼진것을 알수 있다
 
 1개만 나온다. 
 
-![](./images/2019-11-25-18-48-03.png)
+![]({{ site.baseurl }}/assets/2019-11-25-18-48-03.png)
 
 이제 다 된듯
 
@@ -346,7 +346,7 @@ docker run -d -p 9090:9090 -v /data/git/docker/prometheus/prometheus.yml:/etc/pr
 
 http://prometheus:9090/alerts
 
-![](./images/2019-11-25-19-22-14.png)
+![]({{ site.baseurl }}/assets/2019-11-25-19-22-14.png)
 
 이제 알림이 확보가 됬다.
 
@@ -441,7 +441,7 @@ http://localhost:3000
 
 구조 
 
-![](./images/2020-01-12-13-50-15.png)
+![]({{ site.baseurl }}/assets/2020-01-12-13-50-15.png)
 
 노드 익스포터 daemonset 으로 자동 설치가 됨
 
