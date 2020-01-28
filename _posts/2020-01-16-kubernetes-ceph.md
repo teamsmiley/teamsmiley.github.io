@@ -336,19 +336,125 @@ kind: ObjectBucketClaim
 metadata:
   name: ceph-bucket
 spec:
-  generateBucketName: ceph-bkt
+  bucketName: ceph-bucket # 이름으로 하나생성
+  # generateBucketName: ceph-bucket  # 이름 뒤에 복잡한 문자를 붙여서 자동 생성 BucketName을 같이 주면 BucketName 사용 
   storageClassName: rook-ceph-bucket
 ```
 
 #### Client Connections
 ```bash
 #config-map, secret, OBC will part of default if no specific name space mentioned
-export AWS_HOST=$(kubectl -n default get cm ceph-bucket -o yaml | grep BUCKET_HOST | awk '{print $2}')
-export AWS_ACCESS_KEY_ID=$(kubectl -n default get secret ceph-bucket -o yaml | grep AWS_ACCESS_KEY_ID | awk '{print $2}' | base64 --decode)
-export AWS_SECRET_ACCESS_KEY=$(kubectl -n default get secret ceph-bucket -o yaml | grep AWS_SECRET_ACCESS_KEY | awk '{print $2}' | base64 --decode)
+export AWS_HOST=$(kubectl get cm ceph-bucket -o yaml | grep BUCKET_HOST | awk '{print $2}')
+export AWS_ACCESS_KEY_ID=$(kubectl get secret ceph-bucket -o yaml | grep AWS_ACCESS_KEY_ID | awk '{print $2}' | base64 --decode)
+export AWS_SECRET_ACCESS_KEY=$(kubectl get secret ceph-bucket -o yaml | grep AWS_SECRET_ACCESS_KEY | awk '{print $2}' | base64 --decode)
+
+echo $AWS_HOST
+echo $AWS_ACCESS_KEY_ID
+echo $AWS_SECRET_ACCESS_KEY
 ```
 
-### Object Store User CRD
+이것들을 적어두고 나중에 사용한다.
+
+rook-ceph-rgw-my-object-storage.rook-ceph
+8G3C6FR2X7CCRAM9IJ5D
+zoFd26tPCiGjWe0XP37lGJJllPvm7xO4OCVmqGCQ
+
+#### 사용
+Consume the Object Storage
+
+* AWS_ENDPOINT
+`kubectl get svc rook-ceph-rgw-my-object-storage`
+```
+rook-ceph-rgw-my-object-storage        ClusterIP      10.97.24.211    <none>          80/TCP              21m
+```
+
+`k describe ObjectBucketClaim ceph-bucket | grep "Bucket Name" `
+```
+Bucket Name:           ceph-bucket-8e636b8f-d85e-4799-95b0-d2a209dbac6d
+```
+tool에서 해보자.
+```bash
+export AWS_HOST=rook-ceph-rgw-my-object-storage.rook-ceph
+#export AWS_ENDPOINT=10.97.24.211:80
+export AWS_ACCESS_KEY_ID=8G3C6FR2X7CCRAM9IJ5D
+export AWS_SECRET_ACCESS_KEY=zoFd26tPCiGjWe0XP37lGJJllPvm7xO4OCVmqGCQ
+echo $AWS_HOST
+#echo $AWS_ENDPOINT 
+echo $AWS_ACCESS_KEY_ID
+echo $AWS_SECRET_ACCESS_KEY
+```
+
+버킷을 생성하지 않으면 위 정보가 없으므로 아래처럼 user를 만들어서 해야한다.
+
+테스트하기 위해 다음 패키지가 필요
+
+```bash
+yum --assumeyes install s3cmd
+```
+
+```bash
+echo "Hello Rook2" > /tmp/rookObj
+s3cmd put /tmp/rookObj --no-ssl --host=${AWS_HOST} --host-bucket= s3://ceph-bucket-8e636b8f-d85e-4799-95b0-d2a209dbac6d
+s3cmd get s3://ceph-bucket-8e636b8f-d85e-4799-95b0-d2a209dbac6d/rookObj /tmp/rookObj-download --no-ssl --host=${AWS_HOST} --host-bucket=
+cat /tmp/rookObj-download
+s3cmd ls s3://ceph-bucket-8e636b8f-d85e-4799-95b0-d2a209dbac6d /tmp/rookObj-download --no-ssl --host=${AWS_HOST} --host-bucket=
+```
+
+`--host-bucket=  ` 다음에 공백이 중요 없으면 에러
+
+AWS_ENDPOINT는 필요가 없는것도 같음.
+
+#### 외부에서 연결
+
+```
+k get svc rook-ceph-rgw-my-object-storage --show-labels
+
+NAME                              TYPE        CLUSTER-IP     EXTERNAL-IP   PORT(S)   AGE   LABELS
+rook-ceph-rgw-my-object-storage   ClusterIP   10.97.24.211   <none>        80/TCP    49m   app=rook-ceph-rgw,ceph_daemon_id=my-object-storage,rgw=my-object-storage,rook_cluster=rook-ceph,rook_object_store=my-object-storage
+```
+```yml
+# 외부에 오픈
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: rook-ceph-rgw-my-store-external
+  namespace: rook-ceph
+  labels:
+    app: rook-ceph-rgw
+    rook_cluster: rook-ceph
+    rook_object_store: my-object-storage
+spec:
+  ports:
+    - name: rgw
+      port: 80
+      protocol: TCP
+      targetPort: 80
+  selector:
+    app: rook-ceph-rgw
+    rook_cluster: rook-ceph
+    rook_object_store: my-object-storage
+  sessionAffinity: None
+  type: LoadBalancer
+  loadBalancerIP: 192.168.0.198
+```
+
+k apply -f object-storage
+
+이제 laptop에서 위 커맨드를 실행해서 로그인해본다.
+```bash
+export AWS_HOST=192.168.0.198
+export AWS_ACCESS_KEY_ID=8G3C6FR2X7CCRAM9IJ5D
+export AWS_SECRET_ACCESS_KEY=zoFd26tPCiGjWe0XP37lGJJllPvm7xO4OCVmqGCQ
+
+brew install s3cmd
+s3cmd get s3://ceph-bucket-8e636b8f-d85e-4799-95b0-d2a209dbac6d/rookObj /tmp/rookObj-download --no-ssl --host=${AWS_HOST} --host-bucket=
+```
+
+파일을 잘 가져온다.
+
+
+#### Object Store User CRD
 ```yml
 apiVersion: ceph.rook.io/v1
 kind: CephObjectStoreUser # 여기 주의
@@ -359,6 +465,17 @@ spec:
   store: my-store
   displayName: my-display-name 
 ```
+
+kubectl create -f object-user.yaml
+
+kubectl -n rook-ceph describe secret rook-ceph-object-user-my-store-my-user
+
+이걸 pod에 마운트해서 사용하면 된다. 고 메뉴얼에 써져잇는데 이걸 모르겟네 //todo
+
+비번을 직접 찾아보려면 
+
+kubectl -n rook-ceph get secret rook-ceph-object-user-my-store-my-user -o yaml | grep AccessKey | awk '{print $2}' | base64 --decode
+kubectl -n rook-ceph get secret rook-ceph-object-user-my-store-my-user -o yaml | grep SecretKey | awk '{print $2}' | base64 --decode
 
 ### Shared Filesystem CRD
 ```yml
