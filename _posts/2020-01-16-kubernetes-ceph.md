@@ -96,10 +96,11 @@ rook-ceph-mgr-dashboard-loadbalancer   LoadBalancer   10.104.37.219   192.168.0.
 id :  admin
 
 password를 알아내자.
-
+```
 kubectl -n rook-ceph get secret rook-ceph-dashboard-password -o jsonpath="{['data']['password']}" | base64 --decode && echo
 
-y1EUdqkEJ5
+> l1EUdqkEJ5
+```
 
 이렇게 패스워드를 알고 로그인하면 dash board를 볼수 있다.
 
@@ -188,12 +189,14 @@ ceph는 위 3가지를 다 지원을 한다.
 
 * Block Storage
 * Object Storage
-  * 
+  * s3를 사용하던 클라이언트는 다 지원 가능
+  * 스토리지에 저장(s3에 저장되는지 알앗으나 아니였음)
 * Shared Filesystem (클러스터당 1개만 생성 가능) 
   * 여러 파드에 동시에 붙어질수 있다.
   * rook에서는 shared file system을 만들수 있다(1개만 가능) 
   * shared가 의미하는것은 Rook에서 만든  일반적인 file system 파드를 공유할수 없다. 
   * 1개의 파드에서 한개의 file system을 사용하게 된다. 그런데 이건 여러 파드에서 공유할수 있다. 그래서 그런지 클러스터당 1개만 가능하다.
+  * By default only one shared filesystem can be created with Rook. Multiple filesystem support in Ceph is still considered experimental and can be enabled with the environment variable ROOK_ALLOW_MULTIPLE_FILESYSTEMS defined in operator.yaml.
 
 ## CRD (Custom Resource Definition)
 
@@ -285,6 +288,10 @@ spec:
 ```
 
 ### Object Store CRD
+
+create CephObjectStore ==>  create storageClass ==> create bucket 
+
+#### CephObjectStore
 ```yml
 apiVersion: ceph.rook.io/v1
 kind: CephObjectStore #여기 주의
@@ -310,8 +317,36 @@ spec:
     instances: 1
 ```
 
-### Object Bucket Claim
-이건 잘 모름
+#### StorageClass and Object Bucket Claim
+
+```yml
+apiVersion: storage.k8s.io/v1
+kind: StorageClass
+metadata:
+   name: rook-ceph-bucket
+provisioner: ceph.rook.io/bucket
+reclaimPolicy: Delete
+parameters:
+  objectStoreName: my-store
+  objectStoreNamespace: rook-ceph
+  region: us-east-1
+---
+apiVersion: objectbucket.io/v1alpha1
+kind: ObjectBucketClaim
+metadata:
+  name: ceph-bucket
+spec:
+  generateBucketName: ceph-bkt
+  storageClassName: rook-ceph-bucket
+```
+
+#### Client Connections
+```bash
+#config-map, secret, OBC will part of default if no specific name space mentioned
+export AWS_HOST=$(kubectl -n default get cm ceph-bucket -o yaml | grep BUCKET_HOST | awk '{print $2}')
+export AWS_ACCESS_KEY_ID=$(kubectl -n default get secret ceph-bucket -o yaml | grep AWS_ACCESS_KEY_ID | awk '{print $2}' | base64 --decode)
+export AWS_SECRET_ACCESS_KEY=$(kubectl -n default get secret ceph-bucket -o yaml | grep AWS_SECRET_ACCESS_KEY | awk '{print $2}' | base64 --decode)
+```
 
 ### Object Store User CRD
 ```yml
