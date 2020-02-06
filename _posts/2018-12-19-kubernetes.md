@@ -154,7 +154,7 @@ MINIO_OPTS="--address :9001"
 # Access Key of the server.
 MINIO_ACCESS_KEY=6K3MW29PYQHC4W39E03D
 # Secret key of the server.
-MINIO_SECRET_KEY=kuOkqn3y6UKvmHvC0DgoLyb+fDstDJFZV3NBwtZ1
+MINIO_SECRET_KEY=kuOkqn3y6UKvHvC0DgoLyb+fDstDJFZV3NBwtZ1
 
 EOT
 

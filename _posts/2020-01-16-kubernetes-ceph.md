@@ -354,10 +354,11 @@ echo $AWS_SECRET_ACCESS_KEY
 ```
 
 이것들을 적어두고 나중에 사용한다.
-
+```
 rook-ceph-rgw-my-object-storage.rook-ceph
 8G3C6FR2X7CCRAM9IJ5D
 zoFd26tPCiGjWe0XP37lGJJllPvm7xO4OCVmqGCQ
+```
 
 #### 사용
 Consume the Object Storage

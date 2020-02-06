@@ -48,7 +48,7 @@ hal config version edit --version 1.15.3
 
 # setup storage : minio 
 MINIO_ACCESS_KEY=6K3MW29PYQHC4W39E03D
-MINIO_SECRET_KEY=kuOkqn3y6UKvmHvC0DgoLyb+fDstDJFZV3NBwtZ1
+MINIO_SECRET_KEY=kuOkqn3y6UKvHvC0DgoLyb+fDstDJFZV3NBwtZ1
 ENDPOINT=http://192.168.0.194:9001
 
 echo $MINIO_SECRET_KEY | hal config storage s3 edit --endpoint $ENDPOINT \
