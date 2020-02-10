@@ -198,6 +198,8 @@ ceph는 위 3가지를 다 지원을 한다.
   * 1개의 파드에서 한개의 file system을 사용하게 된다. 그런데 이건 여러 파드에서 공유할수 있다. 그래서 그런지 클러스터당 1개만 가능하다.
   * By default only one shared filesystem can be created with Rook. Multiple filesystem support in Ceph is still considered experimental and can be enabled with the environment variable ROOK_ALLOW_MULTIPLE_FILESYSTEMS defined in operator.yaml.
 
+![]({{ site.baseurl }}/assets//2020-02-10-10-14-25.png)
+
 ## CRD (Custom Resource Definition)
 
 CRD는 다음과 같은 구분이 있다.
