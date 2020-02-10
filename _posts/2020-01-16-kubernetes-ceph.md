@@ -289,7 +289,7 @@ spec:
 
 ### Object Store CRD
 
-create CephObjectStore ==>  create storageClass ==> create bucket 
+create CephObjectStore ==>  create StorageClass ==> create Bucket 
 
 #### CephObjectStore
 ```yml
