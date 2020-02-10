@@ -1,6 +1,6 @@
 ---
 layout: post
-title: 'kubernetes ceph install' 
+title: 'kubernetes Rook Ceph' 
 author: teamsmiley
 date: 2020-01-16
 tags: [kubernetes]
@@ -12,11 +12,11 @@ node 4개가 있다. 그런데 노드에 하드가 4개씩 달려있다.
 
 | | | | | | 
 |-|-|-|-|-|
-nodeName|sda|sdb|sdc|sdd|
-node01|1T|1T|1T|1T|
-node02|1T|1T|1T|1T|
-node03|1T|1T|1T|1T|
-node04|1T|1T|1T|1T|
+|Name|sda|sdb|sdc|sdd|
+|node01|1T|1T|1T|1T|
+|node02|1T|1T|1T|1T|
+|node03|1T|1T|1T|1T|
+|node04|1T|1T|1T|1T|
 
 sda는 os드라이브라 사용하지 않고 나머지 3개 하드 디스크를 ceph로 묵어서 스토리지로 쓰고 싶다. 
 
