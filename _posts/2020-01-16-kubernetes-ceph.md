@@ -355,9 +355,9 @@ echo $AWS_SECRET_ACCESS_KEY
 
 이것들을 적어두고 나중에 사용한다.
 ```
-rook-ceph-rgw-my-object-storage.rook-ceph
-8G3C6FR2X7CCRAM9IJ5D
-zoFd26tPCiGjWe0XP37lGJJllPvm7xO4OCVmqGCQ
+rook-ceph-rgw-my-objet-storage.rook-ceph
+8G3C6FR2X7CCRAM9J5D
+zoFd26tPCiGjWe0XP3lGJJllPvm7xO4OCVmqGCQ
 ```
 
 #### 사용
@@ -375,10 +375,10 @@ Bucket Name:           ceph-bucket-8e636b8f-d85e-4799-95b0-d2a209dbac6d
 ```
 tool에서 해보자.
 ```bash
-export AWS_HOST=rook-ceph-rgw-my-object-storage.rook-ceph
+export AWS_HOST=rook-ceph-rg-my-object-storage.rook-ceph
 #export AWS_ENDPOINT=10.97.24.211:80
-export AWS_ACCESS_KEY_ID=8G3C6FR2X7CCRAM9IJ5D
-export AWS_SECRET_ACCESS_KEY=zoFd26tPCiGjWe0XP37lGJJllPvm7xO4OCVmqGCQ
+export AWS_ACCESS_KEY_ID=8G3C6FR2X7CCRAM9IJ5
+export AWS_SECRET_ACCESS_KEY=zoFd26tPCiGjWe0XP37lGJJllPvm7xO4OCVmqGC
 echo $AWS_HOST
 #echo $AWS_ENDPOINT 
 echo $AWS_ACCESS_KEY_ID
@@ -445,8 +445,8 @@ k apply -f object-storage
 이제 laptop에서 위 커맨드를 실행해서 로그인해본다.
 ```bash
 export AWS_HOST=192.168.0.198
-export AWS_ACCESS_KEY_ID=8G3C6FR2X7CCRAM9IJ5D
-export AWS_SECRET_ACCESS_KEY=zoFd26tPCiGjWe0XP37lGJJllPvm7xO4OCVmqGCQ
+export AWS_ACCESS_KEY_ID=8G3C6FR2X7CCRM9IJ5D
+export AWS_SECRET_ACCESS_KEY=zoFd26tCiGjWe0XP37lGJJllPvm7xO4OCVmqGCQ
 
 brew install s3cmd
 s3cmd get s3://ceph-bucket-8e636b8f-d85e-4799-95b0-d2a209dbac6d/rookObj /tmp/rookObj-download --no-ssl --host=${AWS_HOST} --host-bucket=
