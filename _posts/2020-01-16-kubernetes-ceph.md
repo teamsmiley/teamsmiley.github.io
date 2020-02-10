@@ -58,7 +58,7 @@ k get po | grep tool
 
 kubectl exec -it rook-ceph-tools-6586d4859f-cd4pb bash 
 ceph status # 상태보여줌
-ceph osd statu줌 # osd상태보여줌.
+ceph osd status # osd상태보여줌.
 ```
 
 
