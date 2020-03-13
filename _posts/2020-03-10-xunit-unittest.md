@@ -32,6 +32,27 @@ category: {test}
 * Arange : 설정
 * Act    : 실행
 * Assert : 검사
+```cs
+[Fact]
+public void IsValid_ShouldBeTrue_WhenProviderAllMember()
+{
+  //Arrange
+  var command = new CreateProductCommand
+  {
+    Name = "test product",
+    Price = 100.00f,
+    Description = "test description",
+    IsAvailable = true,
+  };
+
+  //Act
+  var validator = new CreateProductCommandValidator();
+  var result = validator.Validate(command);
+  
+  //Assert
+  result.IsValid.ShouldBe(true);
+}
+```
 
 ## 프로젝트 생성 
 * xunit project생성하면된다.
