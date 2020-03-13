@@ -48,7 +48,7 @@ public void IsValid_ShouldBeTrue_WhenProviderAllMember()
   //Act
   var validator = new CreateProductCommandValidator();
   var result = validator.Validate(command);
-  
+
   //Assert
   result.IsValid.ShouldBe(true);
 }
@@ -433,6 +433,10 @@ contestant.Points.ShouldBe(1337);
 nuget으로 shouldly를 설치하고 메뉴얼 좀 보고 사용하면 어렵지 않다.
 
 <https://shouldly.readthedocs.io/en/latest/>
+
+## in memory db
+
+EF에서 in memory db를 사용하여 테스트하는 경우가 있다. in memory db는 rdb가 아니기 때문에 항목들에 제약조건을 확인하지 않는다. 예를 들면 null이 들어가면 안되는데 제약조건을 걸어서 실제 디비에서는 동작하지만 in memory db에서는 이 제약조건이 무시된다. null이 들어가기도 한다. 그러니 이걸 테스트하지는 말것.
 
 ## todo 
 * coverage보는법 
