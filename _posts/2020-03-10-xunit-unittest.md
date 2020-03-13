@@ -394,4 +394,28 @@ public override IEnumerable<object[]> GetData(MethodInfo testMethod)
 }
 ```
 
+## shouldly 
+현재 프로젝트는 shouldly를 같이 사용중이다.
+
+<https://github.com/shouldly/shouldly>
+
+```cs
+//xunit
+Assert.That(contestant.Points, Is.EqualTo(1337));
+
+//shouldly 
+contestant.Points.ShouldBe(1337);
+```
+
+조금더 직관적으로 보이는것이 있다. 
+
+nuget으로 shouldly를 설치하고 메뉴얼 좀 보고 사용하면 어렵지 않다.
+
+<https://shouldly.readthedocs.io/en/latest/>
+
+## todo 
+* coverage보는법 
+* 이름 정하는법.
+
+
 
