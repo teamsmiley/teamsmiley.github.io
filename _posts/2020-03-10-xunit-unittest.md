@@ -59,6 +59,10 @@ public void IsValid_ShouldBeTrue_WhenProviderAllMember()
 * xunit, xunit.runner.visualstudio nuget package설치해도 됨.
 * `dotnet new xunit`
 
+## 테스트 만들때 이름 규칙
+* 클래스명 : 테스트할클래스Tests.cs , 디렉토리 구조나 네임스페이스도 테스트할 클래스구조와 같은방식으로 한다.
+* 함수명   : 테스트할함수명_scenario_ExpectedBehavior
+
 ## 테스트 실행 
 * Test expolor(visual studio)
 * dotnet test (command line)
