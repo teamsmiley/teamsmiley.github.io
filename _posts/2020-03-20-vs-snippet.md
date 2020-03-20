@@ -126,4 +126,6 @@ public async Task Handler_DuplicateData_ThrowDuplicatedException()
 }
 ```
 
+경험상 declarations의 literal 의 순서는 코드에서 보이는 순서대로 넣어주면 편할듯 싶다.
+
 
