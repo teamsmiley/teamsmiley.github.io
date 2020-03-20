@@ -23,11 +23,10 @@ shell을 먼저 만들자.
 
 vi _core_git_pull.sh
 ```bash
-#! /bin/bash 
-git pull ~/Desktop/GitLab/project
+#! /bin/bash //꼭 사용
+cd /Users/ragon/Desktop/GitHub/teamsmiley.github.io
+git pull
 ```
-
-`#! 을 꼭 사용할것.`
 
 ~/Library/LaunchAgents/ 폴더 아래 다음 파일을 만든다. 
 
@@ -78,6 +77,16 @@ launchctl unload ~/Library/LaunchAgents/_git-update.plist//삭제시
 * 로그 경로가 인터넷에 나온대로 /var/log/aaa.log를 하게 되면 프로그램이 아에 실행되지 않는다. 권한 문제 인듯. tmp는 잘됬음
 
 이걸로 한달째 안되던 자동 백업과 업데이트가 완성 
+
+## 추가 문제점
+
+맥버전(catalina)에 따라서 Operation not permitted 이라는 에러가 나올수가 있다. 다음처럼 하자.
+
+system preperences -> security and privacy -> privacy -> Full Disk Access 
+
+Add > &#8984; + shift + G >> /bin/bash
+
+![]({{ site_baseurl }}/assets/fulldiskaccess.png)
 
 
 
