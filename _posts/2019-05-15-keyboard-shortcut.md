@@ -34,10 +34,12 @@ category: {programe}
 * f9 : break point 만들기 /삭제
 * f10 : step over
 * f11 : step in (shift: step out)
-* alt+enter
+* alt + enter : 
 * ctrl + enter : console에서 프로그램이 끝나지 않고 대기
 * ctrl + r + r : rename
-* ctrl + m  ctrl +m : 펼치기 / 닫기
+* ctrl + m + m : 폴딩 펼치기 / 닫기
+* CTRL + M + O : 전체 폴딩 클로즈
+* CTRL + M + L : 전체 폴딩 오픈
 * ctrl + p : 클래스 찾기
 * ctrl + f6 : 다음창으로 (shift)
 * alt w l : 모든 창 닫기
