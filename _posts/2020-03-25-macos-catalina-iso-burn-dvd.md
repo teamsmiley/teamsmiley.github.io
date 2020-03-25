@@ -29,5 +29,3 @@ hdiutil burn ~/Desktop/DiskImageFile.iso
 이렇게 하면 cdrom을 찾아서 시디를 구워준다.
 
 
-
-
