@@ -24,3 +24,7 @@ git update-index --no-assume-unchanged <file>
 
 git ls-files -v | grep "^[[:lower:]]"
 
+```bash
+git update-index --assume-unchanged docker-env/www/www-php.ini
+git update-index --no-assume-unchanged docker-env/www/www-php.ini
+```
