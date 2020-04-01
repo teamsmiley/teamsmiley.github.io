@@ -20,7 +20,7 @@ validation 할 클래스
 
 ```cs
 public class Product {
-  public decimal Discount { get; set; }
+  public float Discount { get; set; }
 }
 ```
 
@@ -104,8 +104,6 @@ public void Scale_and_precision_should_work()
   result = validator.Validate(new Product { Discount = 156.3M });
   result.IsValid.ShouldBeTrue();
 
-  resut = = validator.Validate(new Product { Discount = 1536.333333333f });
-  result.IsValid.ShouldBeFalse();
 ```
 
 테스트를 실행해보면 모두 통과한다는것을 알수 있다. 그럼 내가 넣은 값은 float로 바꿔서 테스트해보자.
@@ -141,9 +139,11 @@ private static uint GetUnsignedScale(decimal Decimal) {
 
 참고로 다음 차이를 보자.
 
+```
 float : 7 digits (32 bit)
 double : 15-16 digits (64 bit)
 decimal : 28-29 significant digits (128 bit)
+```
 
 Decimals and Floats/Doubles cannot be compared without a cast whereas Floats and Doubles can. Decimals also allow the encoding or trailing zeros.
 ```cs
