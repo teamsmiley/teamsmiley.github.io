@@ -3,7 +3,7 @@ layout: post
 title: 'Fluent Validation' 
 author: teamsmiley
 date: 2020-04-01
-tags: [git]
+tags: [Validation]
 image: /files/covers/blog.jpg
 category: {c#}
 ---
@@ -41,7 +41,7 @@ public class TestValidator : InlineValidator<Person>
 
 이 코드를 테스트하다보니 에러가 나야하는데 아무리 해도 에러가 안난다. 그래서 파보기 시작했다.
 
-https://docs.fluentvalidation.net/en/latest/built-in-validators.html#scaleprecision-validator 문서를 보자.
+<https://docs.fluentvalidation.net/en/latest/built-in-validators.html#scaleprecision-validator> 문서를 보자.
 
 문서에는 다음처럼 되잇다.
 
@@ -125,7 +125,7 @@ false가 나와서 테스트를 통과해야하는데 실패 . 실제로는 true
 
 소스코드를 봐보자. 
 
-https://github.com/FluentValidation/FluentValidation/blob/master/src/FluentValidation/Validators/ScalePrecisionValidator.cs
+<https://github.com/FluentValidation/FluentValidation/blob/master/src/FluentValidation/Validators/ScalePrecisionValidator.cs>
 
 소스코드가 전부 Decimal로 되있다.
 
