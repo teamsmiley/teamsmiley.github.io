@@ -27,7 +27,7 @@ public class Product {
 validator 작성 
 
 ```cs
-public class TestValidator : InlineValidator<Person>
+public class TestValidator : InlineValidator<Product>
 {
   public TestValidator()
   {
@@ -89,22 +89,22 @@ public void Scale_and_precision_should_work()
 {
   var validator = new TestValidator(v => v.RuleFor(x => x.Discount).SetValidator(new ScalePrecisionValidator(2, 4)));
 
-  var result = validator.Validate(new Person { Discount = 123.456778m });
+  var result = validator.Validate(new Product { Discount = 123.456778m });
   Assert.False(result.IsValid);
 
-  result = validator.Validate(new Person { Discount = 12.34M });
+  result = validator.Validate(new Product { Discount = 12.34M });
   Assert.True(result.IsValid);
 
-  result = validator.Validate(new Person { Discount = 12.3414M });
+  result = validator.Validate(new Product { Discount = 12.3414M });
   result.IsValid.ShouldBeFalse();
 
-  result = validator.Validate(new Person { Discount = 1.344M });
+  result = validator.Validate(new Product { Discount = 1.344M });
   result.IsValid.ShouldBeFalse();
 
-  result = validator.Validate(new Person { Discount = 156.3M });
+  result = validator.Validate(new Product { Discount = 156.3M });
   result.IsValid.ShouldBeTrue();
 
-  resut = = validator.Validate(new Person { Discount = 1536.333333333f });
+  resut = = validator.Validate(new Product { Discount = 1536.333333333f });
   result.IsValid.ShouldBeFalse();
 ```
 
@@ -116,7 +116,7 @@ public void Scale_and_precision_should_work()
 {
   var validator = new TestValidator(v => v.RuleFor(x => x.Discount).SetValidator(new ScalePrecisionValidator(2, 4)));
 
-  var result = validator.Validate(new Person { Discount = 123.456778f });
+  var result = validator.Validate(new Product { Discount = 123.456778f });
   Assert.False(result.IsValid);
 }
 ``` 
