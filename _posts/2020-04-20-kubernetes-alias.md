@@ -34,9 +34,9 @@ oh-my-zsh을 사용하고 kube플러그인을 사용하면 기본적으로 적�
 
 ns 와 nsv 대신에 플러그인에서 제공하는 
 ```bash
-kgns	#kubectl get namespaces	List the current namespaces in a cluster 전체 네임스페이스
+kgns  #kubectl get namespaces	List the current namespaces in a cluster 전체 네임스페이스
 kcgc  #kubectl config get-contexts context 확인
-kcn	  #kubectl config set-context context 설정 
+kcn   #kubectl config set-context context 설정 
 ```
 이 두 커맨드를 사용하면 된다.
 
