@@ -38,7 +38,7 @@ kgns  #kubectl get namespaces	List the current namespaces in a cluster 전체 �
 kcgc  #kubectl config get-contexts context 확인
 kcn   #kubectl config set-context context 설정 
 ```
-이 두 커맨드를 사용하면 된다.
+위 커맨드를 사용하면 된다.
 
 
 
