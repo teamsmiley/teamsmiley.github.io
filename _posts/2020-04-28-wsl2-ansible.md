@@ -49,6 +49,12 @@ Error
 export ANSIBLE_CONFIG=./ansible.cfg
 ```
 
+vi ~/.zshrc
+```
+export ANSIBLE_CONFIG=./ansible.cfg
+
+```
+
 잘된다.
 
 ## alias 만들기 
