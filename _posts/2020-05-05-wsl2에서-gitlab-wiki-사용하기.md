@@ -47,6 +47,15 @@ http://localhost:4567
 
 다 완료가 되면 git push를 하면 gitlab사이트에 위키가 업데이트가 된다.
 
+## 매번 cd해서 디렉토리로 간 후 gollum을 실행하기 귀찮음.
+```
+vi ~/.zshrc
+
+alias goll="cd /mnt/c/Users/ragon/Desktop/GitLab/ticket/ticket.wiki && gollum ."
+```
+
+이제 goll 하면 된다.
+
 ## 매번 gollum을 시작하기 귀찮다.
 
 wsl2가 systemd를 지원하지 않는거 같다. 아래 내용은 일단 대기 
