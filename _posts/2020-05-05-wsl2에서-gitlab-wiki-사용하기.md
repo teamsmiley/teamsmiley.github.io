@@ -13,9 +13,7 @@ category: {wsl}
 ## 관련 패키지 설치 
 ```bash
 apt-get install ruby ruby-dev make zlib1g-dev libicu-dev build-essential git cmake pkg-config libssl-dev
-
-gem install github-markdown
-gem install gollum
+gem install github-markdown gollum
 ```
 
 ## gitlab wiki를 클론한다.
@@ -48,5 +46,33 @@ http://localhost:4567
 웹으로 수정을 하는 경우에는 자동으로 커밋이 된다. 
 
 다 완료가 되면 git push를 하면 gitlab사이트에 위키가 업데이트가 된다.
+
+## 매번 gollum을 시작하기 귀찮다.
+
+wsl2가 systemd를 지원하지 않는거 같다. 아래 내용은 일단 대기 
+
+```bash
+cat<<EOF | sudo tee /etc/systemd/system/gollum.service
+[Unit]
+Description=Gollum wiki server
+After=network.target
+After=syslog.target
+
+[Service]
+Type=simple
+User=gollum
+Group=gollum
+WorkingDirectory=/mnt/c/Users/ragon/Desktop/GitLab/ticket/ticket.wiki # your-path
+ExecStart=/usr/local/bin/gollum --live-preview --config "/etc/gollum/config.rb"
+Restart=on-abort
+
+[Install]
+WantedBy=multi-user.target
+EOF
+```
+재시작하자. dos cmd에서 
+```bash
+wsl -t Ubuntu-20.04
+```
 
 
