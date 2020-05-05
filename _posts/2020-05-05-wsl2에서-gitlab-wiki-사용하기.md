@@ -12,7 +12,7 @@ category: {wsl}
 
 ## 관련 패키지 설치 
 ```bash
-apt-get install ruby ruby-dev make zlib1g-dev libicu-dev build-essential git cmake
+apt-get install ruby ruby-dev make zlib1g-dev libicu-dev build-essential git cmake pkg-config libssl-dev
 
 gem install github-markdown
 gem install gollum
