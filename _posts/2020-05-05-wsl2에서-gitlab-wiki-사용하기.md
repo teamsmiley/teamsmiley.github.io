@@ -70,6 +70,7 @@ Restart=on-abort
 WantedBy=multi-user.target
 EOF
 ```
+
 재시작하자. dos cmd에서 
 ```bash
 wsl -t Ubuntu-20.04
