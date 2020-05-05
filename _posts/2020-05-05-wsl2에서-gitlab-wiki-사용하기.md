@@ -51,6 +51,8 @@ http://localhost:4567
 
 wsl2가 systemd를 지원하지 않는거 같다. 아래 내용은 일단 대기 
 
+Create systemd unit file.
+
 ```bash
 cat<<EOF | sudo tee /etc/systemd/system/gollum.service
 [Unit]
