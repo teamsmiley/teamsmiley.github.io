@@ -26,6 +26,7 @@ metadata:
 ```
 
 * elastic-search.yml
+
 ```yml
 apiVersion: apps/v1
 kind: Deployment
@@ -93,6 +94,7 @@ elasticsearch-5fcd8ff46f-224cv   1/1     Running   0          9s    10.47.128.9 
 
 ## kibana
 * kibina.yml
+
 ```yml
 apiVersion: apps/v1
 kind: Deployment
@@ -166,8 +168,8 @@ elastic-search    : namespace
 
 전체 노드에 daemonset으로 설치한다.
 *fluentd.yml
-```yml
 
+```yml
 apiVersion: v1
 kind: ServiceAccount
 metadata:
