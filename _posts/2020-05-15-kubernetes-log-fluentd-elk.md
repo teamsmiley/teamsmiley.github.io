@@ -319,13 +319,26 @@ Management -> kibana -> Index Patterns -> Create Index Pattern -> logstash-* -> 
 
 이제 뭐하지?
 
+## kubernetes로그는 모아서 볼수 있으나 어플리케이션 로그들은 어떻게 모으지?
+
+fluentd가 docker에서 나오는 모든 로그를 elk에 보낸다. 따로 어플리케이션에서 에러가 나면 elastic search로 보낼필요가 없다. 
+그냥 stderr로 보내버리면 화면에도 찍히고 elk에도 저장이 되는것으로 판단했다. 이게 훨씬 나은 솔류션이다.
+
+## 에러만 볼수 있나? 워닝만 볼수 있나?
+
+일단 stdout과 stderr 를 잘 구분해서 처리를 해두면 보기가 편해질듯 싶고 기타 다양한 조건으로 filter를 구성할수 있기 때문에 문제가 안된다. 
+
+## 디스크 부족 문제 
+데이터를 => 1주일을 저장하는것으로 하려고 한다. 그정도면 문제가 없을듯. 
+
+1주일 전 데이터는 지워줘야할건데 어떻게 하지? //todo
 
 ## todo 
-* kubernetes로그는 모아서 볼수 있으나 어플리케이션 로그들은 어떻게 모으지?
 * 메모리 부족 문제
-* 디스크 부족 문제
-* 에러만 볼수 있나? 워닝만 볼수 있나?
+* 
+
 * X-Pack is an Elastic Stack extension 활성화
+* kibana에서 검색 조건들을 저장을 해두자 -> 매일 리포트를 받아볼수 잇는가?
 
 
 
