@@ -326,6 +326,7 @@ Management -> kibana -> Index Patterns -> Create Index Pattern -> logstash-* -> 
 * 디스크 부족 문제
 * 에러만 볼수 있나? 워닝만 볼수 있나?
 * X-Pack is an Elastic Stack extension 활성화
+* 멀티 노드
 
 
 
