@@ -17,6 +17,9 @@ EF Core 2.2 부터는 공간 정보(Spatial Data) 를 저장할수 있게 지원
 * <https://docs.microsoft.com/en-us/ef/core/modeling/spatial>
 * <https://github.com/PomeloFoundation/Pomelo.EntityFrameworkCore.MySql/issues/338>
 
+## 용어
+NetTopologySuite :  (NTS)
+
 
 ## nuget package 설치 
 
