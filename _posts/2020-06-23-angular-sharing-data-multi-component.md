@@ -62,4 +62,7 @@ redux를 통해서 하려고 햇던 기능을 이걸로 대체했다. redux가 �
 
 언제나 redux를 쓸만한 프로젝트를 해보나..
 
+## 참고
 
+* <https://www.youtube.com/watch?v=oj6Tae2oSo0&list=PLC3y8-rFHvwgKhaLU8GTyF-5Bb8qT-wzV&index=14>
+* <https://www.youtube.com/watch?v=eqz35AQoVcs&list=PLC3y8-rFHvwgKhaLU8GTyF-5Bb8qT-wzV>
