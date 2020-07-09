@@ -1,6 +1,6 @@
 ---
 layout: post
-title: 'macos - backtick' 
+title: "macos에서 '₩' 대신 '`' 입력하기"
 author: teamsmiley
 date: 2020-07-08
 tags: [macos]
