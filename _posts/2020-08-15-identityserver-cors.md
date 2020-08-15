@@ -77,6 +77,9 @@ new Client
 
 이렇게 AllowedCorsOrigins 를 적용해버린 클라이언트에는 startup에서 만든것은 무시되고 default가 적용이 된다. 그러므로 허용된 cors만 허가되게 된다.
 
+주석처리해버리면(설정을 안하면) 모든 cors를 허용한다.
+
+
 
 
 
