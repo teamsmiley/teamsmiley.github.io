@@ -79,6 +79,15 @@ new Client
 
 주석처리해버리면(설정을 안하면) 모든 cors를 허용한다.
 
+## 생각할것.
+
+조금 웃긴건 전체 cors를 허용하게 해두어도 
+
+`CorsPolicyService did not allow origin: capacitor://localhost`
+
+이런 비슷한 에러는 계속 난다. 그러나 로그인은 잘 된다.
+
+
 
 
 
