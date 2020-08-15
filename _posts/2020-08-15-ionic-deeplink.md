@@ -1,0 +1,164 @@
+---
+layout: post
+title: 'ionic-deeplink' 
+author: teamsmiley
+date: 2020-08-15
+tags: [ionic]
+image: /files/covers/blog.jpg
+category: {ionic}
+---
+
+# ionic deep link
+
+재능기부로 핸드폰 앱을 하나 만들고 있는데 쉽지가 않다. oauth 로그인을 하고 redirect를 해서 토큰을 저장하는데 ionic serve로 개발 서버를 올려서 사용하면 잘되는데 이걸 핸드폰으로 옮겨서 실행하면 localhost(핸드폰)이 실행이 되지 않으므로 에러가 난다. 
+
+한달쯤 확인을 해보니 deep link라는걸 사용하면 된다고 한다.
+
+해보자.
+
+참고 링크 
+
+<https://capacitorjs.com/docs/guides/deep-links>
+
+## deeplink 
+
+특정 주소를 핸드폰에 입력하면 앱으로 이동하는 기능을 딥링크라고한다.
+
+### schema
+예전에는 schema를 사용하는 (myapp://) 방식이엿으나 앱이 없는경우 app store에 갔다가 오면 정보가 사라진는 문제가 있다고 함. 
+
+### universal link
+
+요즘에는 사라지지 않는 universal link라는 방법을 추천
+
+작동 방식은 웹서버에 apple-app-site-association이라는 경로를 만들어두고 요청이 들어오면 json을 결과로 리턴해주면 핸드폰에서 저 경로가 들어오면 앱을 오픈할거냐고 물어보거나 앱으로 리다이렉트 시켜준다. 앱이 실행되잇으면 특정 페이지(아래에서 말하는 slug)로 들어가게 된다
+
+앱에는 capacitor가 설정되잇어야한다.
+```
+npx cap copy ios
+npx cap open ios 
+```
+## 앱코드 구현 
+
+앵귤러를 사용하므로 참고문서처럼 작성한다.
+
+```ts
+import { Component, NgZone } from '@angular/core';
+import { Router } from '@angular/router';
+import { Plugins } from '@capacitor/core';
+const { App } = Plugins;
+
+constructor(private router: Router, private zone: NgZone) {
+    this.initializeApp();
+}
+
+initializeApp() {
+    App.addListener('appUrlOpen', (data: any) => {
+        this.zone.run(() => {
+            // Example url: https://beerswift.app/tabs/tab2
+            // slug = /tabs/tab2
+            const slug = data.url.split(".app").pop();
+            if (slug) {
+                this.router.navigateByUrl(slug);
+            }
+            // If no match, do nothing - let regular routing 
+            // logic take over
+        });
+    });
+}
+```
+
+코드는 간단하다 appurlopen이라는걸 보고있다가 데이터가 들어오면 url에서 잘라내서 slug부분만 redirect해주는것이다.
+
+## iOS Configuration
+
+### apple developer centor 에 가서 설정하고 관련 데이터 가져오기
+
+![]({{ site_baseurl }}/assets/2020-08-15-05-22-16.png)
+
+Team ID and Bundle ID를 적어두고 Capabilities에서 "Associated Domains" 을 체크박스를 켜주자. 
+
+### Site Association Files 만들기 
+
+프로젝트에 src/.well-known 폴더를 만들고 거기에 apple-app-site-association 파일을 만든다. 확장자가 없다.
+
+vi src/.well-known/apple-app-site-association
+```json
+{
+  "applinks": {
+    "apps": [],
+    "details": [
+      {
+          "appID": "appID": "TEAMID.BUNDLEID",
+          "paths": ["*"]
+      }
+    ]
+  }
+}
+```
+
+teamid bundleid를 바꿔서 사이트에 배포해준다.
+
+### Site Association Files 배포 
+
+일반적으로 웹사이트를 배포해서 파일을 서버에 올려두면된다. 주의할점은 mime type이 꼭 `application/json` 이어야 한다.
+
+브라우저로 url을 확인해서 json 내용이 나오면 된다.
+
+* docker 로 웹사이트를 배포한경우
+여기서 나의 경우에는 문제가 발생했다 docker를 사용하다보니 도커에 nginx가 돌고 잇는기 기본 mime type이 application/octet-stream이 였다 그리서 url을 요청을 하게 되면 화면에 json이 나오는게 아니라 파일이 다운로드 받아져 버린다. 이 부분을 수정하기 위해 docker에 사용하는 nginx.conf파일을 수정을 했다.
+
+```nginx
+server {
+  listen 80;
+  root /usr/share/nginx/html;
+  default_type application/json; # 여기 추가
+
+  location / {
+    index index.html index.htm;
+    try_files $uri $uri/ /index.html =404;
+  }
+}
+```
+
+별건 아니고 기본 mime type을 application/json으로 세팅 해서 배포 
+
+이제 브라우저에서 요청을 해보면 json이 잘 보인다. 
+
+### Add Associated Domain
+
+딥링크를 사용할 웹사이트 주소를 적어둔다. `applinks:yourdomain.com` 을 적어줘야한다. applink:은 꼭 필요
+
+![]({{ site_baseurl }}/assets/2020-08-15-05-32-01.png)
+
+## android 
+//todo
+
+## 확인
+
+이제 다 됫다 웹서버가 배포가 된후 yourdomain.com 이 적힌 이메일을 보내둔다. 핸드폰에서 그 이메일을 확인하고 링크를 클릭한다.
+
+딥링크를 설정안한 경우에는 웹사이트가 열릴것이고 한 경우에는 앱이 열려야한다.
+
+사파리를 열어서 직접 주소를 입력해보았다.
+
+그랫더니 다음처럼 나온다.
+
+![]({{ site_baseurl }}/assets/2020-08-15-05-35-19.png)
+
+이러면 유니버셜 링크가 잘 적용된것이다.
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
