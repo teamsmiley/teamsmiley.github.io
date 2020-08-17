@@ -232,6 +232,13 @@ adb shell am start -W -a android.intent.action.VIEW -d www.pickeatup.net net.pic
 
 
 
+App Links on Android
+Unfortunately, App Links don't work in all circumstances. Here are some common rules:
+
+App Links may not work if you paste the link into the browser URL field.
+App Links may not open the app when they are "wrapped" by tracking links.
+Apps with built-in webviews (Google, Twitter, Facebook, Facebook Messenger, WeChat, etc.) may work with App Links only when a webview is already open. In other words, App Links could not work in-app from the feed or main app views.
+
 ## 확인
 
 이제 다 됫다 웹서버가 배포가 된후 yourdomain.com 이 적힌 이메일을 보내둔다. 핸드폰에서 그 이메일을 확인하고 링크를 클릭한다.
