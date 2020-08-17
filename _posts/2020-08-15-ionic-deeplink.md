@@ -161,7 +161,7 @@ npx cap copy android
 npx cap open android
 ```
 
-### Create Site Association File
+### Site Association File
 
 The Site Association file 은 SHA256 fingerprint 가 필요해요 만들어 보자.
 
@@ -232,10 +232,9 @@ www.yourdomain.com 링크가 잇는 이메일을 보내두고 시뮬레이터에
 다음은 참고 
 
 > Unfortunately, App Links don't work in all circumstances. Here are some common rules:
-
-> App Links may not work if you paste the link into the browser URL field.
-> App Links may not open the app when they are "wrapped" by tracking links.
-> Apps with built-in webviews (Google, Twitter, Facebook, Facebook Messenger, WeChat, etc.) may work with App Links only when a webview is already open. In other words, App Links could not work in-app from the feed or main app views.
+<br/>App Links may not work if you paste the link into the browser URL field.
+<br/>App Links may not open the app when they are "wrapped" by tracking links.
+<br/>Apps with built-in webviews (Google, Twitter, Facebook, Facebook Messenger, WeChat, etc.) may work with App Links only when a webview is already open. In other words, App Links could not work in-app from the feed or main app views.
 
 
 ### Add Intent Filter
@@ -246,7 +245,7 @@ www.yourdomain.com 링크가 잇는 이메일을 보내두고 시뮬레이터에
 
 안드로이드 스튜디오에서 android/app/src/main/AndroidManifest.xml 을 열어서 추가하자. <activity> element 안쪽에 추가하자.
 
-```
+```json
 <intent-filter android:autoVerify="true">
     <action android:name="android.intent.action.VIEW" />
     <category android:name="android.intent.category.DEFAULT" />
