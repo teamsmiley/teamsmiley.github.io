@@ -27,7 +27,7 @@ category: {ionic}
 ### schema
 예전에는 schema를 사용하는 (myapp://) 방식이엿으나 앱이 없는경우 app store에 갔다가 오면 정보가 사라지는 문제가 있다고 함. 
 
-### universal link (ios) , App Link(android)
+### universal link(ios) , App Link(android)
 
 요즘에는 사라지지 않는 universal link라는 방법을 추천
 
@@ -111,7 +111,7 @@ teamid bundleid를 바꿔서 사이트에 배포해준다.
 * docker 로 웹사이트를 배포한경우
 여기서 나의 경우에는 문제가 발생했다 docker를 사용하다보니 도커에 nginx가 돌고 잇는기 기본 mime type이 application/octet-stream이 였다 그리서 url을 요청을 하게 되면 화면에 json이 나오는게 아니라 파일이 다운로드 받아져 버린다. 이 부분을 수정하기 위해 docker에 사용하는 nginx.conf파일을 수정을 했다.
 
-```nginx
+```bash
 server {
   listen 80;
   root /usr/share/nginx/html;
@@ -128,11 +128,27 @@ server {
 
 이제 브라우저에서 요청을 해보면 json이 잘 보인다. 
 
+사파리를 열어서 직접 주소를 입력해보았다.
+
+그랫더니 다음처럼 나온다.
+
+![]({{ site_baseurl }}/assets/2020-08-15-05-35-19.png)
+
+이러면 잘 적용된것이다.
+
 ### Add Associated Domain
 
 딥링크를 사용할 웹사이트 주소를 적어둔다. `applinks:yourdomain.com` 을 적어줘야한다. applink:은 꼭 필요
 
 ![]({{ site_baseurl }}/assets/2020-08-15-05-32-01.png)
+
+이제 redirect url이 넘어오면 자동으로 앱을 열 것이다.
+
+이제 다 됫다 웹서버가 배포가 된후 yourdomain.com 이 적힌 이메일을 보내둔다.
+
+핸드폰에서 그 이메일을 확인하고 링크를 클릭한다.
+
+딥링크를 설정안한 경우에는 웹사이트가 열릴것이고 한 경우에는 앱이 열려야한다.
 
 ## Android 구현
 
@@ -241,30 +257,7 @@ www.yourdomain.com 링크가 잇는 이메일을 보내두고 시뮬레이터에
 
 이러면 다된다.
 
-
-
-![]({{ site_baseurl }}/assets/2020-08-16-20-33-35.png)
-
-
-
-
-
-
-
-
-## 확인
-
-이제 다 됫다 웹서버가 배포가 된후 yourdomain.com 이 적힌 이메일을 보내둔다. 핸드폰에서 그 이메일을 확인하고 링크를 클릭한다.
-
-딥링크를 설정안한 경우에는 웹사이트가 열릴것이고 한 경우에는 앱이 열려야한다.
-
-사파리를 열어서 직접 주소를 입력해보았다.
-
-그랫더니 다음처럼 나온다.
-
-![]({{ site_baseurl }}/assets/2020-08-15-05-35-19.png)
-
-이러면 유니버셜 링크가 잘 적용된것이다.
+이제 웹브라우저에 redirect url로 값이 넘어오면 앱이 실행될것이다. 테스트해보자.
 
 
 ## oauth login 
