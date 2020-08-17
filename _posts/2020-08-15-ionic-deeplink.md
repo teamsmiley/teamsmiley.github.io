@@ -10,9 +10,9 @@ category: {ionic}
 
 # ionic deep link
 
-재능기부로 핸드폰 앱을 하나 만들고 있는데 쉽지가 않다. oauth 로그인을 하고 redirect를 해서 토큰을 저장하는데 ionic serve로 개발 서버를 올려서 사용하면 잘되는데 이걸 핸드폰으로 옮겨서 실행하면 localhost(핸드폰)이 실행이 되지 않으므로 에러가 난다. 
+재능기부로 핸드폰 앱을 하나 만들고 있는데 쉽지가 않다. oauth 로그인을 하고 redirect를 해서 토큰을 저장하는데 ionic serve로 로컬 개발 서버를 올려서 사용하면 잘되는데 이걸 핸드폰으로 옮겨서 실행하면 localhost(핸드폰)에 웹서버가 없으므로 로그인이 에러가 난다.
 
-한달쯤 확인을 해보니 deep link라는걸 사용하면 된다고 한다.
+두달쯤 확인을 해보니 deep link라는걸 사용하면 된다고 한다. 여기까지가 어려웠다.
 
 해보자.
 
@@ -25,17 +25,18 @@ category: {ionic}
 특정 주소를 핸드폰에 입력하면 앱으로 이동하는 기능을 딥링크라고한다.
 
 ### schema
-예전에는 schema를 사용하는 (myapp://) 방식이엿으나 앱이 없는경우 app store에 갔다가 오면 정보가 사라진는 문제가 있다고 함. 
+예전에는 schema를 사용하는 (myapp://) 방식이엿으나 앱이 없는경우 app store에 갔다가 오면 정보가 사라지는 문제가 있다고 함. 
 
-### universal link
+### universal link (ios) , App Link(android)
 
 요즘에는 사라지지 않는 universal link라는 방법을 추천
 
-작동 방식은 웹서버에 apple-app-site-association이라는 경로를 만들어두고 요청이 들어오면 json을 결과로 리턴해주면 핸드폰에서 저 경로가 들어오면 앱을 오픈할거냐고 물어보거나 앱으로 리다이렉트 시켜준다. 앱이 실행되잇으면 특정 페이지(아래에서 말하는 slug)로 들어가게 된다
+작동 방식은 웹서버에 apple-app-site-association (ios) , applinks.json (android) 이라는 경로를 만들어두고 요청이 들어오면 json을 결과로 리턴해주면 핸드폰에서 저 경로가 들어오면 앱을 오픈할거냐고 물어보거나 앱으로 리다이렉트 시켜준다. 앱이 실행되잇으면 특정 페이지(아래에서 말하는 slug)로 들어가게 된다
 
 앱에는 capacitor가 설정되잇어야한다.
 ```
-ionic build --prod
+ionic build 
+npx cap add ios
 npx cap copy ios
 npx cap open ios
 ```
@@ -135,8 +136,6 @@ server {
 
 ## android 
 
-Android configuration involves creating a site association file and configuring the native app to recognize app links using an intent filter.
-
 ### Create Site Association File
 
 The Site Association file 은 SHA256 fingerprint 가 필요해요 만들어 보자.
@@ -162,7 +161,7 @@ keytool -list -v -keystore pickeatup-userapp.keystore
 
 내용이 쭉 나오면 성공
 
-이제 site-associate파일을 만들자.
+이제 assetlinks.json 파일을 만들자.
 
 <https://developers.google.com/digital-asset-links/tools/generator> 에서 만들수 있다.
 
