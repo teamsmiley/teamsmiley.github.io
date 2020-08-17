@@ -33,14 +33,6 @@ category: {ionic}
 
 작동 방식은 웹서버에 apple-app-site-association (ios) , applinks.json (android) 이라는 경로를 만들어두고 요청이 들어오면 json을 결과로 리턴해주면 핸드폰에서 저 경로가 들어오면 앱을 오픈할거냐고 물어보거나 앱으로 리다이렉트 시켜준다. 앱이 실행되잇으면 특정 페이지(아래에서 말하는 slug)로 들어가게 된다
 
-앱에는 capacitor가 설정되잇어야한다.
-```
-ionic build 
-npx cap add ios
-npx cap copy ios
-npx cap open ios
-```
-
 ## 앱코드 구현 
 
 앵귤러를 사용하므로 참고문서처럼 작성한다.
@@ -73,7 +65,15 @@ initializeApp() {
 
 코드는 간단하다 appurlopen이라는걸 보고있다가 데이터가 들어오면 url에서 잘라내서 slug부분만 redirect해주는것이다.
 
-## iOS Configuration
+## IOS Configuration
+
+앱에는 capacitor가 설정되잇어야 한다.
+```
+ionic build 
+npx cap add ios
+npx cap copy ios
+npx cap open ios
+```
 
 ### apple developer centor 에 가서 설정하고 관련 데이터 가져오기
 
@@ -134,7 +134,16 @@ server {
 
 ![]({{ site_baseurl }}/assets/2020-08-15-05-32-01.png)
 
-## android 
+## Android 구현
+
+앱에는 capacitor가 설정되잇어야 한다.
+
+```
+ionic build 
+npx cap add android
+npx cap copy android
+npx cap open android
+```
 
 ### Create Site Association File
 
@@ -188,9 +197,9 @@ Generate statement 를 클릭하자.그럼 뭐가 만들어진다.
 
 이 파일을 웹서버에 복사해서 넣어준다.
 
-웹 경로에서 json이 보이는지 확인하자.
+웹 경로에서 json이 보이는지 확인하자. <https://yourdomain.com/.well-known/assetlinks.json>
 
-디플로이가 다 되면 다시 <https://developers.google.com/digital-asset-links/tools/generator>  이 사이트에서 test버튼을 클릭해보자.
+디플로이가 다 되면 다시 <https://developers.google.com/digital-asset-links/tools/generator> 이 사이트에서 test버튼을 클릭해보자.
 
 성공이라고 나오면 된다.
 
@@ -204,6 +213,13 @@ www.yourdomain.com 링크가 잇는 이메일을 보내두고 시뮬레이터에
 
 ![]({{ site_baseurl }}/assets/2020-08-17-03-38-51.png)
 
+다음은 참고 
+
+> Unfortunately, App Links don't work in all circumstances. Here are some common rules:
+
+> App Links may not work if you paste the link into the browser URL field.
+> App Links may not open the app when they are "wrapped" by tracking links.
+> Apps with built-in webviews (Google, Twitter, Facebook, Facebook Messenger, WeChat, etc.) may work with App Links only when a webview is already open. In other words, App Links could not work in-app from the feed or main app views.
 
 
 ### Add Intent Filter
@@ -234,12 +250,7 @@ www.yourdomain.com 링크가 잇는 이메일을 보내두고 시뮬레이터에
 
 
 
-App Links on Android
-Unfortunately, App Links don't work in all circumstances. Here are some common rules:
 
-App Links may not work if you paste the link into the browser URL field.
-App Links may not open the app when they are "wrapped" by tracking links.
-Apps with built-in webviews (Google, Twitter, Facebook, Facebook Messenger, WeChat, etc.) may work with App Links only when a webview is already open. In other words, App Links could not work in-app from the feed or main app views.
 
 ## 확인
 
