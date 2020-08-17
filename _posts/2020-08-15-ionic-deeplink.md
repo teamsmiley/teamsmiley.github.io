@@ -192,6 +192,20 @@ Generate statement 를 클릭하자.그럼 뭐가 만들어진다.
 
 디플로이가 다 되면 다시 <https://developers.google.com/digital-asset-links/tools/generator>  이 사이트에서 test버튼을 클릭해보자.
 
+성공이라고 나오면 된다.
+
+이제 폰에서 확인하자.
+
+웹사이트를 방문하면 앱을 열어라고 떠주면되는데?? 안되네? (ios만 되는듯)
+
+www.yourdomain.com 링크가 잇는 이메일을 보내두고 시뮬레이터에서 메일 설정을 해서 이메일을 받아보자. 
+
+이메일에 있는 링크를 누르면 다음같은 그림이 나오면 assetlinks.json 이 잘 된것이다.
+
+![]({{ site_baseurl }}/assets/2020-08-17-03-38-51.png)
+
+
+
 ### Add Intent Filter
 
 안드로이드 Os가 deep link를 인식하게 해주자.
@@ -209,30 +223,12 @@ Generate statement 를 클릭하자.그럼 뭐가 만들어진다.
 </intent-filter>
 ```
 
-이제 빌드를 해서 시뮬레이터를 돌려보자.
+이러면 다된다.
 
 
-웹사이트를 방문하면 앱을 열어라고 떠주면되는데?? 안되네? 
-
-www.yourdomain.com 링크가 잇는 이메일을 보내두고 시뮬레이터에서 메일 설정을 해서 이메일을 받아보자.
-
-이메일에 있는 링크를 누르면 다음같은 그림이 나오면 assetlinks.json 이 잘 된것이다.
-
-![]({{ site_baseurl }}/assets/2020-08-17-03-38-51.png)
-
-
-
-abd로도 확인이 가능하다고 하는데 
-
-abd경로는 안드로이드 스튜디오 옵션을 열어서 확인가능
 
 ![]({{ site_baseurl }}/assets/2020-08-16-20-33-35.png)
 
-```bash
-cd C:\Users\ragon\AppData\Local\Android\Sdk\platform-tools
-# adb shell am start -W -a android.intent.action.VIEW -d <URI> <PACKAGE>
-adb shell am start -W -a android.intent.action.VIEW -d www.pickeatup.net net.pickeatup.userapp
-```
 
 
 
