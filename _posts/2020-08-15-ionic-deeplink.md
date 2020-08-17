@@ -35,9 +35,11 @@ category: {ionic}
 
 앱에는 capacitor가 설정되잇어야한다.
 ```
+ionic build --prod
 npx cap copy ios
-npx cap open ios 
+npx cap open ios
 ```
+
 ## 앱코드 구현 
 
 앵귤러를 사용하므로 참고문서처럼 작성한다.
@@ -132,7 +134,103 @@ server {
 ![]({{ site_baseurl }}/assets/2020-08-15-05-32-01.png)
 
 ## android 
-//todo
+
+Android configuration involves creating a site association file and configuring the native app to recognize app links using an intent filter.
+
+### Create Site Association File
+
+The Site Association file 은 SHA256 fingerprint 가 필요해요 만들어 보자.
+
+keytool은 자바를 설치하면 자동설치된다. 나의 경우에는 `C:\Program Files\Java\jdk1.8.0_241\bin`에 설치가 되어있다.
+
+cmd를 실행하여 다음처럼 한다. 꼭 어드민 계정으로 cmd를 실행해야한다. 안하면 Access is Denied error
+
+```bash
+cd "C:\Program Files\Java\jdk1.8.0_241\bin"
+#keytool -genkey -v -keystore KEY-NAME.keystore -alias ALIAS -keyalg RSA -keysize 2048 -validity 10000
+keytool -genkey -v -keystore pickeatup-userapp.keystore -alias pickeatup -keyalg RSA -keysize 2048 -validity 10000
+```
+
+질문에 답변을 하면 키가 만들어진다.
+
+![]({{ site_baseurl }}/assets/2020-08-16-19-45-35.png)
+
+키를 확인해보자.
+```
+keytool -list -v -keystore pickeatup-userapp.keystore
+```
+
+내용이 쭉 나오면 성공
+
+이제 site-associate파일을 만들자.
+
+<https://developers.google.com/digital-asset-links/tools/generator> 에서 만들수 있다.
+
+![]({{ site_baseurl }}/assets/2020-08-16-19-48-16.png)
+
+Generate statement 를 클릭하자.그럼 뭐가 만들어진다.
+
+이걸 복사해서 .well-known/assetlinks.json 파일을 만들자.
+```json
+// assetlinks.json
+[
+  {
+    "relation": ["delegate_permission/common.handle_all_urls"],
+    "target": {
+      "namespace": "android_app",
+      "package_name": "com.netkosoft.beerswift",
+      "sha256_cert_fingerprints": [
+        "43:12:D4:27:D7:C4:14..."
+      ]
+    }
+  }
+]
+```
+
+이 파일을 웹서버에 복사해서 넣어준다.
+
+웹 경로에서 json이 보이는지 확인하자.
+
+디플로이가 다 되면 다시 <https://developers.google.com/digital-asset-links/tools/generator>  이 사이트에서 test버튼을 클릭해보자.
+
+### Add Intent Filter
+
+안드로이드 Os가 deep link를 인식하게 해주자.
+
+새로운 Intent Filter 를 AndroidManifest.xml 에 추가하자. 
+
+안드로이드 스튜디오에서 android/app/src/main/AndroidManifest.xml 을 열어서 추가하자. <activity> element 안쪽에 추가하자.
+
+```
+<intent-filter android:autoVerify="true">
+    <action android:name="android.intent.action.VIEW" />
+    <category android:name="android.intent.category.DEFAULT" />
+    <category android:name="android.intent.category.BROWSABLE" />
+    <data android:scheme="https" android:host="beerswift.app" />
+</intent-filter>
+```
+
+이제 빌드를 해서 시뮬레이터를 돌려보자.
+
+
+웹사이트를 방문하면 앱을 열어라고 떠주면되는데??//todo 안되네?
+
+
+abd로도 확인이 가능하다고 하는데 
+
+abd경로는 안드로이드 스튜디오 옵션을 열어서 확인가능
+
+![]({{ site_baseurl }}/assets/2020-08-16-20-33-35.png)
+
+```bash
+cd C:\Users\ragon\AppData\Local\Android\Sdk\platform-tools
+# adb shell am start -W -a android.intent.action.VIEW -d <URI> <PACKAGE>
+adb shell am start -W -a android.intent.action.VIEW -d www.pickeatup.net net.pickeatup.userapp
+```
+
+
+
+
 
 ## 확인
 
