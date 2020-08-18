@@ -61,7 +61,7 @@ systemctl stop mysql
 ```
 
 이제 서비스를 멈추고 ini를 만들자.
-
+```
 cat >>/etc/my.cnf<<EOF
 [mysqld]
 
@@ -101,7 +101,7 @@ syslog
 !includedir /etc/my.cnf.d
 
 EOF
-
+```
 로그를 한번 켜두고 서비스를 시작해보자.
 
 `tail -f /var/log/message`
@@ -118,9 +118,11 @@ show status like 'wsrep%';
 
 이제 노드 2번을 설치하자. 1번과 다르게 ini만 작성하고 mysql을 시작하면 자동으로 모든 내용을 다운받는다.
 
-
+```
 yum install Percona-XtraDB-Cluster-56
+```
 
+```
 cat >>/etc/my.cnf<<EOF
 [mysqld]
 
@@ -160,18 +162,20 @@ syslog
 !includedir /etc/my.cnf.d
 
 EOF
-
+```
+```
 systemctl enable mysql
 
 systemctl start mysql 
-
+```
 ini만 설정하고 나면 자동으로 전부 다운받아서 싱크한다.
 
 ## node14
 
 
-yum install Percona-XtraDB-Cluster-56
+`yum install Percona-XtraDB-Cluster-56`
 
+```
 cat >>/etc/my.cnf<<EOF
 [mysqld]
 
@@ -211,10 +215,12 @@ syslog
 !includedir /etc/my.cnf.d
 
 EOF
+```
 
+```
 systemctl enable mysql
-
 systemctl start mysql 
+```
 
 ini만 설정하고 나면 자동으로 전부 다운받아서 싱크한다.
 
@@ -235,6 +241,9 @@ show databases;
 show databases;
 
 test 디비가 모든곳에 있으면 된다.
+
+이제 node14에서 디비를 생성해보고 다른 곳에도 생기는지 확인하자.
+
 
 
 ## todo 
