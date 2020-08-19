@@ -36,7 +36,37 @@ yum install Percona-XtraDB-Cluster-56 -y
 systemctl enable mysql
 
 systemctl start mysql 
+```
 
+```
+[mysqld]
+
+log_bin
+
+binlog_format                  = ROW
+innodb_buffer_pool_size        = 100M
+innodb_flush_log_at_trx_commit = 0
+innodb_flush_method            = O_DIRECT
+innodb_log_files_in_group      = 2
+innodb_log_file_size           = 20M
+innodb_file_per_table          = 1
+datadir                        = /var/lib/mysql
+
+wsrep_cluster_address          = gcomm://
+wsrep_provider                 = /usr/lib64/galera3/libgalera_smm.so
+
+wsrep_slave_threads            = 8
+wsrep_cluster_name             = Cluster
+wsrep_node_name                = Node1
+
+innodb_autoinc_lock_mode       = 2
+
+[mysqld_safe]
+pid-file = /run/mysqld/mysql.pid
+syslog
+
+
+!includedir /etc/my.cnf.d
 ```
 
 5.6버전의 경우 비번은 없다. 그러므로 다음처럼 로그인한다.
@@ -82,8 +112,8 @@ wsrep_provider                 = /usr/lib64/galera3/libgalera_smm.so
 wsrep_slave_threads            = 8
 wsrep_cluster_name             = Cluster
 
-wsrep_node_name                = Node13
-wsrep_node_address             = 192.168.0.13
+wsrep_node_name                = Node09
+wsrep_node_address             = 192.168.0.9
 
 wsrep_sst_method               = xtrabackup-v2
 wsrep_sst_auth                 = root:rootdb
