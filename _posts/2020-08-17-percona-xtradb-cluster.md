@@ -39,6 +39,8 @@ ini를 만들자.
 cat >>/etc/my.cnf<<EOF
 [mysqld]
 
+max_connections = 10000
+
 log_bin
 
 binlog_format                  = ROW
@@ -68,9 +70,17 @@ default_storage_engine         = InnoDB
 
 innodb_autoinc_lock_mode       = 2
 
+log-error                      = /var/log/mysql/error.log
+
+long_query_time                = 5
+slow_query_log                 = 1
+slow_query_log_file            = /var/log/mysql/mysql_slow.log
+
+#log                           = /var/log/mysql/query.log
+
 [mysqld_safe]
 pid-file = /run/mysqld/mysql.pid
-syslog
+#syslog
 
 !includedir /etc/my.cnf.d
 
@@ -118,6 +128,8 @@ yum install Percona-XtraDB-Cluster-56
 cat >>/etc/my.cnf<<EOF
 [mysqld]
 
+max_connections = 10000
+
 log_bin
 
 binlog_format                  = ROW
@@ -147,14 +159,23 @@ default_storage_engine         = InnoDB
 
 innodb_autoinc_lock_mode       = 2
 
+log-error                      = /var/log/mysql/error.log
+
+long_query_time                = 5
+slow_query_log                 = 1
+slow_query_log_file            = /var/log/mysql/mysql_slow.log
+
+#log                           = /var/log/mysql/query.log
+
 [mysqld_safe]
 pid-file = /run/mysqld/mysql.pid
-syslog
+#syslog
 
 !includedir /etc/my.cnf.d
 
 EOF
 ```
+
 ```
 systemctl enable mysql
 
@@ -170,6 +191,8 @@ ini만 설정하고 나면 자동으로 전부 다운받아서 싱크한다.
 ```
 cat >>/etc/my.cnf<<EOF
 [mysqld]
+
+max_connections = 10000
 
 log_bin
 
@@ -200,9 +223,17 @@ default_storage_engine         = InnoDB
 
 innodb_autoinc_lock_mode       = 2
 
+log-error                      = /var/log/mysql/error.log
+
+long_query_time                = 5
+slow_query_log                 = 1
+slow_query_log_file            = /var/log/mysql/mysql_slow.log
+
+#log                           = /var/log/mysql/query.log
+
 [mysqld_safe]
 pid-file = /run/mysqld/mysql.pid
-syslog
+#syslog
 
 !includedir /etc/my.cnf.d
 
