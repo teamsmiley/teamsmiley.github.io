@@ -39,7 +39,7 @@ ini를 만들자.
 cat >>/etc/my.cnf<<EOF
 [mysqld]
 
-max_connections = 10000
+max_connections = 1000
 
 log_bin
 
@@ -128,7 +128,7 @@ yum install Percona-XtraDB-Cluster-56
 cat >>/etc/my.cnf<<EOF
 [mysqld]
 
-max_connections = 10000
+max_connections = 1000
 
 log_bin
 
@@ -192,7 +192,7 @@ ini만 설정하고 나면 자동으로 전부 다운받아서 싱크한다.
 cat >>/etc/my.cnf<<EOF
 [mysqld]
 
-max_connections = 10000
+max_connections = 1000
 
 log_bin
 
