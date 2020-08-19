@@ -32,65 +32,9 @@ yum update -y
 yum install https://repo.percona.com/yum/percona-release-latest.noarch.rpm -y
 
 yum install Percona-XtraDB-Cluster-56 -y
-
-systemctl enable mysql
-
-systemctl start mysql 
 ```
 
-```
-[mysqld]
-
-log_bin
-
-binlog_format                  = ROW
-innodb_buffer_pool_size        = 100M
-innodb_flush_log_at_trx_commit = 0
-innodb_flush_method            = O_DIRECT
-innodb_log_files_in_group      = 2
-innodb_log_file_size           = 20M
-innodb_file_per_table          = 1
-datadir                        = /var/lib/mysql
-
-wsrep_cluster_address          = gcomm://
-wsrep_provider                 = /usr/lib64/galera3/libgalera_smm.so
-
-wsrep_slave_threads            = 8
-wsrep_cluster_name             = Cluster
-wsrep_node_name                = Node1
-
-innodb_autoinc_lock_mode       = 2
-
-[mysqld_safe]
-pid-file = /run/mysqld/mysql.pid
-syslog
-
-
-!includedir /etc/my.cnf.d
-```
-
-5.6버전의 경우 비번은 없다. 그러므로 다음처럼 로그인한다.
-```bash
-mysql 
-
-이제 로그인후 비번을 설정하자.
-
-mysql> use mysql;
-
-mysql> update user set password = password('rootdb') where user = 'root';
-
-mysql> flush privileges;
-
-mysql> exit
-
-mysql -u root -prootdb
-```
-
-```
-systemctl stop mysql
-```
-
-이제 서비스를 멈추고 ini를 만들자.
+ini를 만들자.
 ```
 cat >>/etc/my.cnf<<EOF
 [mysqld]
@@ -132,12 +76,30 @@ syslog
 
 EOF
 ```
+
 로그를 한번 켜두고 서비스를 시작해보자.
 
-`tail -f /var/log/message`
+```
+tail -f /var/log/message
+```
+
+5.6버전의 경우 비번은 없다. 그러므로 다음처럼 로그인한다.
 
 ```
 systemctl start mysql@bootstrap
+
+mysql 
+```
+
+이제 로그인후 비번을 설정하자.
+```bash
+mysql> use mysql;
+
+mysql> update user set password = password('rootdb') where user = 'root';
+
+mysql> flush privileges;
+
+mysql> exit
 
 mysql -u root -prootdb
 
