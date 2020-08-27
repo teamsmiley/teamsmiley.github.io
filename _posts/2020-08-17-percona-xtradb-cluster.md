@@ -44,11 +44,11 @@ max_connections = 1000
 log_bin
 
 binlog_format                  = ROW
-innodb_buffer_pool_size        = 100M
+innodb_buffer_pool_size        = 10G # 전체메모리에 70%
 innodb_flush_log_at_trx_commit = 0
 innodb_flush_method            = O_DIRECT
 innodb_log_files_in_group      = 2
-innodb_log_file_size           = 20M
+innodb_log_file_size           = 200M
 innodb_file_per_table          = 1
 datadir                        = /var/lib/mysql
 
@@ -66,21 +66,11 @@ wsrep_sst_auth                 = root:yourpass
 
 default_storage_engine         = InnoDB
 
-#pxc_strict_mode                = ENFORCING
-
 innodb_autoinc_lock_mode       = 2
-
-log-error                      = /var/log/mysql/error.log
-
-long_query_time                = 5
-slow_query_log                 = 1
-slow_query_log_file            = /var/log/mysql/mysql_slow.log
-
-#log                           = /var/log/mysql/query.log
 
 [mysqld_safe]
 pid-file = /run/mysqld/mysql.pid
-#syslog
+syslog
 
 !includedir /etc/my.cnf.d
 
@@ -90,7 +80,7 @@ EOF
 로그를 한번 켜두고 서비스를 시작해보자.
 
 ```
-tail -f /var/log/message
+tail -f /var/log/messages
 ```
 
 5.6버전의 경우 비번은 없다. 그러므로 다음처럼 로그인한다.
@@ -133,11 +123,11 @@ max_connections = 10000
 log_bin
 
 binlog_format                  = ROW
-innodb_buffer_pool_size        = 100M
+innodb_buffer_pool_size        = 10G # 전체용량의 70%
 innodb_flush_log_at_trx_commit = 0
 innodb_flush_method            = O_DIRECT
 innodb_log_files_in_group      = 2
-innodb_log_file_size           = 20M
+innodb_log_file_size           = 200M
 innodb_file_per_table          = 1
 datadir                        = /var/lib/mysql
 
@@ -155,21 +145,11 @@ wsrep_sst_auth                 = root:yourpass
 
 default_storage_engine         = InnoDB
 
-#pxc_strict_mode                = ENFORCING
-
 innodb_autoinc_lock_mode       = 2
-
-log-error                      = /var/log/mysql/error.log
-
-long_query_time                = 5
-slow_query_log                 = 1
-slow_query_log_file            = /var/log/mysql/mysql_slow.log
-
-#log                           = /var/log/mysql/query.log
 
 [mysqld_safe]
 pid-file = /run/mysqld/mysql.pid
-#syslog
+syslog
 
 !includedir /etc/my.cnf.d
 
@@ -185,7 +165,6 @@ ini만 설정하고 나면 자동으로 전부 다운받아서 싱크한다.
 
 ## node14
 
-
 `yum install Percona-XtraDB-Cluster-56`
 
 ```
@@ -197,13 +176,13 @@ max_connections = 10000
 log_bin
 
 binlog_format                  = ROW
-innodb_buffer_pool_size        = 100M
+innodb_buffer_pool_size        = 10G # 전체용량의 70%
 innodb_flush_log_at_trx_commit = 0
 innodb_flush_method            = O_DIRECT
 innodb_log_files_in_group      = 2
 innodb_log_file_size           = 20M
 innodb_file_per_table          = 1
-datadir                        = /var/lib/mysql
+datadir                        = /data/mysql
 
 wsrep_cluster_address          = gcomm://192.168.0.9,192.168.0.13,192.168.0.14
 wsrep_provider                 = /usr/lib64/galera3/libgalera_smm.so
@@ -219,28 +198,18 @@ wsrep_sst_auth                 = root:yourpass
 
 default_storage_engine         = InnoDB
 
-#pxc_strict_mode                = ENFORCING
-
 innodb_autoinc_lock_mode       = 2
-
-log-error                      = /var/log/mysql/error.log
-
-long_query_time                = 5
-slow_query_log                 = 1
-slow_query_log_file            = /var/log/mysql/mysql_slow.log
-
-#log                           = /var/log/mysql/query.log
 
 [mysqld_safe]
 pid-file = /run/mysqld/mysql.pid
-#syslog
+syslog
 
 !includedir /etc/my.cnf.d
 
 EOF
 ```
 
-```
+```bash
 systemctl enable mysql
 systemctl start mysql 
 ```
@@ -294,7 +263,6 @@ show status like 'wsrep%';
 | wsrep_local_state_comment    | Donor/Desynced
 
 | wsrep_local_state_comment    | Synced  ==> 이렇게 되야함.
-
 ```
 
 ## 장비 고장후 대처법 
@@ -404,12 +372,6 @@ sysbench --report-interval=1 --threads=4 --time=20 \
 --db-driver=mysql --mysql-user=root --mysql-password=yourpass \
 --mysql-db=sysbench --mysql-socket=/var/lib/mysql/mysql.sock \
 cleanup
-
-
-
-
-
-
 
 hostgroup 0 for the master [Used for Write queries ]
 hostgroup 1 for the slaves [Used for Read Queries ]
