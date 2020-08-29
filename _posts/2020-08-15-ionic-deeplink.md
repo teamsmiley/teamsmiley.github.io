@@ -150,6 +150,8 @@ server {
 
 이러면 잘 적용된것이다.
 
+<https://branch.io/resources/aasa-validator> 여기에서 도메인을 넣고 확인을 할수 있다.
+
 ### Add Associated Domain
 
 딥링크를 사용할 웹사이트 주소를 적어둔다. `applinks:yourdomain.com` 을 적어줘야한다. applink:은 꼭 필요
