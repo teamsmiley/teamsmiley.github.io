@@ -100,7 +100,20 @@ vi src/.well-known/apple-app-site-association
 }
 ```
 
-teamid bundleid를 바꿔서 사이트에 배포해준다.
+### angular.json
+앵귤러 빌드시 src/.well-known폴더를 배포하기 위하여 수정해준다.
+
+vi angular.json
+```json
+"assets": [
+            "src/favicon.ico",
+            "src/assets",
+            "src/.well-known" //추가
+          ],
+          "styles": [
+            "src/styles.css"
+          ],
+```
 
 ### Site Association Files 배포 
 
@@ -111,6 +124,7 @@ teamid bundleid를 바꿔서 사이트에 배포해준다.
 * docker 로 웹사이트를 배포한경우
 여기서 나의 경우에는 문제가 발생했다 docker를 사용하다보니 도커에 nginx가 돌고 잇는기 기본 mime type이 application/octet-stream이 였다 그리서 url을 요청을 하게 되면 화면에 json이 나오는게 아니라 파일이 다운로드 받아져 버린다. 이 부분을 수정하기 위해 docker에 사용하는 nginx.conf파일을 수정을 했다.
 
+vi nginx.conf
 ```bash
 server {
   listen 80;
@@ -126,7 +140,7 @@ server {
 
 별건 아니고 기본 mime type을 application/json으로 세팅 해서 배포 
 
-이제 브라우저에서 요청을 해보면 json이 잘 보인다. 
+이제 브라우저에서 요청을 해보면 json이 잘 보인다.
 
 사파리를 열어서 직접 주소를 입력해보았다.
 

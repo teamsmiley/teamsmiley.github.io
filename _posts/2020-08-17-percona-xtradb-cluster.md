@@ -90,7 +90,7 @@ EOF
 로그를 한번 켜두고 서비스를 시작해보자.
 
 ```
-tail -f /var/log/message
+tail -f /var/log/messages
 ```
 
 5.6버전의 경우 비번은 없다. 그러므로 다음처럼 로그인한다.
