@@ -10,6 +10,8 @@ category: { program }
 
 # safari and chrome datetime 처리 방법
 
+앵귤러 datetime pipe가 크롬에서는 문제가 없는데 사파리에서 에러가 나서 확인해봄
+
 ## chrome
 
 서버에서 `2020-01-01 00:00:00` 가 오면 로컬 시간으로 보여줌 문제는 서버가 utc/gmt일 경우 로컬 시간이랑 안맞음.
