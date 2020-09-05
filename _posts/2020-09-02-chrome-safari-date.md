@@ -28,6 +28,7 @@ C#에서 다음처럼 처리
 
 ```cs
 Created.ToString("yyyy-MM-ddTHH:mm:sszzz")
+Created.ToString("yyyy-MM-ddTHH:mm:ss\"Z\"")//timezone +00:00 대신 Z라는 문자로 대치도 가능
 ```
 
 이제 두개의 브라우저가 모두 같은 화면을 랜더링 한다.
@@ -37,3 +38,13 @@ Created.ToString("yyyy-MM-ddTHH:mm:sszzz")
 ## 주의
 
 `2020-01-01T00:00:00+00:00`는 되지만 `2020-01-01 00:00:00+00:00`는 사파리에서 에러가 난다.
+
+## 추가
+
+mozila site에 보면 타임존 00:00(UTC/GMT) 를 대표하는 문자로 `Z`를 사용하기도 한다.
+
+- <https://developer.mozilla.org/ko/docs/Web/JavaScript/Reference/Global_Objects/Date/toISOString>
+
+마찬가지로
+
+`2020-01-01T00:00:00Z`는 되지만 `2020-01-01 00:00:00Z`는 사파리에서 에러가 난다.
