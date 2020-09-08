@@ -55,4 +55,4 @@ import { MatCardModule } from "@angular/material/card";
 
 ## 프로덕션 모드로 빌드후 결과
 
-![](./images/2020-09-08-00-54-18.png)
+![]({{ site_baseurl }}/assets/2020-09-08-00-54-18.png)
