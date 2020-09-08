@@ -18,7 +18,7 @@ npm install -g webpack-bundle-analyzer
 ng build --stats-json # generate ./dist/stats.json
 ng build --stats-json --prod # generate ./dist/stats.json
 
-webpack-bundle-analyzer ./dist/stats.json
+webpack-bundle-analyzer ./dist/stats.json #화면에 보여주기
 ```
 
 웹서버가 실행되면서 분석한 내용을 그림으로 보여줌.
