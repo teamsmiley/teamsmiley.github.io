@@ -18,10 +18,11 @@ npm install -g webpack-bundle-analyzer
 ng build --stats-json # generate ./dist/stats.json
 
 webpack-bundle-analyzer ./dist/stats.json
-
 ```
 
-material 파일중 사용하는것만 임포트하게 수정하면 다음처럼 변경이 됨.
+웹서버가 실행되면서 분석한 내용을 그림으로 보여줌.
+
+### material 파일중 사용하는것만 임포트하게 수정하면 다음처럼 변경이 됨.
 
 ## 변경전
 
