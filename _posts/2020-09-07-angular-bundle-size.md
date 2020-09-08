@@ -38,7 +38,7 @@ webpack-bundle-analyzer ./dist/stats.json
 
 ## 결론
 
-1메가 정도 용량이 준것을 알수 있다. 사용하는 패키지만 적용하는것이 필요하고
+1메가 정도 용량이 준것을 알수 있다. 사용하는 패키지만 적용되었다.
 
 ```ts
 import { MatCardModule } from "@angular/material";
