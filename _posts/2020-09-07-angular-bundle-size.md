@@ -16,6 +16,7 @@ category: { program }
 npm install -g webpack-bundle-analyzer
 
 ng build --stats-json # generate ./dist/stats.json
+ng build --stats-json --prod # generate ./dist/stats.json
 
 webpack-bundle-analyzer ./dist/stats.json
 ```
