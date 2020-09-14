@@ -8,6 +8,12 @@ image: /files/covers/blog.jpg
 category: { network }
 ---
 
+4년전부터 대충 사용하던 openvpn의 찜찜한 부분을 공부해서 다시 정리해보았습니다. 한글 자료가 많이 부족하여 직접 작성하게 되었습니다. 연제 글로 올려봅니다.
+
+1. <https://teamsmiley.github.io/2020/09/11/openvpn-1-tun/>
+1. <https://teamsmiley.github.io/2020/09/11/openvpn-2-tun-docker/>
+1. <https://teamsmiley.github.io/2020/09/11/openvpn-3-tap/>
+
 # openvpn - TUN - docker
 
 사내 vpn을 구축해서 사용해야해서 openvpn을 이용해서 구축을 해 보았다.
