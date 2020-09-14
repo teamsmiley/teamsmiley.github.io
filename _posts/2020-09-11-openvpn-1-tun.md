@@ -2,7 +2,7 @@
 layout: post
 title: "Openvpn-TUN"
 author: teamsmiley
-date: 2020-09-09
+date: 2020-09-11
 tags: [openvpn]
 image: /files/covers/blog.jpg
 category: { network }
@@ -276,7 +276,7 @@ dev tun
 
 proto udp
 
-remote 204.16.116.121 1194 udp
+remote ---.---.---.--- 1194 udp #본인 아이피를 넣으세요
 
 key-direction 1
 
@@ -325,7 +325,7 @@ group nobody      # 권한
 - port 변경
 
 ```bash
-remote 204.16.116.121 11194 udp
+remote ---.---.---.--- 11194 udp # 본인 아이피를 넣으세요
 ```
 
 포트 변경하고 다시 설치하고 접속하면 잘된다.
@@ -343,7 +343,7 @@ dev tun
 
 proto udp
 
-remote 204.16.116.121 11194 udp
+remote ---.---.---.--- 11194 udp # 본인 아이피를 넣으세요
 
 key-direction 1
 
