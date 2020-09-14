@@ -89,7 +89,7 @@ systemctl restart network
 
 bridge network만든 후 ifconfig
 
-![](./images/2020-09-11-10-26-49.png)
+![]({{ site_baseurl }}/assets/2020-09-11-10-26-49.png)
 
 ## Tap - Ethernet Bridging setup
 
@@ -136,7 +136,7 @@ ifconfig enp7s0 0.0.0.0 promisc up
 
 여기까지 하고 난후 ifconfig
 
-![](./images/2020-09-11-10-28-33.png)
+![]({{ site_baseurl }}/assets/2020-09-11-10-28-33.png)
 
 tap0가 만들어진걸 알수 있다.
 
