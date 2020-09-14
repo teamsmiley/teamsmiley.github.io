@@ -184,3 +184,25 @@ dev tap
 서버설정에서 client-to-client와 topology를 주석제거하고 사용
 
 이제 같은 대역폭으로 아이피도 받고 client to client도 되니 같은 스위치를 공유하는듯 작업할수 있다.
+
+### 재부팅후에도 동작하게 하자.
+
+vi /etc/sysconfig/network-scripts/ifcfg-tap0
+
+```
+NAME="tap0"
+DEVICE="tap0"
+ONBOOT=yes
+TYPE=Tap
+BRIDGE="br0"
+NM_CONTROLLED=no
+```
+
+vi /etc/rc.d/rc.local
+
+```
+ip link set enp7s0 promisc on
+ip link set tap0 promisc on
+```
+
+이제 재부팅후에도 테스트해보자.
