@@ -101,6 +101,8 @@ bridge network만든 후 ifconfig
 
 - <https://openvpn.net/community-resources/ethernet-bridging/>
 
+![]({{ site_baseurl }}/assets/2020-09-14-14-47-12.png)
+
 ### install openvpn
 
 ```

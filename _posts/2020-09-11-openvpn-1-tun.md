@@ -58,6 +58,10 @@ vpn에서 받은걸 ip forward 를 통해서 전달해줘야한다.
 
 ## TUN 방식
 
+![]({{ site_baseurl }}/assets/2020-09-14-14-45-40.png)
+
+![]({{ site_baseurl }}/assets/2020-09-14-14-46-05.png)
+
 ### install
 
 ```bash
