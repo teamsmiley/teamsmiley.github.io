@@ -21,7 +21,7 @@ git --version
 
 > git version 1.8.3.1
 
-yum remove git*
+yum remove git
 
 yum -y install https://packages.endpoint.com/rhel/7/os/x86_64/endpoint-repo-1.7-1.x86_64.rpm
 
