@@ -157,6 +157,7 @@ stages:
 build-dev:
   stage: build
   script:
+    - echo "hello"
     - cd ./ios
     - xcodebuild -workspace 'App/App.xcworkspace' -scheme 'App' -configuration 'Release' -archivePath tmp.xcarchive archive
     - xcodebuild -exportArchive -archivePath ./tmp.xcarchive -exportOptionsPlist ./ExportOptions.plist -exportPath ./exportIpaArchive/
@@ -172,11 +173,15 @@ build-dev:
 
 잘 빌드된다.
 
-이제 필요한 스크립트를 만들어서 .gitlab-ci.yml에 추가하면 빌드가 되겟다.
+추가로 작업이 필요하면 스크립트를 만들어서 .gitlab-ci.yml에 추가하면 빌드가 되겟다.
 
 ## todo
 
 ionic관련해서 빌드할 내용을 추가로 적어야할듯.
+
+- mac에서 log보는법
+
+- git pull을 해서 가져오는법.
 
 - 특정 태그일때만 업로드하는법
 - 버전 업데이트하는법
