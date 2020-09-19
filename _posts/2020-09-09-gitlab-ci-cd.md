@@ -158,9 +158,6 @@ build-dev:
   stage: build
   script:
     - echo "hello"
-    - cd ./ios
-    - xcodebuild -workspace 'App/App.xcworkspace' -scheme 'App' -configuration 'Release' -archivePath tmp.xcarchive archive
-    - xcodebuild -exportArchive -archivePath ./tmp.xcarchive -exportOptionsPlist ./ExportOptions.plist -exportPath ./exportIpaArchive/
 ```
 
 이제 커밋해보자. 푸시
@@ -174,6 +171,21 @@ build-dev:
 잘 빌드된다.
 
 추가로 작업이 필요하면 스크립트를 만들어서 .gitlab-ci.yml에 추가하면 빌드가 되겟다.
+
+실제로 빌드하는 스크립트를 넣어보자.
+
+```yml
+stages:
+  - build
+
+build-dev:
+  stage: build
+  script:
+    # - echo "hello"
+    - cd ./ios
+    - xcodebuild -workspace 'App/App.xcworkspace' -scheme 'App' -configuration 'Release' -archivePath tmp.xcarchive archive
+    - xcodebuild -exportArchive -archivePath ./tmp.xcarchive -exportOptionsPlist ./ExportOptions.plist -exportPath ./exportIpaArchive/
+```
 
 ## todo
 
