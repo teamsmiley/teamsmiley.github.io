@@ -191,7 +191,7 @@ build-dev:
 
 ionic관련해서 빌드할 내용을 추가로 적어야할듯.
 
-- mac에서 log보는법
+- mac에서 log보는법 => console프로그램으로
 
 - git pull을 해서 가져오는법.
 
