@@ -16,63 +16,7 @@ gitlab ci를 현재 사용중이므로 이걸 이용하기로 한다.
 
 일단 gitlab 서버는 설치되있다고 가정하고 gitlab runner를 설치해보자.
 
-## xcode build
-
-xcode에서 archive메뉴를 이용하면 업로드까지 모두 처리가 된다. 그러나 우리는 커맨드라인으로 처리를 해야한다. 그래야 gitlab runner가 실행해줄수 있다.
-
-ExportOptions.plist 파일을 만들어야한다.
-
-```xml
-<?xml version="1.0" encoding="UTF-8"?>
-<!DOCTYPE plist PUBLIC "-//Apple//DTD PLIST 1.0//EN" "http://www.apple.com/DTDs/PropertyList-1.0.dtd">
-<plist version="1.0">
-<dict>
-  <key>method</key>
-  <string>app-store</string>
-
-  <key>teamID</key>
-  <string>YOUR TEAMID</string>
-
-  <key>signingCertificate</key>
-  <string>YOUR CERT</string>
-
-  <key>provisioningProfiles</key>
-  <dict>
-    <key>YOUR APP ID</key>
-    <string>YOUR PROFILE NAME</string>
-  </dict>
-
-  <key>destination</key>
-  <string>upload</string>
-</dict>
-</plist>
-```
-
-method로 app-store를 쓰겟다는것이고(ad hoc등을 사용할수도 있다)
-
-teamid
-
-![]({{ site_baseurl }}/assets/2020-09-19-08-46-23.png)
-
-cert
-
-![]({{ site_baseurl }}/assets/2020-09-19-08-41-45.png)
-
-profile
-
-![]({{ site_baseurl }}/assets/2020-09-19-08-42-53.png)
-
-![]({{ site_baseurl }}/assets/2020-09-19-08-44-18.png)
-
-이제 빌드하고 업로드해보자.
-
-```bash
-cd ./ios
-xcodebuild -workspace 'App/App.xcworkspace' -scheme 'App' -configuration 'Release' -archivePath tmp.xcarchive archive # build and archive
-xcodebuild -exportArchive -archivePath ./tmp.xcarchive -exportOptionsPlist ./ExportOptions.plist -exportPath ./exportIpaArchive/ # upload
-```
-
-업로드가 잘 된다. 이제 이걸 gitlab runner가 실행해주면된다.
+이제 이걸 gitlab runner가 실행해주면된다.
 
 ## install gitlab-runner
 
@@ -172,32 +116,185 @@ build-dev:
 
 추가로 작업이 필요하면 스크립트를 만들어서 .gitlab-ci.yml에 추가하면 빌드가 되겟다.
 
-실제로 빌드하는 스크립트를 넣어보자.
+## log 확인
+
+application >> util >> console : filter by gitlab
+
+로그가 보이면서 에러내용도 볼수 있다.
+
+## xcode build
+
+xcode에서 archive메뉴를 이용하면 업로드까지 모두 처리가 된다. 그러나 우리는 커맨드라인으로 처리를 해야한다. 그래야 gitlab runner가 실행해줄수 있다.
+
+ExportOptions.plist 파일을 만들어야한다.
+
+```xml
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE plist PUBLIC "-//Apple//DTD PLIST 1.0//EN" "http://www.apple.com/DTDs/PropertyList-1.0.dtd">
+<plist version="1.0">
+<dict>
+  <key>method</key>
+  <string>app-store</string>
+
+  <key>teamID</key>
+  <string>YOUR TEAMID</string>
+
+  <key>signingCertificate</key>
+  <string>YOUR CERT</string>
+
+  <key>provisioningProfiles</key>
+  <dict>
+    <key>YOUR APP ID</key>
+    <string>YOUR PROFILE NAME</string>
+  </dict>
+
+  <key>destination</key>
+  <string>upload</string>
+</dict>
+</plist>
+```
+
+method로 app-store를 쓰겟다는것이고(ad hoc등을 사용할수도 있다)
+
+teamid
+
+![]({{ site_baseurl }}/assets/2020-09-19-08-46-23.png)
+
+cert
+
+![]({{ site_baseurl }}/assets/2020-09-19-08-41-45.png)
+
+profile
+
+![]({{ site_baseurl }}/assets/2020-09-19-08-42-53.png)
+
+![]({{ site_baseurl }}/assets/2020-09-19-08-44-18.png)
+
+이제 macos에서 빌드하고 업로드해보자.
+
+```bash
+npm install
+ionic build --configuration=production && npx cap copy ios && npx cap update ios
+cd ./ios
+xcodebuild -workspace 'App/App.xcworkspace' -scheme 'App' -configuration 'Release' -archivePath tmp.xcarchive archive # build and archive
+xcodebuild -exportArchive -archivePath ./tmp.xcarchive -exportOptionsPlist ./ExportOptions.plist -exportPath ./exportIpaArchive/ # upload
+```
+
+이제 이 스크립트를 gitlab runner가 실행할수 있게 해주면 된다.
 
 ```yml
 stages:
   - build
 
-build-dev:
+build-staging:
   stage: build
+
   script:
-    # - echo "hello"
+    # nvm을 사용하지 않는 사람은 필요없음.
+    # - source ~/.nvm/nvm.sh
+    # - nvm use v12.16.1
+    - npm install
+    # - export PACKAGE_NAME=$(node -p -e "require('./package.json').name")
+    - ionic build --configuration=production && npx cap copy ios && npx cap update ios
     - cd ./ios
     - xcodebuild -workspace 'App/App.xcworkspace' -scheme 'App' -configuration 'Release' -archivePath tmp.xcarchive archive
     - xcodebuild -exportArchive -archivePath ./tmp.xcarchive -exportOptionsPlist ./ExportOptions.plist -exportPath ./exportIpaArchive/
 ```
 
+commit & push 하면 gitlab ci/cd가 동작한다.
+
+파일이 test flight에 업로드 된다. 이걸 https://appstoreconnect.apple.com/ 웹사이트를 통해서 퍼블리시 하면 된다.
+
+## master일때만 ci/cd를 실행
+
+```yml
+stages:
+  - build
+
+build-staging:
+  stage: build
+
+  script:
+    - source ~/.nvm/nvm.sh
+    - nvm use v12.16.1
+    - npm install
+    # - export PACKAGE_NAME=$(node -p -e "require('./package.json').name")
+    - ionic build --configuration=production && npx cap copy ios && npx cap update ios
+    - cd ./ios
+    - xcodebuild -workspace 'App/App.xcworkspace' -scheme 'App' -configuration 'Release' -archivePath tmp.xcarchive archive
+    - xcodebuild -exportArchive -archivePath ./tmp.xcarchive -exportOptionsPlist ./ExportOptions.plist -exportPath ./exportIpaArchive/
+  only:
+    - master
+```
+
+마스터일때만 빌드를 시작하고 업로드한다.
+
+## 특정 태그일때만 ci/cd를 실행하고싶다.
+
+생각해보니 마스터일때만 할게 아니라 버전을 태깅을 하면 그때 동작하게 하고 싶다.
+
+yml에 tags를 추가한다.
+
+```yml
+stages:
+  - build
+
+build-staging:
+  stage: build
+  script:
+    - source ~/.nvm/nvm.sh
+    - nvm use v12.16.1
+    - npm install
+    # - export PACKAGE_NAME=$(node -p -e "require('./package.json').name")
+    - ionic build --configuration=production && npx cap copy ios && npx cap update ios
+    - cd ./ios
+    - xcodebuild -workspace 'App/App.xcworkspace' -scheme 'App' -configuration 'Release' -archivePath tmp.xcarchive archive
+    - xcodebuild -exportArchive -archivePath ./tmp.xcarchive -exportOptionsPlist ./ExportOptions.plist -exportPath ./exportIpaArchive/
+  only:
+    - tags
+```
+
+이제 commit / push를 하고 난후 tagging을 한다.
+
+```bash
+git tag -m "release v1.0.0" -a v1.0.0 05d9873 # git hash
+git push origin v1.0.0                        # push tags
+```
+
+1.0.0 태깅을 하면 ci/cd가 트리거 된다.
+
+## gitlab runner stuck
+
+혹시 gitlab runner가 stuck상태이면 runner 상태를 보자.
+
+admin >> runner >> 특정 러너 수정
+
+![](./images/2020-09-21-11-45-56.png)
+
+indicate whether this runner can pick jobs without tags => on
+
+아래쪽 tags는 빈칸
+
+## 버전 업데이트
+
+MARKETING_VERSION 과 CURRENT_PROJECT_VERSION을 업데이트 해야한다.
+
+package.json에 잇는 버전을 읽어와서 MARKETING_VERSION 변수로 만들어 두고 agvtool 라는 툴을 이용해서 업데이트를 할수가 있다.
+
+CURRENT_PROJECT_VERSION은 다음번호를 넣게 해서 사용한다.
+
+```yml
+- export MARKETING_VERSION=$(node -p -e "require('./package.json').version")
+- echo $MARKETING_VERSION
+- cd ./ios/App
+- xcrun agvtool new-marketing-version $MARKETING_VERSION
+- xcrun agvtool next-version -all
+- ionic build --configuration=production && npx cap copy ios && npx cap update ios
+- cd ../
+- xcodebuild -workspace 'App/App.xcworkspace' -scheme 'App' -configuration 'Release' -archivePath tmp.xcarchive archive
+- xcodebuild -exportArchive -archivePath ./tmp.xcarchive -exportOptionsPlist ./ExportOptions.plist -exportPath ./exportIpaArchive/
+```
+
 ## todo
 
-ionic관련해서 빌드할 내용을 추가로 적어야할듯.
-
-- mac에서 log보는법 => console프로그램으로
-
-- git pull을 해서 가져오는법.
-
-- 특정 태그일때만 업로드하는법
-- 버전 업데이트하는법
-- 빌드 넘버 업데이트하는법
 - 수동으로 트리거해서 빌드하는법
-- test flight에 업로드가 되는데? 맞나?
-- 정식버전으로 배포는 어떻게?
