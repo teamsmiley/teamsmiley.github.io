@@ -269,7 +269,7 @@ git push origin v1.0.0                        # push tags
 
 admin >> runner >> 특정 러너 수정
 
-![](./images/2020-09-21-11-45-56.png)
+![]({{ site_baseurl }}/assets/2020-09-21-11-45-56.png)
 
 indicate whether this runner can pick jobs without tags => on
 
