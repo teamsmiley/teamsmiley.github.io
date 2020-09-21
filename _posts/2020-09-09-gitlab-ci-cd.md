@@ -281,7 +281,7 @@ MARKETING_VERSION 과 CURRENT_PROJECT_VERSION을 업데이트 해야한다.
 
 package.json에 잇는 버전을 읽어와서 MARKETING_VERSION 변수로 만들어 두고 agvtool 라는 툴을 이용해서 업데이트를 할수가 있다.
 
-CURRENT_PROJECT_VERSION은 다음번호를 넣게 해서 사용한다.
+CURRENT_PROJECT_VERSION은 다음 번호를 넣게 해서 사용한다.
 
 ```yml
 - export MARKETING_VERSION=$(node -p -e "require('./package.json').version")
@@ -294,6 +294,71 @@ CURRENT_PROJECT_VERSION은 다음번호를 넣게 해서 사용한다.
 - xcodebuild -workspace 'App/App.xcworkspace' -scheme 'App' -configuration 'Release' -archivePath tmp.xcarchive archive
 - xcodebuild -exportArchive -archivePath ./tmp.xcarchive -exportOptionsPlist ./ExportOptions.plist -exportPath ./exportIpaArchive/
 ```
+
+CURRENT_PROJECT_VERSION는 다음번을 넣어주기는하는데 기본값을 기준으로해서 문제가 된다.
+
+예를 들면 기존값이 5면 빌드시 6으로 만들어 주기는 하나 여전히 소스코드는 5로 되잇기때문에 새로 받아서 빌드하면 또 6이 생성될듯 보인다.
+
+바뀐값이 소스코드에 포함이 되야하는데 음.
+
+바뀐값을 커밋해줄가? 그럼 계속 빌드가 되는 문제가 생기는데
+
+tags가 잇는경우만 빌드가 트리거가 되게 바꾸면 바뀐값을 커밋해도 되겟다.
+
+commit / push가 어느 브랜치로 될가?
+
+테스트해보니 문제가 있음 gitlab runner는 기본적으로 https를 통해서 git clone을 받는다. https는 커밋이 안된다. ssh를 사용해야하는데
+
+해보자.
+
+```yml
+stages:
+  - build
+
+variables:
+  GIT_STRATEGY: none
+
+build-staging:
+  stage: build
+
+  before_script:
+    ## clean the working directory
+    - export RUNNER_TOKEN=dnMxf-Fn
+    - BUILD_DIR=~/builds/$RUNNER_TOKEN/0
+    - echo $BUILD_DIR
+    - rm -rf $BUILD_DIR
+    - mkdir -p $BUILD_DIR
+    - cd $BUILD_DIR
+    ## clone
+    - git clone ssh://git@gitlab.xgridcolo.com:30022/pickeatup/pickeatup-user-app.git .
+
+  script:
+    - source ~/.nvm/nvm.sh
+    - nvm use v12.16.1
+    - npm install
+    - ionic build --configuration=production && npx cap copy ios && npx cap update ios
+    # - export PACKAGE_NAME=$(node -p -e "require('./package.json').name")
+    - export MARKETING_VERSION=$(node -p -e "require('./package.json').version")
+    - echo $MARKETING_VERSION
+    - cd ./ios/App
+    - xcrun agvtool new-marketing-version $MARKETING_VERSION
+    - xcrun agvtool next-version -all
+    - cd ../
+    - xcodebuild -workspace 'App/App.xcworkspace' -scheme 'App' -configuration 'Release' -archivePath tmp.xcarchive archive
+    - xcodebuild -exportArchive -archivePath ./tmp.xcarchive -exportOptionsPlist ./ExportOptions.plist -exportPath ./exportIpaArchive/
+    - git commit -am next-version # 바뀐값 커밋
+    - git push origin HEAD:dev # push to origin
+  only:
+    - tags
+```
+
+GIT_STRATEGY: none 이라는것이 자동으로 clone을 가져오지 않게 한다.
+
+이제 스크립트에서 클론을 받아보고 그걸 빌드하면된다.
+
+그리고 바뀐값을 이제 커밋하면 된다.
+
+빌드하고 숫자가 바뀐걸 커밋해준다. 이제 잘 된다.
 
 ## todo
 
