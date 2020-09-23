@@ -1,6 +1,6 @@
 ---
 layout: post
-title: "ionic gitlab ci/cd"
+title: "ionic gitlab ci/cd - ios"
 author: teamsmiley
 date: 2020-09-09
 tags: [cicd]
@@ -18,7 +18,9 @@ gitlab ci를 현재 사용중이므로 이걸 이용하기로 한다.
 
 이제 이걸 gitlab runner가 실행해주면된다.
 
-## install gitlab-runner
+## gitlab-runner
+
+### install gitlab-runner
 
 on macos
 
@@ -30,7 +32,7 @@ gitlab-runner install
 gitlab-runner start
 ```
 
-## register gitlab runner on macbook
+### register gitlab runner on macbook
 
 ```bash
 sudo gitlab-runner register
@@ -84,7 +86,7 @@ gitlab-runner register \
 
 참고로 설정은 ~/.gitlab-runner/config.toml 에 저장된다.
 
-## gitlab-runner service start
+### gitlab-runner service start
 
 ```bash
 gitlab-runner start
@@ -116,13 +118,13 @@ build-dev:
 
 추가로 작업이 필요하면 스크립트를 만들어서 .gitlab-ci.yml에 추가하면 빌드가 되겟다.
 
-## log 확인
+### log 확인
 
 application >> util >> console : filter by gitlab
 
 로그가 보이면서 에러내용도 볼수 있다.
 
-## xcode build
+## xcode build with command line
 
 xcode에서 archive메뉴를 이용하면 업로드까지 모두 처리가 된다. 그러나 우리는 커맨드라인으로 처리를 해야한다. 그래야 gitlab runner가 실행해줄수 있다.
 
@@ -196,7 +198,6 @@ build-staging:
     # - source ~/.nvm/nvm.sh
     # - nvm use v12.16.1
     - npm install
-    # - export PACKAGE_NAME=$(node -p -e "require('./package.json').name")
     - ionic build --configuration=production && npx cap copy ios && npx cap update ios
     - cd ./ios
     - xcodebuild -workspace 'App/App.xcworkspace' -scheme 'App' -configuration 'Release' -archivePath tmp.xcarchive archive
@@ -207,7 +208,9 @@ commit & push 하면 gitlab ci/cd가 동작한다.
 
 파일이 test flight에 업로드 된다. 이걸 https://appstoreconnect.apple.com/ 웹사이트를 통해서 퍼블리시 하면 된다.
 
-## master일때만 ci/cd를 실행
+## ci/cd trigger
+
+### master일때만 ci/cd를 실행
 
 ```yml
 stages:
@@ -220,7 +223,6 @@ build-staging:
     - source ~/.nvm/nvm.sh
     - nvm use v12.16.1
     - npm install
-    # - export PACKAGE_NAME=$(node -p -e "require('./package.json').name")
     - ionic build --configuration=production && npx cap copy ios && npx cap update ios
     - cd ./ios
     - xcodebuild -workspace 'App/App.xcworkspace' -scheme 'App' -configuration 'Release' -archivePath tmp.xcarchive archive
@@ -231,7 +233,7 @@ build-staging:
 
 마스터일때만 빌드를 시작하고 업로드한다.
 
-## 특정 태그일때만 ci/cd를 실행하고싶다.
+### 특정 태그일때만 ci/cd를 실행하고싶다.
 
 생각해보니 마스터일때만 할게 아니라 버전을 태깅을 하면 그때 동작하게 하고 싶다.
 
@@ -247,7 +249,6 @@ build-staging:
     - source ~/.nvm/nvm.sh
     - nvm use v12.16.1
     - npm install
-    # - export PACKAGE_NAME=$(node -p -e "require('./package.json').name")
     - ionic build --configuration=production && npx cap copy ios && npx cap update ios
     - cd ./ios
     - xcodebuild -workspace 'App/App.xcworkspace' -scheme 'App' -configuration 'Release' -archivePath tmp.xcarchive archive
@@ -264,18 +265,6 @@ git push origin v1.0.0                        # push tags
 ```
 
 1.0.0 태깅을 하면 ci/cd가 트리거 된다.
-
-## gitlab runner stuck
-
-혹시 gitlab runner가 stuck상태이면 runner 상태를 보자.
-
-admin >> runner >> 특정 러너 수정
-
-![]({{ site_baseurl }}/assets/2020-09-21-11-45-56.png)
-
-indicate whether this runner can pick jobs without tags => on
-
-아래쪽 tags는 빈칸
 
 ## 버전 업데이트
 
@@ -325,31 +314,29 @@ build-staging:
 
   before_script:
     ## clean the working directory
-    - export RUNNER_TOKEN=dnMxf-Fn
-    - BUILD_DIR=~/builds/$RUNNER_TOKEN/0
-    - echo $BUILD_DIR
+    - BUILD_DIR=~/builds/
     - rm -rf $BUILD_DIR
     - mkdir -p $BUILD_DIR
     - cd $BUILD_DIR
     ## clone
-    - git clone ssh://git@gitlab.xgridcolo.com:30022/pickeatup/pickeatup-user-app.git .
+    - git clone ssh://git@gitlab.xgridcolo.com:30022/pickeatup/pickeatup-manager-app.git .
 
   script:
-    - source ~/.nvm/nvm.sh
-    - nvm use v12.16.1
+    ## nvm사용하면
+    ## - source ~/.nvm/nvm.sh
+    ## - nvm use v12.18.4
     - npm install
     - ionic build --configuration=production && npx cap copy ios && npx cap update ios
-    # - export PACKAGE_NAME=$(node -p -e "require('./package.json').name")
-    - export MARKETING_VERSION=$(node -p -e "require('./package.json').version")
-    - echo $MARKETING_VERSION
-    - cd ./ios/App
+    - export MARKETING_VERSION=$(node -p -e "require('./package.json').version") ## package.json에 버전을 가지고 와서 marketing_version에 사용한다.
+    - cd $BUILD_DIR/ios/App
     - xcrun agvtool new-marketing-version $MARKETING_VERSION
     - xcrun agvtool next-version -all
-    - cd ../
-    - xcodebuild -workspace 'App/App.xcworkspace' -scheme 'App' -configuration 'Release' -archivePath tmp.xcarchive archive
-    - xcodebuild -exportArchive -archivePath ./tmp.xcarchive -exportOptionsPlist ./ExportOptions.plist -exportPath ./exportIpaArchive/
     - git commit -am next-version # 바뀐값 커밋
     - git push origin HEAD:dev # push to origin
+    - cd $BUILD_DIR/ios
+    - xcodebuild -workspace 'App/App.xcworkspace' -scheme 'App' -configuration 'Release' -archivePath tmp.xcarchive archive
+    - xcodebuild -exportArchive -archivePath ./tmp.xcarchive -exportOptionsPlist ./ExportOptions.plist -exportPath ./exportIpaArchive/
+
   only:
     - tags
 ```
@@ -362,6 +349,18 @@ GIT_STRATEGY: none 이라는것이 자동으로 clone을 가져오지 않게 한
 
 빌드하고 숫자가 바뀐걸 커밋해준다. 이제 잘 된다.
 
-## todo
+이제부터는 tagging을 하면 빌드가 트리거 된다.
 
-- 수동으로 트리거해서 빌드하는법
+## known error
+
+### gitlab runner stuck
+
+혹시 gitlab runner가 stuck상태이면 runner 상태를 보자.
+
+admin >> runner >> 특정 러너 수정
+
+![]({{ site_baseurl }}/assets/2020-09-21-11-45-56.png)
+
+indicate whether this runner can pick jobs without tags => on
+
+아래쪽 tags는 빈칸
