@@ -98,6 +98,8 @@ variables:
 
 태깅을 햇을때만 ci/cd가 실행되게 하자.
 
+## ci/cd 파일로 스크립트 실행
+
 전체 .gitlab-ci.yml파일은 아래와 같다.
 
 ```yml
