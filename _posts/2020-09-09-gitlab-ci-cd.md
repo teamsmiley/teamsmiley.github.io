@@ -160,11 +160,13 @@ teamid
 
 ![]({{ site_baseurl }}/assets/2020-09-19-08-46-23.png)
 
-cert
+certification ( apple distribute용 하나면 다 됨. )
 
 ![]({{ site_baseurl }}/assets/2020-09-19-08-41-45.png)
 
 profile
+
+꼭 App store type으로 만들어서 그걸 이용하자.
 
 ![]({{ site_baseurl }}/assets/2020-09-19-08-42-53.png)
 
