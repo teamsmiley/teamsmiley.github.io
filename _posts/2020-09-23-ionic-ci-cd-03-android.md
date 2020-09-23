@@ -16,6 +16,10 @@ category: { ionic }
 
 # ionic ci/cd - android
 
+## android studio install
+
+<https://developer.android.com/studio>
+
 ## command line으로 빌드/업로드
 
 ## ci/cd 파일로 스크립트 실행
