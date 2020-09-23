@@ -8,6 +8,12 @@ image: /files/covers/blog.jpg
 category: { ionic }
 ---
 
+얼마전 쓴 글이 정리도 잘 안되고 너무 커서 자르고 정리해서 다시 올립니다.
+
+1. <https://teamsmiley.github.io/2020/09/23/ionic-ci-cd-01-gitlab-runner/>
+1. <https://teamsmiley.github.io/2020/09/23/ionic-ci-cd-02-ios/>
+1. <https://teamsmiley.github.io/2020/09/23/ionic-ci-cd-03-android/>
+
 # ionic ci/cd - gitlab runner
 
 gitlab ci를 현재 사용중이므로 이걸 이용하기로 한다.
