@@ -22,6 +22,45 @@ category: { ionic }
 
 ## command line으로 빌드/업로드
 
+```bash
+cd project directory
+
+ionic build --configuration=production && npx cap copy android && npx cap update android && npx cap open android
+
+cd android
+
+gradlew tasks # 전체 gradle tasks
+bash gradlew #build
+
+# apk bundle 생성(unsigned)
+bash gradlew :app:bundleDebug
+
+## sign
+
+## upload
+```
+
+갑자기 자바를 설치하라고함.
+
+https://www.oracle.com/java/technologies/javase-downloads.html
+
+11버전이 lts니 그걸로 macOS Installer 를 설치
+
+그런데 더 조사를 해보니 gradlew를 쓰면 필요없어 보임
+
+```
+cd android
+chmod +x gradlew
+
+./gradlew tasks --all
+```
+
+apksigner sign --ks release.jks app.apk
+
+Sign your app from command line
+
+keytool -genkey -v -keystore my-release-key.jks -keyalg RSA -keysize 2048 -validity 10000 -alias my-alias
+
 ## ci/cd 파일로 스크립트 실행
 
 ## known error
