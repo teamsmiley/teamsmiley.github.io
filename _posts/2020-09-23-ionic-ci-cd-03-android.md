@@ -16,11 +16,29 @@ category: { ionic }
 
 # ionic ci/cd - android
 
-## android studio install
+## key를 만들어야한다. 벌서 만들엇으면 그냥 쓰고
+
+```
+keytool -genkey \
+  - keystore release.jks \
+  - keyalg RSA \
+  - keysize 2048 -validity 10000 \
+  - storepass URPASS \
+  - alias alias1 \
+  - keypass URPASS \
+  - dname "CN=smiley.xgridcolo.com, OU=ID, O=XGRID, L=LLL, S=SSS, C=US" \
+  - noprompt
+```
+
+이키를 사용해서 apk 나 aab를 singing을 한다. 이걸 play store에 업로드를 할수가 있다.
+
+## android studio install 필요한가?
 
 <https://developer.android.com/studio>
 
 ## command line으로 빌드/업로드
+
+gradle로 전부 빌드하고 사인한다.
 
 ```bash
 cd project directory
@@ -29,11 +47,18 @@ ionic build --configuration=production && npx cap copy android && npx cap update
 
 cd android
 
-gradlew tasks # 전체 gradle tasks
-bash gradlew #build
+./gradlew androidDepencies
 
-# apk bundle 생성(unsigned)
-bash gradlew :app:bundleDebug
+chmod +x ./android/gradlew
+
+./gradlew tasks --all # 전체 gradle tasks
+./gradlew #build
+
+# abb bundle 생성(unsigned)
+./gradlew bundle
+
+./android/app/build/outputs/bundle/release/app-release.aab 요기에 생성됨.
+
 
 ## sign
 
@@ -59,7 +84,7 @@ apksigner sign --ks release.jks app.apk
 
 Sign your app from command line
 
-keytool -genkey -v -keystore my-release-key.jks -keyalg RSA -keysize 2048 -validity 10000 -alias my-alias
+signingConfigs signingConfigs.release 추가
 
 ## ci/cd 파일로 스크립트 실행
 
