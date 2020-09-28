@@ -35,7 +35,7 @@ plugins=(git zsh-syntax-highlighting zsh-autosuggestions kubectl kube-ps1) #여�
 ## kubernetes 연결하기
 
 ```bash
-scp root@master:/root/.kube/config ~/.kube/config
+scp root@master01:/root/.kube/config ~/.kube/config
 # 확인
 kubectl get pods 
 ```
