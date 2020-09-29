@@ -14,7 +14,7 @@ kubernetes를 설치하면 잘 되는데 재부팅시 not ready가 되었다.
 
 에러를 찾아봤다.
 
-```
+```bash
 systemctl status kubelet
 
 systemctl restart kubelet
@@ -22,7 +22,7 @@ systemctl restart kubelet
 systemctl status kubelet
 ```
 
-```
+```bash
 kubelet.service - kubelet: The Kubernetes Node Agent
    Loaded: loaded (/usr/lib/systemd/system/kubelet.service; enabled; vendor preset: disabled)
   Drop-In: /usr/lib/systemd/system/kubelet.service.d
@@ -35,7 +35,7 @@ kubelet.service - kubelet: The Kubernetes Node Agent
 
 정확한 에러는 안나와서 `journalctl -xefu kubelet` 실행
 
-```
+```bash
 failed to run Kubelet: failed to create kubelet: misconfiguration: kubelet cgroup driver: "cgroupfs" is different from docker cgroup driver: "systemd"
 ```
 

@@ -12,7 +12,7 @@ category: { kube }
 
 ## 더이상 pod가 할당 되지 않게
 
-```
+```bash
 kubectl cordon master03
 ```
 
@@ -20,8 +20,9 @@ kubectl cordon master03
 
 ## 기존 포드들을 다른곳으로 이동
 
-```
+```bash
 kubectl drain master03
+
 node/master03 cordoned
 error: unable to drain node "master03", aborting command...
 
@@ -34,7 +35,7 @@ error: cannot delete DaemonSet-managed Pods (use --ignore-daemonsets to ignore):
 
 에러에 나온 옵션 추가
 
-```
+```bash
 kubectl drain master03 --ignore-daemonsets
 ```
 
