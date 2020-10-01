@@ -8,6 +8,12 @@ image: /files/covers/blog.jpg
 category: { kubespray }
 ---
 
+연속된 글입니다.
+
+1. <https://teamsmiley.github.io/2020/09/30/kubespray-01-vagrant/>
+1. <https://teamsmiley.github.io/2020/10/01/kubespray-02-install-kube-local-internal-loadbalancer/>
+1. <https://teamsmiley.github.io/2020/10/02/kubespray-03-kube-with-haproxy/>
+
 # kubespray - 02 install kube - local internal loadbalancer
 
 ## install python 3
@@ -251,5 +257,3 @@ kubectl get nodes # 클러스터가 없으므로 에러
 ![]({{ site_baseurl }}/assets/2020-10-01-10-09-14.png)
 
 노드들은 proxy가 있어서 하나의 마스터가 죽으면 자동으로 다음으로 넘어가지만 laptop은 마스터두개중 하나를 정해서 접속해야한다.
-
-![]({{ site_baseurl }}/assets/2020-10-01-10-15-15.png)

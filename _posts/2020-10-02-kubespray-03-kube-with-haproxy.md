@@ -10,7 +10,15 @@ category: { kubespray }
 
 # kubespray - 03 install kube - haproxy 버전
 
+연속된 글입니다.
+
+1. <https://teamsmiley.github.io/2020/09/30/kubespray-01-vagrant/>
+1. <https://teamsmiley.github.io/2020/10/01/kubespray-02-install-kube-local-internal-loadbalancer/>
+1. <https://teamsmiley.github.io/2020/10/02/kubespray-03-kube-with-haproxy/>
+
 2개의 서버로 haproxy를 설정하여 하나가 문제가 생겨도 서비스에는 지장이 없게 한다.
+
+쿠버네티스가 haproxy를 보고 있게 한다. 맨 마지막 다이어그램 참고
 
 ## vm 셋업
 
@@ -92,24 +100,27 @@ haproxy vm은 192.168.33.2 192.168.33.3 번 아이피를 사용
 
 아래 링크에서 보고 설치하면 된다.
 
+<https://teamsmiley.github.io/2020/10/02/haproxy-keepalived/>
+
 ## seliux off
 
+```bash
 vi /etc/sysconfig/selinux
 
-disabled
+> SELINUX=disabled
 
-shutdown -r now
+reboot
+```
 
-## setup haproxy
+## setup haproxy01 haproxy02
 
 두개다 설정 한다.
 
 vi /etc/haproxy/haproxy.cfg
 
-```
+```ruby
 listen kubernetes-apiserver-https
-  # bind <VIP>:8383
-  bind 192.168.33.10:8383
+  bind :8383
 
   mode tcp
   option log-health-checks
@@ -134,10 +145,6 @@ systemctl status haproxy
 ### error
 
 ```
-'option httplog' not usable with proxy 'kubernetes-apiserver-https' (needs 'mode http'). Falling back to 'option tcplog'.
-
-Oct 01 19:30:03 haproxy02 haproxy-systemd-wrapper[600]: [WARNING] 274/193002 (603) : config : 'option forwardfor' ignored for proxy 'kubernetes-apiserver-https' as it requires HTTP mode.
-
 Oct 01 19:30:03 haproxy02 haproxy-systemd-wrapper[600]: [ALERT] 274/193002 (603) : Starting proxy kubernetes-apiserver-https: cannot bind socket [192.168.33.10:8383]
 ```
 
