@@ -207,3 +207,5 @@ kubectl config view
 ## 다이어그램
 
 ![]({{ site_baseurl }}/assets/2020-10-01-10-15-15.png)
+
+이제 쿠버네티스 쉽게 설치하자.
