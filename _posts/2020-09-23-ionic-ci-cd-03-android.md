@@ -35,15 +35,15 @@ https://www.oracle.com/java/technologies/javase-downloads.html
 
 - android studio
 
-  ![](./images/2020-09-26-06-11-29.png)
+  ![]({{ site_baseurl }}/assets/2020-09-26-06-11-29.png)
 
-  ![](./images/2020-09-26-06-17-31.png)
+  ![]({{ site_baseurl }}/assets/2020-09-26-06-17-31.png)
 
   사용하는 옵션을 선택하고
 
-  ![](./images/2020-09-26-06-12-54.png)
+  ![]({{ site_baseurl }}/assets/2020-09-26-06-12-54.png)
 
-  ![](./images/2020-09-26-06-13-41.png)
+  ![]({{ site_baseurl }}/assets/2020-09-26-06-13-41.png)
 
   정보를 다 넣고 저장하면 키가 만들어진다.
 
@@ -71,7 +71,7 @@ https://www.oracle.com/java/technologies/javase-downloads.html
 
   Android app bundle
 
-  ![](./images/2020-09-26-07-14-54.png)
+  ![]({{ site_baseurl }}/assets/2020-09-26-07-14-54.png)
 
   필요한 정보를 다 적고 export encrypted key를 하면 pepk파일이 생성이 된다. 이걸 play store에 올려줘야한다.
 
@@ -84,7 +84,7 @@ https://www.oracle.com/java/technologies/javase-downloads.html
 
 - 안드로이드 스튜디오에서 내보낸 키를 업로드 한다.
 
-  ![](./images/2020-09-26-07-19-51.png)
+  ![]({{ site_baseurl }}/assets/2020-09-26-07-19-51.png)
 
   pepk파일을 업로드 하면 된다.
 
@@ -211,7 +211,7 @@ https://console.cloud.google.com/ 에 접속해서 프로젝트를 하나만든�
 
 https://console.cloud.google.com/apis/library/androidpublisher.googleapis.com 에 접속해서 프로젝트 선택후 enable을 해준다.
 
-![](./images/2020-09-27-07-07-25.png)
+![]({{ site_baseurl }}/assets/2020-09-27-07-07-25.png)
 
 Link your Google Play developer account to your GCP project
 
@@ -219,17 +219,17 @@ https://play.google.com/apps/publish#ApiAccessPlace
 
 에서 api access >>
 
-![](./images/2020-09-27-07-15-37.png)
+![]({{ site_baseurl }}/assets/2020-09-27-07-15-37.png)
 
-![](./images/2020-09-27-07-17-00.png)
+![]({{ site_baseurl }}/assets/2020-09-27-07-17-00.png)
 
 create service account
 
-![](./images/2020-09-27-07-18-02.png)
+![]({{ site_baseurl }}/assets/2020-09-27-07-18-02.png)
 
-![](./images/2020-09-27-07-19-52.png)
+![]({{ site_baseurl }}/assets/2020-09-27-07-19-52.png)
 
-![](./images/2020-09-27-07-21-50.png)
+![]({{ site_baseurl }}/assets/2020-09-27-07-21-50.png)
 
 ### gradle version upgrade
 
