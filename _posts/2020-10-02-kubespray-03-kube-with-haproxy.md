@@ -196,3 +196,7 @@ kubectl config view
 ![]({{ site_baseurl }}/assets/2020-10-01-14-07-45.png)
 
 잘되있다.
+
+## 다이어그램
+
+![]({{ site_baseurl }}/assets/2020-10-01-10-15-15.png)
