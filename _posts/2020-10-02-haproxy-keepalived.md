@@ -247,10 +247,23 @@ http://192.168.33.10:8404/ 로 status 확인 가능
 
 ```bash
 setsebool -P haproxy_connect_any=1
-# 또는 selinux를 off하자.
+```
+
+또는 selinux를 off하자.
+
+```bash
+vi /etc/sysconfig/selinux
+
+> SELINUX=disabled
+
+reboot
 ```
 
 웹사이트를 확인해보자.
+
+## 알고 있는 문제
+
+- keepalived가 vagrant up할때 바로 안올라와서 매번 로그인해서 `systemctl restart keepalived`해주고 있다.
 
 ## Enable Logs in CentOS
 
