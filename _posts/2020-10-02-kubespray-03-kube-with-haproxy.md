@@ -158,6 +158,8 @@ bind 192.168.33.10:8383 => bind :8383
 
 `ping google.com`
 
+안되면 인터넷이 되게 하자. 혹시 안되면 resolve.conf파일에 dns도 확인해보자.
+
 External LB 설정 부분을 수정하자.
 
 vi inventory/mycluster/group_vars/all/all.yml
