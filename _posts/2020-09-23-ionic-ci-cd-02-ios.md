@@ -153,4 +153,10 @@ build-staging:
 
 ## known error
 
-TestFlight에 기존에 있는 버전과 같은 버전을 사용하면 업로드시 에러가 난다. 기존 버전을 지우고 다시해보자.
+- TestFlight에 기존에 있는 버전과 같은 버전을 사용하면 업로드시 에러가 난다. 기존 버전을 지우고 다시해보자.
+
+- macos가 슬립모드로 안들어가게 해야 항상 빌드가 된다.
+
+```
+sudo pmset -c disablesleep 1
+```
