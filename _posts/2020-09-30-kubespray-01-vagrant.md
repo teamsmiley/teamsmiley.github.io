@@ -259,3 +259,6 @@ config.vm.define "haproxy01" do |haproxy01|
 ```
 vagrant up
 ```
+
+## 알고잇는 문제 
+keepalived가 vagrant up할때 바로 안올라와서 매번 로그인해서 `systemctl restart keepalived`해주고 있다.
