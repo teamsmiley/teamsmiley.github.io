@@ -248,7 +248,7 @@ ansible-playbook -i inventory/mycluster/hosts.yaml  --become --become-user=root 
 kubespray가 설치되기 전으로 돌려준다.
 
 ```bash
-ansible-playbook -i inventory/mycluster/hosts.yaml  --become --become-user=root scale.yml
+ansible-playbook -i inventory/mycluster/hosts.yaml  --become --become-user=root reset.yml
 kubectl get nodes # 클러스터가 없으므로 에러
 ```
 

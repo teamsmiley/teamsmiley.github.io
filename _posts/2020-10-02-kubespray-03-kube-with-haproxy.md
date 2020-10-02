@@ -154,6 +154,10 @@ bind 192.168.33.10:8383 => bind :8383
 
 ## kubespray 설정
 
+전체 노드에서 인터넷이 되는지 확인하자.
+
+`ping google.com`
+
 External LB 설정 부분을 수정하자.
 
 vi inventory/mycluster/group_vars/all/all.yml
