@@ -199,3 +199,63 @@ ssh 192.168.33.24
 ```
 
 비번없이 로그인되면 성공
+
+## 생성된 이미지를 저장해서 사용
+
+vm에 이것저것 세팅을 다 해두고 그상태로 이미지로 만들고 싶다.
+
+ssh키 등록을 다해두고 그걸 저장해서 이미지로 만들고 나중에 이 이미지를 사용하면 다시 등록하지 않아도 된다. 기타 기본 패키지도 다 설치해두고 싶다.
+
+Vagrantfile이 있는 폴더에서 다음 명령어를 실행한다.
+
+```
+vagrant status
+```
+
+```
+Current machine states:
+
+minion1                   running (virtualbox)
+minion2                   running (virtualbox)
+minion3                   running (virtualbox)
+haproxy01                 running (virtualbox)
+haproxy02                 running (virtualbox)
+```
+
+원하는 vm을 선택후
+
+```
+vagrant package haproxy01 -- output haproxy01.box
+```
+
+이제 이 박스를 언제든 불러쓸수잇게 vagrant 에 추가하자.
+
+```
+vagrant box add haproxy01 haproxy01.box
+vagrant box list
+```
+
+box박스는 잘 저장해두면 나중에 다른 컴에서도 사용이 가능
+
+이제 Vagrantfile을 변경하자.
+
+```ruby
+# config.vm.provision "shell", path: "provision.sh"
+# 이건 벌써된상태로 이미지를 만들어서 더이상 필요없어짐
+
+config.vm.define "haproxy01" do |haproxy01|
+    haproxy01.vm.box = "haproxy01" #centos/7에서 변경
+    haproxy01.vm.hostname = "haproxy01"
+    haproxy01.vm.network "private_network", ip: "192.168.0.108"
+    haproxy01.vm.provider "virtualbox" do |v|
+      v.memory = 512
+      v.cpus = 1
+	  end
+  end
+```
+
+다시 vm을 올리자.
+
+```
+vagrant up
+```
