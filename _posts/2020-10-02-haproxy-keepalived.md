@@ -241,11 +241,13 @@ systemctl restart haproxy
 
 http://192.168.33.10:8404/ 로 status 확인 가능
 
+각자 아이피에 8404로도 확인가능
+
 잘안되면 다음 커맨들 실행해보자.
 
 ```bash
 setsebool -P haproxy_connect_any=1
-#또는 selinux를 off하자.
+# 또는 selinux를 off하자.
 ```
 
 웹사이트를 확인해보자.
