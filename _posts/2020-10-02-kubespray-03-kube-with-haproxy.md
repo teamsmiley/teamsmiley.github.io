@@ -168,6 +168,8 @@ vi inventory/mycluster/group_vars/all/all.yml
 ## External LB example config
 apiserver_loadbalancer_domain_name: "haproxy.xgridcolo.com"
 loadbalancer_apiserver:
+  address: 192.168.0.100
+  port: 8383
 
 ## Internal loadbalancers for apiservers
 loadbalancer_apiserver_localhost: false # 여기 주석해제후 수정

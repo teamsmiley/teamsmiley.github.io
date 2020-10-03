@@ -260,5 +260,27 @@ config.vm.define "haproxy01" do |haproxy01|
 vagrant up
 ```
 
-## 알고잇는 문제 
-keepalived가 vagrant up할때 바로 안올라와서 매번 로그인해서 `systemctl restart keepalived`해주고 있다.
+## 알고잇는 문제
+
+- keepalived가 vagrant up할때 바로 안올라와서 매번 로그인해서 `systemctl restart keepalived`해주고 있다.
+
+- vboxsf
+
+```
+Vagrant was unable to mount VirtualBox shared folders. This is usually
+because the filesystem "vboxsf" is not available. This filesystem is
+made available via the VirtualBox Guest Additions and kernel module.
+Please verify that these guest additions are properly installed in the
+guest. This is not a bug in Vagrant and is usually caused by a faulty
+Vagrant box. For context, the command attempted was:
+
+mount -t vboxsf -o uid=1000,gid=1000 vagrant /vagrant
+
+The error output from the command was:
+```
+
+다음 설치하자.
+
+```
+vagrant plugin install vagrant-vbguest
+```
