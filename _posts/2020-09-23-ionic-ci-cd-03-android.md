@@ -200,6 +200,8 @@ play {
   // 3.0
   // defaultToAppBundles.set(true)
   // serviceAccountCredentials.set(file("google-cloud-service-account.json"))
+
+  resolutionStrategy = "auto" // build버전이 계속 올라간다.
 }
 ```
 
@@ -336,4 +338,8 @@ buildTypes {
 
 - "message" : "APK specifies a version code that has already been used.",
 
-버전이 벌써잇다. 버전 수정해서 업로드하면된다.
+버전이 벌써 있다. 버전 수정해서 업로드하면된다. 또는 app/build.gradle에 play함수에 다음 옵션을 추가해주면 자동으로 1씩 증가시켜준다.
+
+```
+resolutionStrategy = "auto"
+```
