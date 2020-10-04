@@ -252,6 +252,13 @@ ansible-playbook -i inventory/mycluster/hosts.yaml  --become --become-user=root 
 kubectl get nodes # 클러스터가 없으므로 에러
 ```
 
+reset후에도 여전히 파일이 잇어서 수동으로 지워줬다.
+
+```
+rm -rf /usr/bin/docker
+rm -rf /usr/bin/kubectl
+```
+
 ## 구성도
 
 ![]({{ site_baseurl }}/assets/2020-10-01-10-09-14.png)
