@@ -160,3 +160,6 @@ build-staging:
 ```
 sudo pmset -c disablesleep 1
 ```
+
+- Error Domain=DVTPortalServiceErrorDomain Code=1100 "Your session has expired. Please log in."
+  xcode를 실행해 두고 ci를 트리거한다.
