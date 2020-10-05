@@ -16,6 +16,7 @@ category: { kubespray }
 1. <https://teamsmiley.github.io/2020/10/01/kubespray-02-install-kube-local-internal-loadbalancer/>
 1. <https://teamsmiley.github.io/2020/10/02/kubespray-03-kube-with-haproxy/>
 1. <https://teamsmiley.github.io/2020/10/04/kubernetes-multi-cluster/>
+1. <https://teamsmiley.github.io/2020/10/05/kubernetes-cert-manager/>
 
 2개의 서버로 haproxy를 설정하여 하나가 문제가 생겨도 서비스에는 지장이 없게 한다.
 

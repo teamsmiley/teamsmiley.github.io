@@ -16,12 +16,13 @@ category: { kubernetes }
 1. <https://teamsmiley.github.io/2020/10/01/kubespray-02-install-kube-local-internal-loadbalancer/>
 1. <https://teamsmiley.github.io/2020/10/02/kubespray-03-kube-with-haproxy/>
 1. <https://teamsmiley.github.io/2020/10/04/kubernetes-multi-cluster/>
+1. <https://teamsmiley.github.io/2020/10/05/kubernetes-cert-manager/>
 
 이제 추가 작업에 대해서 적어보자.
 
 ## helm을 사용하자.
 
-```
+```bash
 brew install helm
 ```
 
