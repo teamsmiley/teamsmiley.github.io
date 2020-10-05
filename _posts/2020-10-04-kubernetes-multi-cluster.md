@@ -15,10 +15,11 @@ category: { kubernetes }
 1. <https://teamsmiley.github.io/2020/09/30/kubespray-01-vagrant/>
 1. <https://teamsmiley.github.io/2020/10/01/kubespray-02-install-kube-local-internal-loadbalancer/>
 1. <https://teamsmiley.github.io/2020/10/02/kubespray-03-kube-with-haproxy/>
+1. <https://teamsmiley.github.io/2020/10/04/kubernetes-multi-cluster/>
 
 이제 kube spray로 2개 이상의 클러스터를 생성시 관리방법을 이야기해보자.
 
-## cluster 1 config
+## download cluster 1 config
 
 랩탑에 scp로 1번째 클러스터에 설정 파일을 가져온다.
 
@@ -53,7 +54,7 @@ users:
 
 주석이 붙은 번호들은 서로 같은 값을 가져야 한다.
 
-## cluster 2 config
+## download cluster 2 config
 
 ```
 scp c2-master:/etc/kubernetes/admin.conf ~/.kube/c2-config
