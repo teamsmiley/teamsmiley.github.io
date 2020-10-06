@@ -12,7 +12,6 @@ category: { kubernetes }
 
 ## 할일
 
-- cert-manager
 - ingress-nginx
 - metallb
 - prometheus
@@ -20,7 +19,6 @@ category: { kubernetes }
 - grafana
 - velero
 - elastic search
-
 
 ## 백업
 
