@@ -31,13 +31,15 @@ brew install helm
 ### 설치
 
 ```bash
-kubectl create namespace cert-manager
 helm repo add jetstack https://charts.jetstack.io
-helm install jetstack/cert-manager --generate-name --set installCRDs=true
+kubectl config use-context c2
+kubectl create namespace cert-manager
+kubectl config set-context --current --namespace cert-manager
+helm install jetstack/cert-manager --namespace cert-manager --generate-name --set installCRDs=true
 ```
 
 ```bash
-NAME: my-release
+NAME: cert-manager-1601943552
 LAST DEPLOYED: Sun Oct  4 22:05:04 2020
 NAMESPACE: cert-manager
 STATUS: deployed
@@ -132,7 +134,7 @@ spec:
 ```
 
 ```bash
-kubectl apply --validate=false -f ./le-dns-issuer-aws.yaml
+kubectl apply -f ./le-dns-issuer-aws.yaml
 
 kubectl get ClusterIssuer
 
@@ -199,10 +201,3 @@ Status:
 kubectl get pod -n cert-manager # cert-manager pod확인
 kubectl logs cert-manager-XXX -f -n cert-manager # cain이나 webhook가 아닌 main pod를 체크해야한다.
 ```
-
-<!--
-## ingress-nginx
-
-## prometheus flentd grafana
-
-## -->

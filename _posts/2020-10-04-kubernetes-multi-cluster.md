@@ -107,3 +107,11 @@ kubectl config use-context kubernetes-c2-admin@kubernetes # context name
 ```
 unset KUBECONFIG
 ```
+
+## 재시작시에도 항상 적용
+
+vi .zshrc
+
+```
+export KUBECONFIG=~/.kube/c1-config:~/.kube/c2-config
+```
