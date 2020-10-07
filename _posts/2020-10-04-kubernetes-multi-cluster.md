@@ -80,8 +80,8 @@ kubectl config view
 ## 원하는 컨텍스트를 확인하자.
 
 ```bash
-kubectl config use-context kubernetes-c1-admin@kubernetes # context name
-kubectl config use-context kubernetes-c2-admin@kubernetes # context name
+kubectl config use-context c1 # context name
+kubectl config use-context c2 # context name
 ```
 
 ## kubeconfig 파일을 병합할 때에 kubectl에서 사용하는 규칙

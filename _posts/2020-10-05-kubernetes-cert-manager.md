@@ -28,7 +28,7 @@ brew install helm
 
 ## cert-manager
 
-### 설치
+### install
 
 ```bash
 helm repo add jetstack https://charts.jetstack.io

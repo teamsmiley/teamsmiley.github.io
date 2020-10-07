@@ -49,16 +49,6 @@ kubectl apply -f https://raw.githubusercontent.com/metallb/metallb/v0.9.3/manife
 kubectl create secret generic -n metallb-system memberlist --from-literal=secretkey="$(openssl rand -base64 128)"
 ```
 
-혹시 버전이 바뀔지 모르니 백업을 해두자.
-
-```bash
-cd ~/Desktop/kubespray/inventory/metallb
-curl -O https://raw.githubusercontent.com/metallb/metallb/v0.9.3/manifests/namespace.yaml
-curl -O https://raw.githubusercontent.com/metallb/metallb/v0.9.3/manifests/metallb.yaml
-kubectl apply -f default.yaml
-kubectl apply -f metallb-install.yaml
-```
-
 이제 설정
 
 vi metallb-configmap.yml
@@ -84,6 +74,7 @@ kubectlapply -f metallb-configmap.yml
 
 ## Ingress-Nginx
 
+```
 helm repo list
 helm repo add ingress-nginx https://kubernetes.github.io/ingress-nginx
 helm repo update
@@ -92,6 +83,7 @@ helm repo list
 kubectl config set-context --current --namespace= ingress-nginx
 
 helm install ingress-nginx ingress-nginx/ingress-nginx
+```
 
 아래 내용이 나온다 잘 읽어보자.
 
@@ -158,7 +150,7 @@ kubectl --namespace ingress-nginx get services -o wide -w ingress-nginx-controll
 
 서비스 타입은 loadbalancer 그리고 loadBalancerIP를 지정해야할듯 하다.
 
-kubectldelete svc ingress-nginx-controller
+kubectl delete svc ingress-nginx-controller
 
 ingress-service.yml
 
@@ -200,7 +192,7 @@ spec:
 ```
 
 ```
-kubectlapply -f ingress-service.yml
+kubectl apply -f ingress-service.yml
 ```
 
 vi sample-ingress.yml
