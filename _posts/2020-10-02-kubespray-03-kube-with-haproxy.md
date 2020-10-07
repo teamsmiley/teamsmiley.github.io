@@ -20,6 +20,7 @@ category: { kubespray }
 1. <https://teamsmiley.github.io/2020/10/06/kubernetes-metallb-ingress-nginx/>
 1. <https://teamsmiley.github.io/2020/10/06/kubernetes-helm/>
 1. <https://teamsmiley.github.io/2020/10/08/kubernetes-prometheus-grafana/>
+1. <https://teamsmiley.github.io/2020/10/08/kubernetes-log/>
 
 2개의 서버로 haproxy를 설정하여 하나가 문제가 생겨도 서비스에는 지장이 없게 한다.
 

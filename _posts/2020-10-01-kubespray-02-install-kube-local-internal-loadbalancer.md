@@ -18,6 +18,7 @@ category: { kubespray }
 1. <https://teamsmiley.github.io/2020/10/06/kubernetes-metallb-ingress-nginx/>
 1. <https://teamsmiley.github.io/2020/10/06/kubernetes-helm/>
 1. <https://teamsmiley.github.io/2020/10/08/kubernetes-prometheus-grafana/>
+1. <https://teamsmiley.github.io/2020/10/08/kubernetes-log/>
 
 # kubespray - 02 install kube - local internal loadbalancer
 
