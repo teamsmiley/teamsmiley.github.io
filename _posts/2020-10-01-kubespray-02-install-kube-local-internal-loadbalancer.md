@@ -41,7 +41,8 @@ sudo python3 get-pip.py
 https://github.com/kubernetes-sigs/kubespray
 
 ```bash
-git clone https://github.com/kubernetes-sigs/kubespray.git
+#git clone https://github.com/kubernetes-sigs/kubespray.git
+git clone --depth 1 --branch v2.14.1 https://github.com/kubernetes-sigs/kubespray.git
 cd kubespray
 
 python -V && pip -V
@@ -53,6 +54,9 @@ sudo pip install -r requirements.txt
 
 # Copy ``inventory/sample`` as ``inventory/mycluster``
 cp -rfp inventory/sample inventory/mycluster
+## 또는 inventory를 따른 깃으로 관리하면
+# cd inventory
+# git clone ssh://git@gitlab.xgridcolo.com:30022/ragon/kubespray.git .
 
 # 인벤토리 파일이 중요하다.
 # Update Ansible inventory file with inventory builder
