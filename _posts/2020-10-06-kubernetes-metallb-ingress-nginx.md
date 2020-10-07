@@ -8,9 +8,20 @@ image: /files/covers/blog.jpg
 category: { kubernetes }
 ---
 
-# kubernetes MetalLB 와 Ingress nginx
+연속된 글입니다.
 
-## metallb (베어메탈에서 사용하는 로드발란서)
+1. <https://teamsmiley.github.io/2020/09/30/kubespray-01-vagrant/>
+1. <https://teamsmiley.github.io/2020/10/01/kubespray-02-install-kube-local-internal-loadbalancer/>
+1. <https://teamsmiley.github.io/2020/10/02/kubespray-03-kube-with-haproxy/>
+1. <https://teamsmiley.github.io/2020/10/04/kubernetes-multi-cluster/>
+1. <https://teamsmiley.github.io/2020/10/05/kubernetes-cert-manager/>
+1. <https://teamsmiley.github.io/2020/10/06/kubernetes-metallb-ingress-nginx/>
+1. <https://teamsmiley.github.io/2020/10/06/kubernetes-helm/>
+1. <https://teamsmiley.github.io/2020/10/08/kubernetes-prometheus-grafana/>
+
+# kubernetes MetalLB 와 Ingress-Nginx
+
+## MetalLB (베어메탈에서 사용하는 로드발란서)
 
 If you’re using kube-proxy in IPVS mode, since Kubernetes v1.14.2 you have to enable strict ARP mode.
 

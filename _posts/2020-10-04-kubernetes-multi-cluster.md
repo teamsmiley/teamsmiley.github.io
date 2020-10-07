@@ -17,6 +17,9 @@ category: { kubernetes }
 1. <https://teamsmiley.github.io/2020/10/02/kubespray-03-kube-with-haproxy/>
 1. <https://teamsmiley.github.io/2020/10/04/kubernetes-multi-cluster/>
 1. <https://teamsmiley.github.io/2020/10/05/kubernetes-cert-manager/>
+1. <https://teamsmiley.github.io/2020/10/06/kubernetes-metallb-ingress-nginx/>
+1. <https://teamsmiley.github.io/2020/10/06/kubernetes-helm/>
+1. <https://teamsmiley.github.io/2020/10/08/kubernetes-prometheus-grafana/>
 
 이제 kube spray로 2개 이상의 클러스터를 생성시 관리방법을 이야기해보자.
 

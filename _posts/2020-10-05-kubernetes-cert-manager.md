@@ -17,8 +17,9 @@ category: { kubernetes }
 1. <https://teamsmiley.github.io/2020/10/02/kubespray-03-kube-with-haproxy/>
 1. <https://teamsmiley.github.io/2020/10/04/kubernetes-multi-cluster/>
 1. <https://teamsmiley.github.io/2020/10/05/kubernetes-cert-manager/>
-
-이제 추가 작업에 대해서 적어보자.
+1. <https://teamsmiley.github.io/2020/10/06/kubernetes-metallb-ingress-nginx/>
+1. <https://teamsmiley.github.io/2020/10/06/kubernetes-helm/>
+1. <https://teamsmiley.github.io/2020/10/08/kubernetes-prometheus-grafana/>
 
 ## helm을 사용하자.
 

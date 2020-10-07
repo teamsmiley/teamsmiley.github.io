@@ -8,6 +8,17 @@ image: /files/covers/blog.jpg
 category: { kubernetes }
 ---
 
+연속된 글입니다.
+
+1. <https://teamsmiley.github.io/2020/09/30/kubespray-01-vagrant/>
+1. <https://teamsmiley.github.io/2020/10/01/kubespray-02-install-kube-local-internal-loadbalancer/>
+1. <https://teamsmiley.github.io/2020/10/02/kubespray-03-kube-with-haproxy/>
+1. <https://teamsmiley.github.io/2020/10/04/kubernetes-multi-cluster/>
+1. <https://teamsmiley.github.io/2020/10/05/kubernetes-cert-manager/>
+1. <https://teamsmiley.github.io/2020/10/06/kubernetes-metallb-ingress-nginx/>
+1. <https://teamsmiley.github.io/2020/10/06/kubernetes-helm/>
+1. <https://teamsmiley.github.io/2020/10/08/kubernetes-prometheus-grafana/>
+
 # kubernetes - prometheus & grafana
 
 kubernetes 모니터링을 해보자.
@@ -47,7 +58,7 @@ kubectl --namespace monitoring port-forward svc/prometheus-k8s 9090
 
 <http://localhost:9090>
 
-![](./images/2020-10-07-05-25-09.png)
+![]({{ site_baseurl }}/assets/2020-10-07-05-25-09.png)
 
 ## grafana 대시보드
 
@@ -60,6 +71,8 @@ kubectl --namespace monitoring port-forward svc/grafana 3000
 웹사이트로 확인한다.
 
 <http://localhost:3000>
+
+![]({{ site_baseurl }}/assets/2020-10-07-05-25-09.png)
 
 ## 서비스를 만들어서 외부에 오픈하자.
 
@@ -125,6 +138,6 @@ k apply -f ~/grafana-external-service.yaml
 
 manage >> dash board >> default 에 보면 리스트가 많이 나온다 그것중 마음에 드는거으로 클릭해보면 다음같은 화면이 나온다.
 
-![](./images/2020-10-07-06-20-40.png)
+![]({{ site_baseurl }}/assets/2020-10-07-06-20-40.png)
 
 잘 구성해보면 된다.

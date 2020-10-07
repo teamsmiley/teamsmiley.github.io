@@ -8,6 +8,17 @@ image: /files/covers/blog.jpg
 category: { kubernetes }
 ---
 
+연속된 글입니다.
+
+1. <https://teamsmiley.github.io/2020/09/30/kubespray-01-vagrant/>
+1. <https://teamsmiley.github.io/2020/10/01/kubespray-02-install-kube-local-internal-loadbalancer/>
+1. <https://teamsmiley.github.io/2020/10/02/kubespray-03-kube-with-haproxy/>
+1. <https://teamsmiley.github.io/2020/10/04/kubernetes-multi-cluster/>
+1. <https://teamsmiley.github.io/2020/10/05/kubernetes-cert-manager/>
+1. <https://teamsmiley.github.io/2020/10/06/kubernetes-metallb-ingress-nginx/>
+1. <https://teamsmiley.github.io/2020/10/06/kubernetes-helm/>
+1. <https://teamsmiley.github.io/2020/10/08/kubernetes-prometheus-grafana/>
+
 # helm
 
 helm3부터는 tilder를 설치안해도 되서 좋다.
