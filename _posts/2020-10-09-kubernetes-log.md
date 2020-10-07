@@ -62,7 +62,7 @@ kubectl --namespace logging port-forward svc/elasticsearch-master 9200
 
 <http://localhost:9200/>
 
-![](./images/2020-10-07-08-57-16.png)
+![]({{ site_baseurl }}/assets//2020-10-07-08-57-16.png)
 
 동작한다.
 
@@ -83,7 +83,7 @@ kubectl --namespace logging port-forward svc/kibana-kibana 5601
 
 <http://localhost:5601/app/home>
 
-![](./images/2020-10-07-09-06-30.png)
+![]({{ site_baseurl }}/assets//2020-10-07-09-06-30.png)
 
 잘 보인다.
 
@@ -118,6 +118,31 @@ kubectl create -f https://raw.githubusercontent.com/fluent/fluent-bit-kubernetes
 kubectl create -f https://raw.githubusercontent.com/fluent/fluent-bit-kubernetes-logging/master/output/elasticsearch/fluent-bit-ds.yaml
 ```
 
-### configure
+에러가 혹시 나면 configmap에서 꼭 elastic search ip port를 줘야한다.
 
-### test
+```
+[OUTPUT]
+    Name            es
+    Match           *
+    Host            elasticsearch-master.logging.svc.cluster.local
+    Port            9200
+    Logstash_Format On
+    Replace_Dots    On
+    Retry_Limit     False
+```
+
+## kibana로 로그가 들어오는지 확인하자.
+
+localhost:5601 에서 kibana >> index pattern >> logstash-\* 추가하자.
+
+![]({{ site_baseurl }}/assets//2020-10-07-14-52-54.png)
+
+![]({{ site_baseurl }}/assets//2020-10-07-14-53-14.png)
+
+잠시후
+
+![]({{ site_baseurl }}/assets//2020-10-07-15-36-48.png)
+
+![]({{ site_baseurl }}/assets//2020-10-07-15-37-08.png)
+
+결과가 잘 나온다. 사용법은 다음에
