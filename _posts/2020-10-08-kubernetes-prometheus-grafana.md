@@ -66,7 +66,7 @@ kubectl --namespace monitoring port-forward svc/grafana 3000
 ### prometheus
 
 ```bash
-vi ~/Desktop/kube-prometheus/manifests/prometheus-service.yaml
+vi ~/Desktop/prometheus-external-service
 ```
 
 ```yml
@@ -75,11 +75,11 @@ kind: Service
 metadata:
   labels:
     prometheus: k8s
-  name: prometheus-k8s
+  name: prometheus-k8s-ext
   namespace: monitoring
 spec:
-  type: LoadBalancer # 여기 추가
-  loadBalancerIP: 192.168.2.98 # 여기 추가
+  type: LoadBalancer
+  loadBalancerIP: 192.168.2.98
   ports:
     - name: web
       port: 80
@@ -90,38 +90,41 @@ spec:
   sessionAffinity: ClientIP
 ```
 
-k apply -f ~/Desktop/kube-prometheus/manifests/prometheus-service.yaml
+k apply -f ~/Desktop/prometheus-external-service
 
 ### grafana
 
-vi ~/Desktop/kube-prometheus/manifests/grafana-service.yaml
+vi ~/Desktop/grafana-external-service.yaml
 
 ```yml
 apiVersion: v1
 kind: Service
 metadata:
   labels:
-    app: grafana
-  name: grafana
+    app: grafana-ext
+  name: grafana-ext
   namespace: monitoring
 spec:
   type: LoadBalancer # 여기 추가
   loadBalancerIP: 192.168.2.97 # 여기 추가
   ports:
-    - name: grafana-http # 여기 수정
-      port: 80 # 여기 수정
-      targetPort: grafana-http # 여기 수정
+    - name: http
+      port: 80
+      targetPort: http
   selector:
     app: grafana
 ```
 
 ```bash
-k delete svc grafana
-k apply -f ~/Desktop/kube-prometheus/manifests/grafana-service.yaml
+k apply -f ~/grafana-external-service.yaml
 ```
 
 <http://192.168.2.97/login> 확인 성공
 
 일단 admin/admin으로 로그인을 하면 비번을 변경하라고한다. 원하는 비번으로 변경한다.
 
-설치는 완료됬고 데이터소스를 붙여서 사용하면된다.
+manage >> dash board >> default 에 보면 리스트가 많이 나온다 그것중 마음에 드는거으로 클릭해보면 다음같은 화면이 나온다.
+
+![](./images/2020-10-07-06-20-40.png)
+
+잘 구성해보면 된다.
