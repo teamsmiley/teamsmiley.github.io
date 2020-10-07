@@ -1,6 +1,6 @@
 ---
 layout: post
-title: "kubernetes - 로그 분석 elasticserach kibana fluentbit"
+title: "kubernetes - 로그 분석 elasticserach/kibana/fluentbit"
 author: teamsmiley
 date: 2020-10-08
 tags: [cicd]
@@ -32,7 +32,7 @@ k create namespace logging
 kcn logging
 ```
 
-꼭 logging을쓰기 바란다. 설치파일중에 namespace 가 고정된 부분이 있다.
+꼭 logging을쓰기 바란다. 설치파일중에 namespace 가 고정된 부분이 있다.(fluent bit 관련해서)
 
 ## elastic search
 
@@ -53,7 +53,8 @@ kubectl get pods --namespace=monitoring -l app=elasticsearch-master -w #상태 �
 kubectl describe svc elasticsearch-master
 ```
 
-확인해보자.
+### 확인
+
 포트 포워딩
 
 ```
@@ -87,6 +88,48 @@ kubectl --namespace logging port-forward svc/kibana-kibana 5601
 
 잘 보인다.
 
+### 외부 아이피로 서비스 오픈
+
+매번 포트포워드 어려워서 서비스 외부에 오픈
+
+```bash
+vi 01.kibana-external-service.yml
+```
+
+```yml
+apiVersion: v1
+kind: Service
+metadata:
+  annotations:
+    meta.helm.sh/release-name: kibana
+    meta.helm.sh/release-namespace: logging
+  labels:
+    app: kibana
+    app.kubernetes.io/managed-by: Helm
+    heritage: Helm
+    release: kibana
+  name: kibana-external
+  namespace: logging
+spec:
+  loadBalancerIP: 192.168.2.96
+  ports:
+    - name: http-ext
+      port: 80
+      protocol: TCP
+      targetPort: 5601
+  selector:
+    app: kibana
+    release: kibana
+  sessionAffinity: None
+  type: LoadBalancer
+```
+
+```bash
+k apply -f 01.kibana-external-service.yml
+```
+
+<http://192.168.2.96> 으로 확인하자. 잘 보인다.
+
 ## Fluent Bit
 
 Fluentd is a log collector, processor, and aggregator.
@@ -106,34 +149,88 @@ kubectl create -f https://raw.githubusercontent.com/fluent/fluent-bit-kubernetes
 kubectl create -f https://raw.githubusercontent.com/fluent/fluent-bit-kubernetes-logging/master/fluent-bit-role-binding.yaml
 ```
 
-configmap을 만든다.
+### configmap
+
+기본 컨피그를 다운받자.
 
 ```
-kubectl create -f https://raw.githubusercontent.com/fluent/fluent-bit-kubernetes-logging/master/output/elasticsearch/fluent-bit-configmap.yaml
+curl -O https://raw.githubusercontent.com/fluent/fluent-bit-kubernetes-logging/master/output/elasticsearch/fluent-bit-configmap.yaml
 ```
 
-이제 elastic search으로 보내자.
+파일을 열어서 다음 부분을 수정한다.
+
+```conf
+[OUTPUT]
+Name es
+Match \*
+#Host            ${FLUENT_ELASTICSEARCH_HOST}
+#Port            ${FLUENT_ELASTICSEARCH_PORT}
+Host elasticsearch-master.logging.svc.cluster.local #이부분 수정
+Port 9200 # 이부분 수정
+Logstash_Format On
+Replace_Dots On
+Retry_Limit False
+```
+
+적용하자.
+
+```bash
+kubectl create -f fluent-bit-configmap.yaml
+```
+
+### 궁금증
+
+elasticsearch-master.logging.svc.cluster.local 이주소는 어디서 가져오는걸가?
+
+<https://kubernetes.io/docs/tasks/administer-cluster/dns-debugging-resolution/> 여기 참고해서
+
+vi dnsutils.yaml
+
+```yml
+apiVersion: v1
+kind: Pod
+metadata:
+  name: dnsutils
+  namespace: default
+spec:
+  containers:
+    - name: dnsutils
+      image: gcr.io/kubernetes-e2e-test-images/dnsutils:1.3
+      command:
+        - sleep
+        - "3600"
+      imagePullPolicy: IfNotPresent
+  restartPolicy: Always
+```
+
+실행
 
 ```
+kubectl apply -f https://k8s.io/examples/admin/dns/dnsutils.yaml
+```
+
+이제 파드가 만들어지면 다음 명령어로 확인할수 있다.
+
+```bash
+kubectl exec -i -t dnsutils -- nslookup elasticsearch-master.logging
+
+Name:	elasticsearch-master.logging.svc.cluster.local
+Address: 10.233.10.21
+```
+
+### deploy
+
+이제 deploy를 해서 daemonset을 올려서 elasticsearch에 값을 보내자.
+
+```bash
 kubectl create -f https://raw.githubusercontent.com/fluent/fluent-bit-kubernetes-logging/master/output/elasticsearch/fluent-bit-ds.yaml
 ```
 
-에러가 혹시 나면 configmap에서 꼭 elastic search ip port를 줘야한다.
-
-```
-[OUTPUT]
-    Name            es
-    Match           *
-    Host            elasticsearch-master.logging.svc.cluster.local
-    Port            9200
-    Logstash_Format On
-    Replace_Dots    On
-    Retry_Limit     False
-```
+에러가 혹시 나면 configmap에서 꼭 elastic search ip / port를 줘야한다.
 
 ## kibana로 로그가 들어오는지 확인하자.
 
-localhost:5601 에서 kibana >> index pattern >> logstash-\* 추가하자.
+<http://192.168.2.96> 에서 kibana >> index pattern >> logstash-\* 추가하자.
 
 ![]({{ site_baseurl }}/assets//2020-10-07-14-52-54.png)
 
