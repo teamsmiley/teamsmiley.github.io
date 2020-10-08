@@ -19,6 +19,7 @@ category: { kubernetes }
 1. <https://teamsmiley.github.io/2020/10/06/kubernetes-helm/>
 1. <https://teamsmiley.github.io/2020/10/08/kubernetes-prometheus-grafana/>
 1. <https://teamsmiley.github.io/2020/10/08/kubernetes-log/>
+1. <https://teamsmiley.github.io/2020/10/10/kubernetes-backup-velero/>
 
 # kubernetes MetalLB 와 Ingress-Nginx
 

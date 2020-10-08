@@ -21,6 +21,7 @@ category: { kubernetes }
 1. <https://teamsmiley.github.io/2020/10/06/kubernetes-helm/>
 1. <https://teamsmiley.github.io/2020/10/08/kubernetes-prometheus-grafana/>
 1. <https://teamsmiley.github.io/2020/10/08/kubernetes-log/>
+1. <https://teamsmiley.github.io/2020/10/10/kubernetes-backup-velero/>
 
 이제 kube spray로 2개 이상의 클러스터를 생성시 관리방법을 이야기해보자.
 
