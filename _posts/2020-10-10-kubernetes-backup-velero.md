@@ -19,6 +19,7 @@ category: { kubernetes }
 1. <https://teamsmiley.github.io/2020/10/06/kubernetes-helm/>
 1. <https://teamsmiley.github.io/2020/10/08/kubernetes-prometheus-grafana/>
 1. <https://teamsmiley.github.io/2020/10/08/kubernetes-log/>
+1. <https://teamsmiley.github.io/2020/10/10/kubernetes-backup-velero/>
 
 # 쿠버네티스 백업 - velero
 
@@ -153,3 +154,7 @@ velero schedule describe daily-schedule
 ```
 
 ## 내일 백업이 됬는지 확인하자.
+
+![]({{ site_baseurl }}/assets/2020-10-08-06-54-52.png)
+
+잘 됬다.
