@@ -234,14 +234,14 @@ kubectl create -f https://raw.githubusercontent.com/fluent/fluent-bit-kubernetes
 
 <http://192.168.2.96> 에서 kibana >> index pattern >> logstash-\* 추가하자.
 
-![]({{ site_baseurl }}/assets//2020-10-07-14-52-54.png)
+![]({{ site_baseurl }}/assets/2020-10-07-14-52-54.png)
 
-![]({{ site_baseurl }}/assets//2020-10-07-14-53-14.png)
+![]({{ site_baseurl }}/assets/2020-10-07-14-53-14.png)
 
 잠시후
 
-![]({{ site_baseurl }}/assets//2020-10-07-15-36-48.png)
+![]({{ site_baseurl }}/assets/2020-10-07-15-36-48.png)
 
-![]({{ site_baseurl }}/assets//2020-10-07-15-37-08.png)
+![]({{ site_baseurl }}/assets/2020-10-07-15-37-08.png)
 
 결과가 잘 나온다. 사용법은 다음에
