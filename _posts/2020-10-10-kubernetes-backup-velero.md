@@ -12,6 +12,14 @@ category: { kubernetes }
 
 <https://velero.io/>
 
+## 구성도
+
+![]({{ site_baseurl }}/assets/2020-10-07-20-13-21.png)
+
+minio에 백업 데이터를 저장한다.
+
+velero client는 랩탑에 설치하고 이걸 이용해서 kube에 pod를 디플로이하면 이 pod가 백업을 받아서 minio로 올려주는 역할을 한다.
+
 ## minio
 
 백업 데이터를 minio에 직접 보낸다. 알아서 설치해두도록 하고 aws_access_key_id/aws_secret_access_key 를 알고 있어야한다.
