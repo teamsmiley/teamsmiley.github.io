@@ -143,3 +143,113 @@ manage >> dash board >> default 에 보면 리스트가 많이 나온다 그것�
 ![]({{ site_baseurl }}/assets/2020-10-07-06-20-40.png)
 
 잘 구성해보면 된다.
+
+## prometheus-k8s, alertmanager-main, grafana를 위한 Ingress 를 생성
+
+위에서는 아이피를 오픈하여 외부에 서비스를 오픈하엿는데 ingress-nginx를 사용하면 더 쉬울듯. ssl을 만들고 인그레스를 붙이면된다.
+ssl을 위한 certificate를 만들자.
+
+```yml
+---
+apiVersion: cert-manager.io/v1alpha2
+kind: Certificate
+metadata:
+  name: prometheus
+  namespace: monitoring
+spec:
+  secretName: monitoring-tls
+  issuerRef:
+    name: le-dns-issuer-live
+    kind: ClusterIssuer
+  dnsNames:
+    - prometheus.c2.xgridcolo.com
+    - alertmanager.c2.xgridcolo.com
+    - grafana.c2.xgridcolo.com
+```
+
+이제 인그레스를 만들자.
+
+```yml
+---
+apiVersion: extensions/v1beta1
+kind: Ingress
+metadata:
+  name: prometheus
+  annotations:
+    nginx.ingress.kubernetes.io/ssl-redirect: "true"
+  namespace: monitoring
+spec:
+  rules:
+    - host: prometheus.c2.xgridcolo.com
+      http:
+        paths:
+          - backend:
+              serviceName: prometheus-k8s
+              servicePort: 9090
+            path: /
+
+  tls:
+    - hosts:
+        - prometheus.c2.xgridcolo.com
+      secretName: monitoring-tls
+
+---
+apiVersion: extensions/v1beta1
+kind: Ingress
+metadata:
+  name: alertmanager
+  annotations:
+    nginx.ingress.kubernetes.io/ssl-redirect: "true"
+  namespace: monitoring
+spec:
+  rules:
+    - host: alertmanager.c2.xgridcolo.com
+      http:
+        paths:
+          - backend:
+              serviceName: alertmanager-main
+              servicePort: 9093
+            path: /
+
+  tls:
+    - hosts:
+        - alertmanager.c2.xgridcolo.com
+      secretName: monitoring-tls
+
+---
+apiVersion: extensions/v1beta1
+kind: Ingress
+metadata:
+  name: grafana
+  annotations:
+    nginx.ingress.kubernetes.io/ssl-redirect: "true"
+  namespace: monitoring
+spec:
+  rules:
+    - host: grafana.c2.xgridcolo.com
+      http:
+        paths:
+          - backend:
+              serviceName: grafana
+              servicePort: 3000
+            path: /
+
+  tls:
+    - hosts:
+        - grafana.c2.xgridcolo.com
+      secretName: monitoring-tls
+```
+
+dns에 도메인을 추가하고 사용하거나 /etc/hosts파일에 추가해서 사용하면된다.
+
+## todo
+
+### alertmanager 에서 슬랙으로 노티피케이션을 보낼 수 있도록 설정
+
+기본 설정은 alert을 받을수 없음
+
+슬랙으로 alert를 받아보려고함.
+
+### prometheus-k8s, alertmanager-main, grafana PV(Persistence Volume) 사용
+
+기본구성시 스토리지는 호스트 노드의 임시 디렉토리 그래서 포드가 다른 곳에 재배치되면 기존 데이터가 모두 사라짐.
