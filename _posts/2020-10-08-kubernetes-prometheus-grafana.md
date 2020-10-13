@@ -1,6 +1,6 @@
 ---
 layout: post
-title: "kubernetes - prometheus & grafana"
+title: "kubernetes - kube-prometheus"
 author: teamsmiley
 date: 2020-10-08
 tags: [cicd]
@@ -21,7 +21,7 @@ category: { kubernetes }
 1. <https://teamsmiley.github.io/2020/10/08/kubernetes-log/>
 1. <https://teamsmiley.github.io/2020/10/10/kubernetes-backup-velero/>
 
-# kubernetes - prometheus & grafana
+# kube-prometheus
 
 kubernetes 모니터링을 해보자.
 
