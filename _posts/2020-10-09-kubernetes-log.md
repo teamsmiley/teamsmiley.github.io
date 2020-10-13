@@ -245,3 +245,54 @@ kubectl create -f https://raw.githubusercontent.com/fluent/fluent-bit-kubernetes
 ![]({{ site_baseurl }}/assets/2020-10-07-15-37-08.png)
 
 결과가 잘 나온다. 사용법은 다음에
+
+## ingress에 붙여보자.
+
+기존에는 따로 서비스를 만들어서 아이피를 할당하여 처리하였는데 불편해보임 ingress-nginx에 추가하여 외부에 오픈해보자.
+
+cert만들기
+
+```yml
+---
+apiVersion: cert-manager.io/v1alpha2
+kind: Certificate
+metadata:
+  name: logging-tls
+  namespace: logging
+spec:
+  secretName: logging-tls
+  issuerRef:
+    name: le-dns-issuer-live
+    kind: ClusterIssuer
+  dnsNames:
+    - kibana.c2.xgridcolo.com
+```
+
+ingress만들기
+
+```yml
+---
+apiVersion: extensions/v1beta1
+kind: Ingress
+metadata:
+  name: kibana
+  annotations:
+    nginx.ingress.kubernetes.io/ssl-redirect: "true"
+  namespace: logging
+spec:
+  rules:
+    - host: kibana.c2.xgridcolo.com
+      http:
+        paths:
+          - backend:
+              serviceName: kibana-kibana
+              servicePort: 5601
+            path: /
+
+  tls:
+    - hosts:
+        - kibana.c2.xgridcolo.com
+      secretName: logging-tls
+```
+
+dns나 hosts 파일을 변경하여 url로 접속해보면 된다.
