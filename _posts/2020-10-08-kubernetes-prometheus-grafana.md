@@ -250,6 +250,20 @@ dns에 도메인을 추가하고 사용하거나 /etc/hosts파일에 추가해�
 
 슬랙으로 alert를 받아보려고함.
 
+https://gist.github.com/milesbxf/e2744fc90e9c41b47aa47925f8ff6512
+
+여기에서 3개 파일을 다 저장한다.
+
+```bash
+curl -O https://gist.githubusercontent.com/milesbxf/e2744fc90e9c41b47aa47925f8ff6512/raw/e8d555a72a5c283cba8e9e9852e0375123f0a708/monzo-alertmanager-config.yaml
+curl -O https://gist.githubusercontent.com/milesbxf/e2744fc90e9c41b47aa47925f8ff6512/raw/e8d555a72a5c283cba8e9e9852e0375123f0a708/monzo-alertmanager-receiver.yaml
+curl -O https://gist.githubusercontent.com/milesbxf/e2744fc90e9c41b47aa47925f8ff6512/raw/e8d555a72a5c283cba8e9e9852e0375123f0a708/monzo-slack-templates.tmpl
+```
+
+기존 secret은 삭제를 하고 새로 만들어보자.
+kubectl -n monitoring delete secret alertmanager-main
+kubectl -n monitoring create secret generic alertmanager-main --from-file=monzo-alertmanager-config.yaml --from-file=monzo-alertmanager-receiver.yaml --from-file=monzo-slack-templates.tmpl
+
 ### prometheus-k8s, alertmanager-main, grafana PV(Persistence Volume) 사용
 
 기본구성시 스토리지는 호스트 노드의 임시 디렉토리 그래서 포드가 다른 곳에 재배치되면 기존 데이터가 모두 사라짐.
