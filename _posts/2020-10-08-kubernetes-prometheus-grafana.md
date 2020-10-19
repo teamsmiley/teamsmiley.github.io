@@ -162,9 +162,9 @@ spec:
     name: le-dns-issuer-live
     kind: ClusterIssuer
   dnsNames:
-    - prometheus.c2.xgridcolo.com
-    - alertmanager.c2.xgridcolo.com
-    - grafana.c2.xgridcolo.com
+    - prometheus.sample.com
+    - alertmanager.sample.com
+    - grafana.sample.com
 ```
 
 이제 인그레스를 만들자.
@@ -180,7 +180,7 @@ metadata:
   namespace: monitoring
 spec:
   rules:
-    - host: prometheus.c2.xgridcolo.com
+    - host: prometheus.sample.com
       http:
         paths:
           - backend:
@@ -190,7 +190,7 @@ spec:
 
   tls:
     - hosts:
-        - prometheus.c2.xgridcolo.com
+        - prometheus.sample.com
       secretName: monitoring-tls
 
 ---
@@ -203,7 +203,7 @@ metadata:
   namespace: monitoring
 spec:
   rules:
-    - host: alertmanager.c2.xgridcolo.com
+    - host: alertmanager.sample.com
       http:
         paths:
           - backend:
@@ -213,7 +213,7 @@ spec:
 
   tls:
     - hosts:
-        - alertmanager.c2.xgridcolo.com
+        - alertmanager.sample.com
       secretName: monitoring-tls
 
 ---
@@ -226,7 +226,7 @@ metadata:
   namespace: monitoring
 spec:
   rules:
-    - host: grafana.c2.xgridcolo.com
+    - host: grafana.sample.com
       http:
         paths:
           - backend:
@@ -236,7 +236,7 @@ spec:
 
   tls:
     - hosts:
-        - grafana.c2.xgridcolo.com
+        - grafana.sample.com
       secretName: monitoring-tls
 ```
 
@@ -245,24 +245,6 @@ dns에 도메인을 추가하고 사용하거나 /etc/hosts파일에 추가해�
 ## todo
 
 ### alertmanager 에서 슬랙으로 노티피케이션을 보낼 수 있도록 설정
-
-기본 설정은 alert을 받을수 없음
-
-슬랙으로 alert를 받아보려고함.
-
-https://gist.github.com/milesbxf/e2744fc90e9c41b47aa47925f8ff6512
-
-여기에서 3개 파일을 다 저장한다.
-
-```bash
-curl -O https://gist.githubusercontent.com/milesbxf/e2744fc90e9c41b47aa47925f8ff6512/raw/e8d555a72a5c283cba8e9e9852e0375123f0a708/monzo-alertmanager-config.yaml
-curl -O https://gist.githubusercontent.com/milesbxf/e2744fc90e9c41b47aa47925f8ff6512/raw/e8d555a72a5c283cba8e9e9852e0375123f0a708/monzo-alertmanager-receiver.yaml
-curl -O https://gist.githubusercontent.com/milesbxf/e2744fc90e9c41b47aa47925f8ff6512/raw/e8d555a72a5c283cba8e9e9852e0375123f0a708/monzo-slack-templates.tmpl
-```
-
-기존 secret은 삭제를 하고 새로 만들어보자.
-kubectl -n monitoring delete secret alertmanager-main
-kubectl -n monitoring create secret generic alertmanager-main --from-file=monzo-alertmanager-config.yaml --from-file=monzo-alertmanager-receiver.yaml --from-file=monzo-slack-templates.tmpl
 
 ### prometheus-k8s, alertmanager-main, grafana PV(Persistence Volume) 사용
 
