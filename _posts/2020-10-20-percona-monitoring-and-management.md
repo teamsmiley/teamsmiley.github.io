@@ -173,7 +173,9 @@ groups:
 
 일부러 4로 해서 에러를 만들어보앗으나 실제는 3으로해서 현재 3개보다 적으면 알림이 오게 해야한다.
 
-알림이 오니 추가 알림을 설정해보자. <https://github.com/prometheus/mysqld_exporter/blob/master/example.rules>
+알림이 오니 추가 알림을 설정해보자.
+
+<https://github.com/prometheus/mysqld_exporter/blob/master/example.rules>
 
 기존 설정을 지우고 아래 설정으로 대체
 
@@ -256,6 +258,8 @@ for: 1m
 ```
 
 기본이 체크가 10초니까 6번까지 에러가 나면 알림을 해라 이것이다. up은 0 이면 노드가 꺼진것이다.
+
+![]({{ site_baseurl }}/assets/2020-10-20-19-15-56.png)
 
 ### 샘플 alert rule
 
