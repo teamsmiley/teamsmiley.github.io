@@ -2,7 +2,7 @@
 layout: post
 title: "Percona XtraDB Cluster 8.0 without SSL"
 author: teamsmiley
-date: 2020-10-10
+date: 2020-10-16
 tags: [db]
 image: /files/covers/blog.jpg
 category: { percona }
