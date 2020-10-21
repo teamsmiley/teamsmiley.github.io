@@ -3,7 +3,7 @@ layout: post
 title: "Percona Monitoring and Management"
 author: teamsmiley
 date: 2020-10-20
-tags: [db]
+tags: [pmm]
 image: /files/covers/blog.jpg
 category: { percona }
 ---
