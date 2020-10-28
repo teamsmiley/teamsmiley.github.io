@@ -81,6 +81,13 @@ NAME                      READY   STATUS    RESTARTS   AGE
 velero-54bdf48d57-8z5nd   1/1     Running   0          47s
 ```
 
+## delete velero on kube
+```bash
+kcuc c3
+kubectl delete namespace/velero clusterrolebinding/velero
+kubectl delete crds -l component=velero
+```
+
 ## backup
 
 ```bash

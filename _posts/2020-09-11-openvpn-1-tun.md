@@ -231,12 +231,13 @@ ls -alF /etc/openvpn
 
 ```bash
 cd /etc/openvpn/easy-rsa
+. ./vars
 ./build-key ragon
 ```
 
 ```
 Common Name (eg, your name or your server's hostname) [ragon]: ragon
-Name [vpn01-server]:ragon
+Name [vpn01-server]:vpn01
 Email Address [support@xgridcolo.com]:teamsmiley@gmail.com
 ```
 
@@ -271,10 +272,10 @@ systemctl restart openvpn@server.service
 
 ```bash
 cd
-scp vpn01:/etc/openvpn/easy-rsa/keys/ragon.crt ./Desktop/openvpn/
-scp vpn01:/etc/openvpn/easy-rsa/keys/ragon.key ./Desktop/openvpn/
-scp vpn01:/etc/openvpn/ca.crt ./Desktop/openvpn/
-scp vpn01:/etc/openvpn/ta.key ./Desktop/openvpn/
+scp vpn01:/etc/openvpn/easy-rsa/keys/daniel.crt ~/Desktop/openvpn/
+scp vpn01:/etc/openvpn/easy-rsa/keys/daniel.key ~/Desktop/openvpn/
+scp vpn01:/etc/openvpn/ca.crt ~/Desktop/openvpn/
+scp vpn01:/etc/openvpn/ta.key ~/Desktop/openvpn/
 ```
 
 vi ragon.ovpn
@@ -353,7 +354,7 @@ dev tun
 
 proto udp
 
-remote ---.---.---.--- 11194 udp # 본인 아이피를 넣으세요
+remote ---.---.---.--- 11194 udp # 본인 서버 아이피를 넣으세요
 
 key-direction 1
 
