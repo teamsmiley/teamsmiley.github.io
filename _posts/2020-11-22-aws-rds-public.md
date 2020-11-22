@@ -16,15 +16,21 @@ aws rds 서비스를 외부에서 엑세스가 가능하게 만들기
 
 1. aws console > rds > db instance > 원하는 db instance 선택후 modify
 1. connectivity > Additional connectivity configuration
-   ![]({{ site_baseurl }}/assets/rds/2020-11-22-06-37-08.png)
+
+![]({{ site_baseurl }}/assets/rds/2020-11-22-06-37-08.png)
+
 1. save
 
 ## vpc에서 라우팅을 internet gateway로 설정
 
 1. aws console > rds > db instance > 원하는 db instance 선택후 > vpc 선택
-   ![]({{ site_baseurl }}/assets/rds/2020-11-22-06-40-03.png)
+
+![]({{ site_baseurl }}/assets/rds/2020-11-22-06-40-03.png)
+
 1. click routing table
-   ![]({{ site_baseurl }}/assets/rds/2020-11-22-06-41-56.png)
+
+![]({{ site_baseurl }}/assets/rds/2020-11-22-06-41-56.png)
+
 1. edit routes
    ![]({{ site_baseurl }}/assets/rds/2020-11-22-06-43-35.png)
 1. 0.0.0.0/0 internet gateway 추가
