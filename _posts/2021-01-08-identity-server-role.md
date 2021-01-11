@@ -141,4 +141,24 @@ public class AdvertiseDetailsController : ApiController
 ...
 ```
 
+StartUp.cs파일에서 다음처럼 수정해야한다.
+
+참고 <https://stackoverflow.com/questions/65069078/asp-net-core-3-1-role-based-authorization-for-web-api-does-not-work>
+
+```cs
+services.AddAuthentication(JwtBearerDefaults.AuthenticationScheme).AddJwtBearer(
+        options =>
+        {
+          ...
+          // 추가
+          options.TokenValidationParameters = new TokenValidationParameters
+          {
+            NameClaimType = JwtClaimTypes.Name,
+            RoleClaimType = JwtClaimTypes.Role,
+          };
+          // If you also want to add additional claims, you need to explicitly map them into the local user ClaimsPrincipal using:
+          // options.ClaimActions.MapUniqueJsonKey("claimname", "claimname");  });
+        });
+```
+
 완성
