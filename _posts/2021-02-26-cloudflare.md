@@ -78,8 +78,6 @@ curl -X POST "https://api.cloudflare.com/client/v4/zones/xxx0ad5ca54c0c2be85e6ff
 
 대충 이런식으로 해서 아래 데이터를 보내주면 된다.
 
-나는 postman으로 사용을 해서 테스트했더니 잘 됨.
-
 ```json
 {
   "ip_firewall": false,
@@ -98,3 +96,11 @@ curl -X POST "https://api.cloudflare.com/client/v4/zones/xxx0ad5ca54c0c2be85e6ff
   "origin_direct": ["tcp://28.16.0.xxx:63111"]
 }
 ```
+
+나는 postman으로 사용을 해서 테스트했더니 잘 됨.
+
+![]({{ site_baseurl }}/assets/2021-02-26-18-24-38.png)
+
+![]({{ site_baseurl }}/assets/2021-02-26-18-23-57.png)
+
+이제 편하게 데이터를 넣을수 있다.
