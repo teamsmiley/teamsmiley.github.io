@@ -1,6 +1,6 @@
 ---
 layout: post
-title: "dotnet 5 console"
+title: "dotnet 5 console program 배포"
 author: teamsmiley
 date: 2021-02-28
 tags: [coding]
