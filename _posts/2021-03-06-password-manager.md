@@ -1,6 +1,6 @@
 ---
 layout: post
-title: "password 관리"
+title: "bitwarden Password 매니저"
 author: teamsmiley
 date: 2021-03-06
 tags: [coding]
