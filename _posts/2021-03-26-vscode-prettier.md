@@ -1,6 +1,6 @@
 ---
 layout: post
-title: "Prettier-Code Formatter"
+title: 'Prettier-Code Formatter'
 author: teamsmiley
 date: 2021-03-26
 tags: [coding]
@@ -28,7 +28,7 @@ settings.json > .editorconfig > .prettierrc
 
 Default Formatter에 설정하면 모든 파일에 적용이된다.
 
-```javascript
+```json
 {
   "editor.defaultFormatter": "esbenp.prettier-vscode",
   "[javascript]": {
@@ -39,7 +39,7 @@ Default Formatter에 설정하면 모든 파일에 적용이된다.
 
 원하는 언어에만 적용해도 된다.
 
-```javascript
+```json
 {
   "editor.defaultFormatter": null,
   "[javascript]": {
@@ -75,7 +75,7 @@ Default Formatter에 설정하면 모든 파일에 적용이된다.
 
 붙여넣기나 저장시 자동 formatting을 하도록 해두었다. width는 200을 사용한다.
 
-```javascript
+```json
 "editor.formatOnPaste": true,
 "editor.formatOnSave": true,
 
@@ -98,7 +98,7 @@ Default Formatter에 설정하면 모든 파일에 적용이된다.
 
 오늘 작업을 하는데 마크다운에서 format을 하면 `_` 가 `\_` 로 변경이 된다. 분명 설정에서
 
-```javascript
+```json
 "editor.defaultFormatter": null,
 "[markdown]": {
 
@@ -107,7 +107,7 @@ Default Formatter에 설정하면 모든 파일에 적용이된다.
 
 이렇게 마크다운은 prettier를 사용하지않게 해두었는데도 실행이 된다.
 
-```javascript
+```json
 prettier.disableLanguages: [
 "markdown"
 ]
@@ -115,7 +115,7 @@ prettier.disableLanguages: [
 
 이 기능은 depreciate가 됬다. `.prettierignore`를 사용하라고 한다. 파일 생성후 다음처럼 작성하니 드디어 prettier의 동작이 md파일에는 적용이 안된다.
 
-```
+```.gitignore
 **/*.md
 ```
 
