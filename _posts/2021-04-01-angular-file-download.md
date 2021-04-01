@@ -1,8 +1,8 @@
 ---
 layout: post
-title: 'angular file download'
+title: 'angular file download with browser'
 author: teamsmiley
-date: 2021-03-29
+date: 2021-04-01
 tags: [coding]
 image: /files/covers/blog.jpg
 category: { program }
@@ -12,7 +12,7 @@ category: { program }
 
 일반적인 다운로드는 크롬 다운로드창에서 보이면서 경과가 보여진다.
 
-![](./images/2021-04-01-07-38-56.png)
+![]({{ site_baseurl }}/assets/2021-04-01-07-38-56.png)
 
 그런데 angular에서 다운로드를 하면 xhr을 사용하여 스트림을 download하기때문에 파일이 완전히 다운로드가 된 후에 download창을 띄운다.
 
@@ -46,7 +46,7 @@ public async Task<IActionResult> Get(string path, string fileName)
 }
 ```
 
-### Front
+### Frontend
 
 1. filesaver 사용
 
@@ -135,7 +135,7 @@ public async Task<IActionResult> Get(string path, string fileName)
 
 `Content-Length` 를 넣어줘야 브라우저 download에서 진행 % 가 보인다.
 
-### frontend
+### Frontend
 
 간단하게 http 링크를 하나만들어서 테스트해보자.
 
