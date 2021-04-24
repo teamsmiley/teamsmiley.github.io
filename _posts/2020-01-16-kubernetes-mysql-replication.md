@@ -1,19 +1,19 @@
 ---
 layout: post
-title: 'kubernetes mysql replication' 
+title: 'kubernetes mysql replication'
 author: teamsmiley
 date: 2020-01-16
 tags: [kubernetes]
 image: /files/covers/blog.jpg
-category: {kuberentes}
+category: { kuberentes }
 ---
 
 mysql을 쿠버네티스에 배포 연습
 
-다음 방식이 있다. 
+다음 방식이 있다.
 
-1. statefulset 을 이용한 자동 배포 
-1. 수동으로 master slave를 설정하는 배포 
+1. statefulset 을 이용한 자동 배포
+1. 수동으로 master slave를 설정하는 배포
 
 ## statefulset을 사용해서 배포를 하면 다음처럼 하면된다.
 
@@ -25,27 +25,28 @@ pv가 dynamic provision이 되면 아주 잘 된다.
 
 pv는 ceph를 설치해서 해결햇음. 잘 된다.
 
-스토리지가 좋으면 되는데 네트워크로 묶어서 사용하는 ceph다 보니 해보니 퍼포먼스가 로컬 하드디스크를 쓰는것보다 잘 안나오는듯 보인다. 
+스토리지가 좋으면 되는데 네트워크로 묶어서 사용하는 ceph다 보니 해보니 퍼포먼스가 로컬 하드디스크를 쓰는것보다 잘 안나오는듯 보인다.
 
-## 수동 배포 
+## 수동 배포
 
-kubernetes 노드가 4대가 있고 mysql을 각각 노드에 띄우고 모든 pod는 자신의 하드디스크를 스토리지로 사용한다. 
+kubernetes 노드가 4대가 있고 mysql을 각각 노드에 띄우고 모든 pod는 자신의 하드디스크를 스토리지로 사용한다.
 
 일단 이것이 나에게는 퍼포먼스 문제를 해결할수 있어서 조금더 나은 선택으로 보여서 작업햇다.
 
-### server 구성 
-| | | | |
-|---|---|---|---|
-|NodeName|Type|Node IP|serviceIP|
-|node 11 |master|192.168.0.11|192.168.0.111|
-|node 12 |slave01|192.168.0.12|192.168.0.112|
-|node 13 |slave02|192.168.0.13|192.168.0.112|
-|node 14 |slave03|192.168.0.14|192.168.0.112|
+### server 구성 테이블
 
+|          |         |              |               |
+| -------- | ------- | ------------ | ------------- |
+| NodeName | Type    | Node IP      | serviceIP     |
+| node 11  | master  | 192.168.0.11 | 192.168.0.111 |
+| node 12  | slave01 | 192.168.0.12 | 192.168.0.112 |
+| node 13  | slave02 | 192.168.0.13 | 192.168.0.112 |
+| node 14  | slave03 | 192.168.0.14 | 192.168.0.112 |
 
-### 설정파일 만들기 
+### 설정파일 만들기
 
 configmap.yml
+
 ```yml
 apiVersion: v1
 kind: ConfigMap
@@ -87,7 +88,7 @@ data:
     [mysqld]
     server-id = 3
     slave-skip-errors=all
-    #default_authentication_plugin= mysql_native_password  # mysql 8만 해당 다른버전은 삭제할것 
+    #default_authentication_plugin= mysql_native_password  # mysql 8만 해당 다른버전은 삭제할것
 
 ---
 apiVersion: v1
@@ -105,13 +106,14 @@ data:
 ```
 
 master.yml
+
 ```yml
 ---
 apiVersion: v1
 kind: PersistentVolume
 metadata:
   annotations:
-    pv.beta.kubernetes.io/gid: "0"
+    pv.beta.kubernetes.io/gid: '0'
   labels:
     type: local
   name: staging-master-pv
@@ -177,7 +179,7 @@ spec:
           imagePullPolicy: Always
           name: mysql-master
           args:
-            - "--default-authentication-plugin=mysql_native_password" # mysql 8만 해당 다른버전은 삭제할것
+            - '--default-authentication-plugin=mysql_native_password' # mysql 8만 해당 다른버전은 삭제할것
           env:
             - name: MYSQL_ROOT_PASSWORD
               value: YOUR_PASSWORD
@@ -216,13 +218,14 @@ spec:
 ```
 
 slave01.yml
+
 ```yml
 ---
 apiVersion: v1
 kind: PersistentVolume
 metadata:
   annotations:
-    pv.beta.kubernetes.io/gid: "0"
+    pv.beta.kubernetes.io/gid: '0'
   labels:
     type: local
   name: staging-slave01-pv
@@ -288,7 +291,7 @@ spec:
           imagePullPolicy: Always
           name: mysql-slave01
           args:
-            - "--default-authentication-plugin=mysql_native_password" # mysql 8만 해당 다른버전은 삭제할것
+            - '--default-authentication-plugin=mysql_native_password' # mysql 8만 해당 다른버전은 삭제할것
           env:
             - name: MYSQL_ROOT_PASSWORD
               value: YOUR_PASSWORD
@@ -327,13 +330,14 @@ spec:
 ```
 
 slave02.yml
+
 ```yml
 ---
 apiVersion: v1
 kind: PersistentVolume
 metadata:
   annotations:
-    pv.beta.kubernetes.io/gid: "0"
+    pv.beta.kubernetes.io/gid: '0'
   labels:
     type: local
   name: staging-slave02-pv
@@ -399,7 +403,7 @@ spec:
           imagePullPolicy: Always
           name: mysql-slave02
           args:
-            - "--default-authentication-plugin=mysql_native_password" # mysql 8만 해당 다른버전은 삭제할것
+            - '--default-authentication-plugin=mysql_native_password' # mysql 8만 해당 다른버전은 삭제할것
           env:
             - name: MYSQL_ROOT_PASSWORD
               value: YOUR_PASSWORD
@@ -421,13 +425,14 @@ spec:
 ```
 
 slave03.yml
+
 ```yml
 ---
 apiVersion: v1
 kind: PersistentVolume
 metadata:
   annotations:
-    pv.beta.kubernetes.io/gid: "0"
+    pv.beta.kubernetes.io/gid: '0'
   labels:
     type: local
   name: staging-slave03-pv
@@ -493,7 +498,7 @@ spec:
           imagePullPolicy: Always
           name: mysql-slave03
           args:
-            - "--default-authentication-plugin=mysql_native_password" # mysql 8만 해당 다른버전은 삭제할것
+            - '--default-authentication-plugin=mysql_native_password' # mysql 8만 해당 다른버전은 삭제할것
           env:
             - name: MYSQL_ROOT_PASSWORD
               value: YOUR_PASSWORD
@@ -515,6 +520,7 @@ spec:
 ```
 
 ### kuberentes에 배포하자.
+
 ```bash
 kubectl apply -f configmap.yml
 kubectl apply -f mysql-master.yml
@@ -524,6 +530,7 @@ kubectl apply -f mysql-slave03.yml
 ```
 
 ### 변수 선언
+
 ```bash
 MASTER=`kubectl get pod | grep master | cut -d' ' -f1`
 SLAVE01=`kubectl get pod | grep slave01 | cut -d' ' -f1`
@@ -536,13 +543,14 @@ echo $SLAVE03;
 ```
 
 ### master 디비 백업
+
 ```bash
 kubectl exec -it $MASTER -- mysqldump -u root -pYOUR_PASSWORD --all-databases > test.sql
 ```
 
 mysqldump 버전에 따라 첫번째 줄에 이상한 내용이 들어가잇는경우가 있다. test.sql을 확인하여 지우자.
 
-### master status 확인 
+### master status 확인
 
 ```bash
 kubectl exec -it $MASTER -- \
@@ -550,20 +558,22 @@ mysql -u root -pYOUR_PASSWORD <<EOF
 show master status\G;
 EOF
 ```
+
 ```sql
 mysql> show master status\G
 *************************** 1. row ***************************
              File: mysql-bin.000003
          Position: 155
-     Binlog_Do_DB: 
- Binlog_Ignore_DB: 
-Executed_Gtid_Set: 
+     Binlog_Do_DB:
+ Binlog_Ignore_DB:
+Executed_Gtid_Set:
 1 row in set (0.00 sec)
 ```
 
 이 정보를 나중에 사용할 것이다.
 
 ### slave 디비에 test.sql을 복구
+
 ```bash
 kubectl exec -it $SLAVE01 -- mysql -u root -pYOUR_PASSWORD < test.sql
 kubectl exec -it $SLAVE02 -- mysql -u root -pYOUR_PASSWORD < test.sql
@@ -571,6 +581,7 @@ kubectl exec -it $SLAVE03 -- mysql -u root -pYOUR_PASSWORD < test.sql
 ```
 
 ### slave setting
+
 ```bash
 kubectl exec -it $SLAVE01 -- \
 mysql -u root -pYOUR_PASSWORD <<EOF
@@ -627,6 +638,7 @@ mysql -u root -pYOUR_PASSWORD <<EOF
 SELECT * FROM test.messages;
 EOF
 ```
+
 slave service 동작 확인
 
 ### 서비스 동작 확인
@@ -648,6 +660,7 @@ EOF
 ```
 
 ## delete all
+
 ```bash
 kubectl delete -f configmap.yml
 kubectl delete -f mysql-master.yml
@@ -660,8 +673,3 @@ ssh node12 rm -rf /data/staging
 ssh node13 rm -rf /data/staging
 ssh node14 rm -rf /data/staging
 ```
-
-
-
-
-

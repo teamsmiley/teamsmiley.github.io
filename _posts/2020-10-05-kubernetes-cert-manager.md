@@ -1,6 +1,6 @@
 ---
 layout: post
-title: "kubernetes cert-manager"
+title: 'kubernetes cert-manager'
 author: teamsmiley
 date: 2020-10-05
 tags: [cicd]
@@ -103,7 +103,7 @@ metadata:
 spec:
   acme:
     server: https://acme-staging-v02.api.letsencrypt.org/directory
-    email: "teamsmiley@gmail.com"
+    email: 'teamsmiley@gmail.com'
     privateKeySecretRef:
       name: le-dns-issuer-staging
     solvers:
@@ -123,7 +123,7 @@ metadata:
 spec:
   acme:
     server: https://acme-v02.api.letsencrypt.org/directory
-    email: "teamsmiley@gmail.com"
+    email: 'teamsmiley@gmail.com'
     privateKeySecretRef:
       name: le-dns-issuer-live
     solvers:
@@ -180,7 +180,7 @@ kubectl describe certificate tls-staging -n xgrid-staging
 
 결과가 아래처럼 나오면 된다
 
-```
+```bash
 Spec:
   Dns Names:
     *.staging.xgridcolo.com
@@ -202,5 +202,5 @@ Status:
 
 ```bash
 kubectl get pod -n cert-manager # cert-manager pod확인
-kubectl logs cert-manager-XXX -f -n cert-manager # cain이나 webhook가 아닌 main pod를 체크해야한다.
+kubectl logs cert-manager-1602273512-6c8fff6d74-mvhdb -f -n cert-manager # cain이나 webhook가 아닌 main pod를 체크해야한다.
 ```
