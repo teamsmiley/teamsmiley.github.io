@@ -1,6 +1,6 @@
 ---
 layout: post
-title: "cloud-init"
+title: 'cloud-init'
 author: teamsmiley
 date: 2021-02-08
 tags: [coding]
@@ -47,7 +47,7 @@ users:
     shell: /bin/bash
     groups: sudo
     lock-passwd: false
-    passwd: $1$i2NTyTDo$SS62OWlhxc1s.FHNJNEfq0
+    passwd: hashed_your_password
 timezone: America/Los_Angeles
 packages:
   - htop
@@ -70,7 +70,7 @@ runcmd:
   - git clone https://github.com/zsh-users/zsh-syntax-highlighting
   - sudo chmod 755 -R .
 power_state:
-  delay: "2"
+  delay: '2'
   mode: reboot
   message: Bye Bye
   timeout: 5
