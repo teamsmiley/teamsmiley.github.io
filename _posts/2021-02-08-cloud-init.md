@@ -42,7 +42,7 @@ deploy하기전에 다음 화면에 내용을 넣어두면 설치시 실행을 �
 #cloud-config
 users:
   - default
-  - name: ragon
+  - name: YourUserName
     sudo: ALL=(ALL) NOPASSWD:ALL
     shell: /bin/bash
     groups: sudo
