@@ -1,8 +1,8 @@
 ---
 layout: post
-title: 'chrome extension with angular'
+title: 'chrome extension with angular22'
 author: teamsmiley
-date: 2021-05-09
+date: 2021-05-10
 tags: [coding]
 image: /files/covers/blog.jpg
 category: { program }
