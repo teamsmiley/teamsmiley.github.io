@@ -2,7 +2,7 @@
 layout: post
 title: 'chrome extension vs chrome app'
 author: teamsmiley
-date: 2021-05-07
+date: 2021-05-08
 tags: [coding]
 image: /files/covers/blog.jpg
 category: { program }
