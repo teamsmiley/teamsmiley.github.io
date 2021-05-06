@@ -1,6 +1,6 @@
 ---
 layout: post
-title: 'chrome extension deploy'
+title: 'chrome extension deploy - 01'
 author: teamsmiley
 date: 2021-05-06
 tags: [coding]
@@ -86,4 +86,3 @@ chrome 앱을 지원중단한다고?
 https://zuminternet.github.io/Zum-Chrome-Extension/ review
 
 액티브 탭 권한과 https http권한도 없어도 되는데 괞히 추가해서 복잡해졌음. 정리 해야함 - 권한 수정해서 업로드 하려고하는데 안됨..검토끝날때까지 안될듯
-
