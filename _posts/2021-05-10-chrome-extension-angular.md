@@ -42,7 +42,7 @@ ng serve -o
 
 이걸 이제 크롬에 등록해보자.
 
-chrome://extensions/
+`chrome://extensions/`
 
 developer mode를 켜고
 
