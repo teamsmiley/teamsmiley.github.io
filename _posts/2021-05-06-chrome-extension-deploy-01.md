@@ -78,3 +78,9 @@ chrome 앱을 지원중단한다고?
 ![]({{ site_baseurl }}/assets/2021-05-06-09-20-09.png)
 
 제출되는거 보고 나머지는 진행하자.
+
+//todo
+
+크롬 앱 vs 크롬 익스텐션
+
+https://zuminternet.github.io/Zum-Chrome-Extension/ review
