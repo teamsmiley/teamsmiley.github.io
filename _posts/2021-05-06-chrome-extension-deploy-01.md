@@ -8,7 +8,7 @@ image: /files/covers/blog.jpg
 category: { program }
 ---
 
-# chrome extension deploy
+# chrome extension deploy - 01
 
 ## 개발자 등록
 
