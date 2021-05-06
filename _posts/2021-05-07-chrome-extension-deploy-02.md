@@ -78,8 +78,6 @@ https://accounts.google.com/o/oauth2/auth?response_type=code&scope=https://www.g
 
 clientid만 수정해서 요청해보자. 구글 아이디로 로그인 되 있어야한다.
 
-https://accounts.google.com/o/oauth2/auth?response_type=code&scope=https://www.googleapis.com/auth/chromewebstore&client_id=206079853979-uv3536u335r203ige4rsi3kl0jftkrn1.apps.googleusercontent.com&redirect_uri=urn:ietf:wg:oauth:2.0:oob
-
 ![]({{ site_baseurl }}/assets/2021-05-07-chrome-extension-deploy-02/2021-05-06-11-26-29.png)
 
 음 크롬 익스텐션이 게시가 되야 처리가 가능한가 보다.
@@ -92,7 +90,7 @@ https://accounts.google.com/o/oauth2/auth?response_type=code&scope=https://www.g
 
 링크를 다시 해보자.
 
-https://accounts.google.com/o/oauth2/auth?response_type=code&scope=https://www.googleapis.com/auth/chromewebstore&client_id=206079853979-uv3536u335r203ige4rsi3kl0jftkrn1.apps.googleusercontent.com&redirect_uri=urn:ietf:wg:oauth:2.0:oob
+https://accounts.google.com/o/oauth2/auth?response_type=code&scope=https://www.googleapis.com/auth/chromewebstore&client_id=XXXXX-3kl0jftkrn1.apps.googleusercontent.com&redirect_uri=urn:ietf:wg:oauth:2.0:oob
 
 ![]({{ site_baseurl }}/assets/2021-05-07-chrome-extension-deploy-02/2021-05-06-12-25-53.png)
 
@@ -109,9 +107,9 @@ https://accounts.google.com/o/oauth2/auth?response_type=code&scope=https://www.g
 code를 받았으므로 이걸 추가해서 url을 호출해보자. 값을 모르면 들어가서 확인해보면 된다.
 
 ```bash
-CLIENT_ID=206079853979-uv3536u335r203ige4rsi3kl0jftkrn1.apps.googleusercontent.com
-CLIENT_SECRET=oeMcFVqUqzJ_sOiwTVMjzJPd
-CODE=4/1AY0e-g7tdMche_HGb3-LT5QP1n12Djz3hUcwte57Drpjw920w8q_BrAZp30
+CLIENT_ID=XXXXX-3kl0jftkrn1.apps.googleusercontent.com
+CLIENT_SECRET=oeMcFVqUqzJ_sOi
+CODE=4/1AY0e-g7tdMche_HGb3-LT5QP1n12Djz3hUc
 ```
 
 ![]({{ site_baseurl }}/assets/2021-05-07-chrome-extension-deploy-02/2021-05-06-12-30-34.png)
@@ -124,16 +122,16 @@ curl "https://accounts.google.com/o/oauth2/token" -d \
 "client_id=$CLIENT_ID&client_secret=$CLIENT_SECRET&code=$CODE&grant_type=authorization_code&redirect_uri=urn:ietf:wg:oauth:2.0:oob"
 
 > {
-> "access_token": "ya29.a0AfH6SMBcqyQtC-Vo3F-AUBZq20IdDGgoDH9blYJbu8O1dXT3z3sNxaPKw8RS6SYnTBxOSSSdC0Tak_grH2irju9D6N7QByjT9eWpZzZTLQPHnMWagD3OuWcYW2k4eXCAzh7cy4GivwTRp1hsqXjiT5rlp9Vx",
+> "access_token": "rH2irju9D6N7QByjT9eWpZzZTLQPHnMWagD3OuWcYW2k4eXCAzh7cy4GivwTRp1hsqXjiT5rlp9Vx",
 > "expires_in": 3599,
-> "refresh_token": "1//06uWcWWkVxYa0CgYIARAAGAYSNwF-L9IrzAp5WTOO53NmjQXDDEgYBDrYJ_SC1z1DHOHT1meoOOjj_gVr3YvfymU0GmTdWH0x5u0",
+> "refresh_token": "1//06uWcWWkVxYa0CgYIAj_gVr3YvfymU0GmTdWH0x5u0",
 > "scope": "https://www.googleapis.com/auth/chromewebstore",
 > "token_type": "Bearer"
 > }%
 
 여기서 refresh_token을 사용할것이다.
 
-1//06uWcWWkVxYa0CgYIARAAGAYSNwF-L9IrzAp5WTOO53NmjQXDDEgYBDrYJ_SC1z1DHOHT1meoOOjj_gVr3YvfymU0GmTdWH0x5u0
+1//06uWcWWkVxYa0CgYIAj_gVr3YvfymU0GmTdWH0x5u0
 
 이제 github action을 이용하여 커밋 푸시가 올라올때 압축해서 업로드하게 처리한다.
 
