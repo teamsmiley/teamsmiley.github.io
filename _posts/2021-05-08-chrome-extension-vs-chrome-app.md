@@ -24,6 +24,8 @@ chrome extension과 chrome app은 다르다고 한다.
 
 대신 크롬 앱은 주소창에 다음처럼 넣는다.
 
+chrome://apps/
+
 ![]({{ site_baseurl }}/assets/2021-05-08-chrome-extension-vs-chrome-app/2021-05-06-13-45-10.png)
 
 ![]({{ site_baseurl }}/assets/2021-05-08-chrome-extension-vs-chrome-app/2021-05-06-13-45-20.png)
