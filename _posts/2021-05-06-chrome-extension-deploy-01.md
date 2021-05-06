@@ -86,3 +86,7 @@ chrome 앱을 지원중단한다고?
 https://zuminternet.github.io/Zum-Chrome-Extension/ review
 
 액티브 탭 권한과 https http권한도 없어도 되는데 괞히 추가해서 복잡해졌음. 정리 해야함 - 권한 수정해서 업로드 하려고하는데 안됨..검토끝날때까지 안될듯
+
+//update
+
+권한이 필요한게 없기때문에 전부 삭제를 하고 다시 검토를 올려야겟다. 기존게 있어서 문제가 잇어서 새로 앱을 생성해서 해야겟음.
