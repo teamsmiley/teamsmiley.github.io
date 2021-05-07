@@ -13,7 +13,7 @@ category: { program }
 ```bash
 npm install -g @angular/cli
 cd ~/Desktop
-ng new afk-chrome-extension > yes > yes > scss
+ng new afk-chrome-extension --routing=true --style=scss
 cd afk-chrome-extension
 npm i
 ng build --prod
@@ -23,10 +23,36 @@ dist폴더를 봐보자. 그럼 컴파일되서 올라온것이 보인다.
 
 ![]({{ site_baseurl }}/assets/2021-05-09-chrome-extension-angular/2021-05-06-14-33-31.png)
 
-내용을 보려면
+vi src/manifest.json
 
-```bash
-ng serve -o
+```json
+{
+  "author": "AFK",
+  "name": "AFK",
+  "manifest_version": 2,
+  "version": "0.0.1",
+  "version_name": "preview",
+
+  "permissions": [],
+
+  "chrome_url_overrides": {
+    "newtab": "index.html"
+  }
+}
+```
+
+vi angular.json
+
+```json
+"build": {
+          ...
+          "options": {
+            "assets": [
+              "src/favicon.ico",
+              "src/assets",
+              "src/manifest.json" //추가
+            ],
+            ...
 ```
 
 이제 app.component.html 을 수정한다.
