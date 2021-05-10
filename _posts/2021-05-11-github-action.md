@@ -2,7 +2,7 @@
 layout: post
 title: 'github action'
 author: teamsmiley
-date: 2021-05-101
+date: 2021-05-11
 tags: [coding]
 image: /files/covers/blog.jpg
 category: { program }
