@@ -1,11 +1,11 @@
 ---
 layout: post
-title: 'Kubernetes Log보기' 
+title: 'Kubernetes Log보기'
 author: teamsmiley
 date: 2020-05-10
 tags: [Kubernetes]
 image: /files/covers/blog.jpg
-category: {kubernetes}
+category: { kubernetes }
 ---
 
 # Kubernetes에서 로그 보기
@@ -18,6 +18,7 @@ kubectl logs -f  podxxxx
 ```
 
 이러면 로그를 계속 볼수 있다. 그런데 너무 로그가 많으면 오래 걸린다. 특별시 시간을 줄수 있다.
+
 ```bash
 kubectl logs -f xxxx  --since=5m
 ```
@@ -33,6 +34,3 @@ kubectl logs -f deployment/mobile-php --all-containers=true --since=5m
 ```
 
 이러면 이제 mobile-php 로 생성된 모든 pod의 로그를 한꺼번에 보여준다.
-
-
-
