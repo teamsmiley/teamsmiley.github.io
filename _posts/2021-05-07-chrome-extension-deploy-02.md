@@ -206,6 +206,12 @@ chrome web store에가면 개발자 dash board로 갈수 있다.
 
 동작한다.
 
-chrome web store 개발자 대시보드에 가면 업로드 된것을 볼수있다.
+chrome web store 개발자 대시보드에 가면 업로드 된것을 볼수 있다.
 
 맨처음에는 수동으로 업로드를 한번 해야 필요한정보등을 받을수있다.
+
+![]({{ site_baseurl }}/assets/2021-05-07-chrome-extension-deploy-02/before.png
+
+![]({{ site_baseurl }}/assets/2021-05-07-chrome-extension-deploy-02/after.png
+
+자동으로 검수까지 요청하는것을 볼수가 있다.
