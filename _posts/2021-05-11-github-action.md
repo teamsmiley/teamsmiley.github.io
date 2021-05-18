@@ -20,7 +20,7 @@ gitlab ci/cd도 같은 기능을 한다. 저는 gitlab ci/cd가 너무 좋아서
 
 해보자.
 
-## workflow
+## workflows
 
 프로젝트에 `.github/workflows` 라는 폴더를 만들고 거기에 build.yml을 만들어 보자.
 
