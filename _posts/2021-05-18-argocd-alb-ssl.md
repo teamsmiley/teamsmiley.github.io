@@ -1,6 +1,6 @@
 ---
 layout: post
-title: 'aws alb controller'
+title: 'argocd alb with ssl'
 author: teamsmiley
 date: 2021-05-18
 tags: [coding]
