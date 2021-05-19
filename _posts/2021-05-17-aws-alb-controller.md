@@ -34,7 +34,7 @@ metadata:
     kubernetes.io/ingress.class: 'alb' # alb를 사용하겠다
     alb.ingress.kubernetes.io/listen-ports: '[{"HTTP": 80}, {"HTTPS":443}]' # 포트를 80 443을 로드발란스에서 오픈하겟다.
     alb.ingress.kubernetes.io/scheme: internet-facing # 인터넷(public)에서 접속이 되게 한다.
-    alb.ingress.kubernetes.io/certificate-arn: arn:aws:acm:us-west-2:849059793568:certificate/199b8e95 # load balance에 ssl을 적용
+    alb.ingress.kubernetes.io/certificate-arn: arn:aws:acm:us-west-2:xxxxxx:certificate/199b8e95 # load balance에 ssl을 적용
     alb.ingress.kubernetes.io/actions.ssl-redirect: '{"Type": "redirect", "RedirectConfig": { "Protocol": "HTTPS", "Port": "443", "StatusCode": "HTTP_301"}}'
 spec:
   rules:
@@ -90,7 +90,7 @@ metadata:
   namespace: auth-staging
   annotations:
     kubernetes.io/ingress.class: 'alb'
-    alb.ingress.kubernetes.io/certificate-arn: arn:aws:acm:us-west-2:849059793568:certificate/199b8e95-fe5b-43e6-b499-061e4f133011
+    alb.ingress.kubernetes.io/certificate-arn: arn:aws:acm:us-west-2:xxxx:certificate/199b8e95-fe5b-43e6-b499-061e4f133011
     alb.ingress.kubernetes.io/listen-ports: '[{"HTTP": 80},{"HTTPS":443}]'
     alb.ingress.kubernetes.io/scheme: internet-facing
     alb.ingress.kubernetes.io/actions.ssl-redirect: '{"Type": "redirect", "RedirectConfig": { "Protocol": "HTTPS", "Port": "443", "StatusCode": "HTTP_301"}}'
