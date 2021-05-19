@@ -18,7 +18,7 @@ category: { program }
 
 aws certificate manager에서 소유한 도메인으로 tls(ssl)을 발급받아서 arn을 적어둔다.
 
-## argocd를 insecure 모드로 실행한다.
+## argocd를 insecure 모드
 
 이걸 하지않으면 too many redirect라는 메세지가 나오면서 동작하지 않는다.
 
