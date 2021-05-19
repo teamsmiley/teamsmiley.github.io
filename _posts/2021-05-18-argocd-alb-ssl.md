@@ -28,7 +28,7 @@ deploy에서 다음부분을 추가해준다.
 - --insecure
 ```
 
-![]({{ site_baseurl }}/assets/2021-05-19-07-44-41.png)
+![]({{ site_baseurl }}/assets/2021-05-18-argocd-alb-ssl/2021-05-19-07-44-41.png)
 
 배포가 잘 됬는지 확인해보자.
 
@@ -40,7 +40,7 @@ alb는 clusterip를 지원하지 않으므로 노드 포트로 사용해야한�
 kubectl patch svc argocd-server -n argocd -p '{"spec": {"type": "NodePort"}}'
 ```
 
-![]({{ site_baseurl }}/assets/2021-05-19-07-46-59.png)
+![]({{ site_baseurl }}/assets/2021-05-18-argocd-alb-ssl/2021-05-19-07-46-59.png)
 
 ## alb 설정
 
@@ -83,12 +83,12 @@ certificate-arn도 기존에 적어놓은 내용을 넣어준다.
 
 aws / ec2 / load balancer가 자동으로 생성이 된다.
 
-![]({{ site_baseurl }}/assets/2021-05-19-07-53-44.png)
+![]({{ site_baseurl }}/assets/2021-05-18-argocd-alb-ssl/2021-05-19-07-53-44.png)
 
 ## route53 설정
 
 route53에 자동으로 생성이 되기는 한다. 없는경우에는 만들어주면 된다. cname으로 새로 생긴 load balancer를 추가해주면된다.
 
-![]({{ site_baseurl }}/assets/2021-05-19-07-55-50.png)
+![]({{ site_baseurl }}/assets/2021-05-18-argocd-alb-ssl/2021-05-19-07-55-50.png)
 
 이제 http로 접속하면 https로 변경되면서 warning없이 진행된다.
