@@ -1,6 +1,6 @@
 ---
 layout: post
-title: 'vscode-formatter'
+title: 'vscode-tip'
 author: teamsmiley
 date: 2021-05-28
 tags: [devops]
