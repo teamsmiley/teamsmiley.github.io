@@ -16,7 +16,7 @@ category: { kubernetes }
 
 js나 ts의 경우에는 Prettier를 사용중이고
 
-https://marketplace.visualstudio.com/items?itemName=esbenp.prettier-vscode
+<https://marketplace.visualstudio.com/items?itemName=esbenp.prettier-vscode>
 
 이곳에서 관련 내용을 확인할수 있다.
 
@@ -44,6 +44,8 @@ https://docs.microsoft.com/en-us/dotnet/api/microsoft.codeanalysis.csharp.format
   "prettier.singleQuote": true,
 
   "omnisharp.organizeImportsOnFormat": true,
+  "omnisharp.enableEditorConfigSupport": true,
+
   //언어별로 설정이 가능
   "[markdown]": {},
   "[html]": {
