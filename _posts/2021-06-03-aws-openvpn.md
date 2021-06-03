@@ -14,9 +14,11 @@ category: { kubernetes }
 
 ## Create EC2
 
-- ec2
-- launch instance
-  ![]({{ site_baseurl }}/assets/2021-06-03-aws-openvpn/2021-06-03-10-30-50.png)
+ec2
+
+launch instance
+
+![]({{ site_baseurl }}/assets/2021-06-03-aws-openvpn/2021-06-03-10-30-50.png)
 
 ![]({{ site_baseurl }}/assets/2021-06-03-aws-openvpn/2021-06-03-10-31-19.png)
 
@@ -103,5 +105,4 @@ client.ovpn 을 openvpn에서 사용하면 된다.
 
 ![]({{ site_baseurl }}/assets/2021-06-03-aws-openvpn/2021-06-03-11-05-41.png)
 
-)
-vpn을 한국 리전에 만들면 watcha.com을 볼수가 있다.
+vpn을 한국 리전에 만들면 play.watcha.com을 볼수가 있다.
