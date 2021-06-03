@@ -42,10 +42,10 @@ chmod 600 aws.pem
 ssh openvpnas@YourIP -i aws.pem
 # 로그인하자마자 설정을 해야한다.
 > yes
-# 기본값으로 하다 하나만 변경
+# 기본값으로 하다가 하나만 변경
 ```
 
-![]({{ site_baseurl }}/assets/2021-06-03-aws-openvpn//2021-06-03-14-22-32.png)
+![]({{ site_baseurl }}/assets/2021-06-03-aws-openvpn/2021-06-03-14-22-32.png)
 
 다 설정되면
 
