@@ -47,7 +47,7 @@ ssh openvpnas@YourIP -i aws.pem
 # 기본값으로 하다가 하나만 변경
 ```
 
-![]({{ site_baseurl }}/assets/2021-06-03-aws-openvpn/2021-06-03-14-22-32.png)
+![]({{ site_baseurl }}/assets/2021-06-03-aws-openvpn/aws-openvpn-01.png)
 
 다 설정되면
 
@@ -86,6 +86,10 @@ passwd openvpn
 ![]({{ site_baseurl }}/assets/2021-06-03-aws-openvpn/2021-06-03-10-55-53.png)
 
 여기서 관리가 된다.
+
+모든 트래픽을 vpn을 통해서 보내고 싶은경우(대부분의 경우) 잘 안되면 다음 설정을 확인해본다.
+
+![]({{ site_baseurl }}/assets/2021-06-03-aws-openvpn/2021-06-03-14-29-36.png)
 
 ## 접속파일
 
