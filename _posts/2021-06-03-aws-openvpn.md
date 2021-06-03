@@ -10,6 +10,8 @@ category: { kubernetes }
 
 # aws-openvpn
 
+한국 서비스를 이용하고싶으신분은 꼭 리전을 한국으로 하시기 바랍니다.
+
 ## Create EC2
 
 - ec2
