@@ -261,9 +261,25 @@ s3에 버킷을 하나 만들어두고 유저를 생성해서 s3 full권한을 �
 빌드하고 artifact를 업로드 하고 argocd에 프로젝트에 커밋을 해야하는경우
 새프로젝트를 다시 체크아웃 받고 필요한 작업을 하고 난후 다시 커밋하면된다.
 
-여기에서 PAT라는게 잇는데 이건 github person access token이라는것이다. user >> setting에 가면
+여기에서 PAT라는게 잇는데 이건 github person access token이라는것이다.
 
-developer setting이 잇는데 그걸 누르면 access token을 만들수 있다. 만들때 권한을 줘야하는데 repo정도면 충분해보인다. 생성후 ${{ secrets.PAT }} 네 넣어주거나 setting에 넣어줘도 된다.
+User >> Settings > Developer settings >> developer setting
+
+![]({{ site_baseurl }}/assets/2021-05-11-github-action/2021-06-07-19-52-41.png)
+
+create access token을 만들수 있다.
+
+권한을 줘야하는데 repo정도면 충분해보인다.
+
+![]({{ site_baseurl }}/assets/2021-05-11-github-action/2021-06-07-19-52-59.png)
+
+토큰을 복사해서
+
+repo >> setting >> secret 에서 PAT를 추가하고 토큰을 넣어준다.
+
+![]({{ site_baseurl }}/assets/2021-05-11-github-action/2021-06-07-20-05-29.png)
+
+${{ secrets.PAT }} 로 사용
 
 ```yml
 - name: Checkout argocd
