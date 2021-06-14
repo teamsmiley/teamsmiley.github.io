@@ -87,5 +87,5 @@ category: { program }
 - 도메인에서는 뷰모델을 사용하지 말자. 모든 viewmodel은 api프로젝트에 있어야한다.(?)
 - Viewmodel을 잘 정해야한다.
 - 중복된 viewmodel이 없도록 해야한다.
-- List를 받을때는 꼭 list라는 클래스 이름을 써주자.
+- List는 단수 + Collection 클래스 이름을 써주자.
 - Viewmodel이 너무 크지 않게 해야한다. 꼭 필요한거만 가야한다. 그런데 viewmodel을 너무 많이 만들기 어려우므로 한두개정도 필드는 합쳐서 하나로 만들수도 있다.
