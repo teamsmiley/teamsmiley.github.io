@@ -1,13 +1,13 @@
 ---
 layout: post
 title: '블로그 이전'
-author: teamsmiley 
+author: teamsmiley
 date: 2016-07-07 15:25
-tags: [github-pages,jekyll,static-site-generator]
+tags: [github-pages, jekyll, static-site-generator]
 image: /files/covers/blog.jpg
-category: {me}
+category: { me }
 ---
 
+# todo
 
-# todo 
-
+블로그 이전

@@ -1,14 +1,14 @@
 ---
 layout: post
-title: 'Code Style'
+title: 'Program Rule'
 author: teamsmiley
-date: 2017-02-10'
+date: 2021-06-14'
 tags: [code]
 image: /files/covers/code.jpg
 category: { program }
 ---
 
-# Code Style (코드 규약) - ver. 0.1
+# Program Rule - ver. 0.2
 
 ## 최우선 목적
 
@@ -28,10 +28,11 @@ category: { program }
   - image를 넣어야 하므로 assets/images/폴더도 만든다.
 - 개발일지를 쓰거나 프로그램시 궁금증이 생기거나 todo가 발생하면 todos-questions.md 라는 파일을 만들어서 추가해둔다. 완료시 삭제하고 궁금증의 경우 결과를 블로그로 옮겨서 전체 팀원이 참고할수 있게 하고 이문서에서는 지운다.
 
-## 네이밍 규칙 (https://msdn.microsoft.com/en-us/library/ms229043.aspx) 을 정확히 지킨다.
+## 네이밍 규칙
 
+1. (https://msdn.microsoft.com/en-us/library/ms229043.aspx) 을 정확히 지킨다.
 1. 파스칼 : 단어의 첫글자는 대문자.
-2. 카멜 : 첫단어의 첫글자는 소문자. 나머지 단어의 첫글자는 대문자.
+1. 카멜 : 첫단어의 첫글자는 소문자. 나머지 단어의 첫글자는 대문자.
 
 - 클래스 : 파스칼 : Book
 - 멤버변수 : 파스칼 : Receive

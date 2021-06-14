@@ -1,11 +1,11 @@
 ---
 layout: post
-title: 'Visual-Studio에서-VI를-써보자' 
-author: teamsmiley 
+title: 'Visual-Studio에서-VI를-써보자'
+author: teamsmiley
 date: 2016-06-23
 tags: [visual studio]
 image: /files/covers/blog.jpg
-category: {programe}
+category: { programe }
 ---
 
 # Visual-Studio에서-VI를-써보자
@@ -19,21 +19,22 @@ category: {programe}
 [VIM emulation layer for Visual Studio](https://visualstudiogallery.msdn.microsoft.com/59ca71b3-a4a3-46ca-8fe1-0e90e3f79329) 에서 설치한다.
 
 ## enable/disable
+
 enable/disable을 하고 싶으면 ctrl+shift+f12 이다.
 
 가끔 이게 안되는경우에는 vs ==>tool==> option 에서
 
 keyboard에 가서 초기화를 한번 시킨후
 
-vsvim에 가서  Handle all with VsVim 을 클릭하고 OK 클릭
+vsvim에 가서 Handle all with VsVim 을 클릭하고 OK 클릭
 
 이후에 단축키를 확인해보자.
 
-## 검색시 붙여넣기 사용 
+## 검색시 붙여넣기 사용
 
 vsvim 은 / 로 검색을 할때 붙여넣기가 안되서 불편하다.
 
-그럴때는 /  다음에 home키를 한번 누른후 ctrl + v를 하면 복사가 가능하다.
+그럴때는 / 다음에 home키를 한번 누른후 ctrl + v를 하면 복사가 가능하다.
 
 ## 검색시 대소문자 구분 하지 않는다.
 
@@ -51,13 +52,14 @@ vim에서 검색시 대소문자를 구분하고 싶지 않다.
 
 vimrcpaths=”C:\Users\Administrator;C:\Users\Administrator\vimfiles;C:\Users\Administrator”
 
-이런 결과가 나온다. 
-이중에 하나에 .vimrc라는 파일을 만들고 세팅을 넣어주면 vs가 자동 로딩한다는 이야기 
+이런 결과가 나온다.
+이중에 하나에 .vimrc라는 파일을 만들고 세팅을 넣어주면 vs가 자동 로딩한다는 이야기
 
 나는 C:\Users\Administrator 이경로를 사용
 
-### 탐색기 이용 
-탐색기에서 C:\Users\Administrator 폴더에 vimrc파일을 만든다. 
+### 탐색기 이용
+
+탐색기에서 C:\Users\Administrator 폴더에 vimrc파일을 만든다.
 
 cmd 를 오픈해서 다음처럼 한다.
 
@@ -67,13 +69,15 @@ move vimrc .vimrc
 
 이제 파일이 생겼다.
 
-또는 
+또는
 
 ### cmd에서 처리
+
 ```
 copy /b NUL C:\Users\Administrator\.vimrc
 ```
-### 파일 수정 
+
+### 파일 수정
 
 이제 메모장으로 파일을 열어서 다음처럼 작성한다.
 
@@ -85,15 +89,12 @@ vs를 재시작
 
 참고로 기타 vi 설정을 넣으면 대부분 동작하는듯.
 
-완료 
+완료
 
 ## RelativeLineNumbers
 
-vsvim을 사용중인데 relative Line Number가 되면 좋겟다. 
+vsvim을 사용중인데 relative Line Number가 되면 좋겟다.
 
-extension에서 RelativeLineNumbers 를 검색해서 설치하면 된다. 
+extension에서 RelativeLineNumbers 를 검색해서 설치하면 된다.
 
 <https://visualstudiogallery.msdn.microsoft.com/74d68e2b-ff64-4c51-a2ed-d8b164eee858>
-
-
-

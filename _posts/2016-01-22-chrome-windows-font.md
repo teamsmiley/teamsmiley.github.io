@@ -1,11 +1,11 @@
---- 
-layout: post 
-title: "크롬 윈도우 폰트 변경" 
+---
+layout: post
+title: '크롬 윈도우 폰트 변경'
 date: 2016-01-22 04:16
-author: teamsmiley 
+author: teamsmiley
 tags: [chrome]
 image: /files/covers/blog.jpg
-category: {Program}
+category: { Program }
 ---
 
 # 크롬 윈도우 폰트를 변경해보자.
