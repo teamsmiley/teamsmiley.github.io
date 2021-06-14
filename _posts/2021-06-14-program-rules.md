@@ -89,7 +89,3 @@ category: { program }
 - 중복된 viewmodel이 없도록 해야한다.
 - List를 받을때는 꼭 list라는 클래스 이름을 써주자.
 - Viewmodel이 너무 크지 않게 해야한다. 꼭 필요한거만 가야한다. 그런데 viewmodel을 너무 많이 만들기 어려우므로 한두개정도 필드는 합쳐서 하나로 만들수도 있다.
-
-## Service
-
-- service layer에서는 도메인 오브젝트를 넣고 빼야 한다.
