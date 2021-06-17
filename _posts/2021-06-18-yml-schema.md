@@ -28,11 +28,11 @@ menu > code > preference > setting 에 아래 그림 부분을 클릭한다.
 
 ```json
 "yaml.schemas": {
-    "https://json.schemastore.org/github-workflow.json":
-      [
-        ".github/workflows/*.yml",
-        ".github/workflows/*.yaml"
-      ]
+  "https://json.schemastore.org/github-workflow.json":
+    [
+      ".github/workflows/*.yml",
+      ".github/workflows/*.yaml"
+    ]
 },
 ```
 
@@ -42,7 +42,7 @@ menu > code > preference > setting 에 아래 그림 부분을 클릭한다.
 
 다른 스키마를 찾아보려면 https://json.schemastore.org 에 가보면 엄청나게 많은 스키마를 이용할수 있는것을 알수 있다.
 
-특별히 좋은 기능
+## 특별히 좋은 기능
 
 - Auto completion : (Ctrl + Space) mac에서만 확인
 
@@ -57,3 +57,16 @@ u 라고만 치면 u에 해당되는 선택할수 있는 옵션이 보여진다.
 - 자동으로 포맷팅도 해준다.
 
 기타는 위에 보이는 링크를 읽어보면 크게 의미가 있다.
+
+## 참고
+
+이런식으로 여러개를 등록해서 사용 할 수도 있다.
+
+```json
+"yaml.schemas": {
+  "http://json.schemastore.org/composer": ["/*"],
+  "file:///home/johnd/some-schema.json": ["some.yaml"],
+  "../relative/path/schema.json": ["/config*.yaml"],
+  "/Users/johnd/some-schema.json": ["some.yaml"],
+},
+```
