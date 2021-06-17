@@ -10,7 +10,9 @@ category: { program }
 
 # 다른 namespace에 있는 서비스 사용하기
 
-프로젝트가 10개가 넘어가는데 모든 서비스에서 rabbitmq를 사용중이다 보니 똑같은 pod가 여러개 올라간다. aws의 pod제한에 따라서 새 노드를 올려야하는 문제가 생겼다.
+kubernetes 에서 프로젝트가 10개가 넘어가는데 모든 서비스에서 rabbitmq를 사용중이다 보니 똑같은 pod가 여러개 올라간다.
+
+aws의 pod제한에 따라서 새 노드를 올려야하는 문제가 생겼다.
 
 그래서 shared라는 namespace를 만들고 거기에 rabbmitmq하나만 올리고 모든 프로젝트에서 이걸 공유하는것으로 구조를 바꿨다.
 
