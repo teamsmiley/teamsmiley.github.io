@@ -165,11 +165,6 @@ public class EmailSender
   public string EmailPassword = "";
   public bool EmailEnableSSL = true;
 
-  public EmailSender()
-  {
-
-  }
-
   public async Task SendEmailAsync(EmailMessage message)
   {
     try
