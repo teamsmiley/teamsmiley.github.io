@@ -1,6 +1,6 @@
 ---
 layout: post
-title: 'RabbitMQ 와 dotnet Worker Service Project'
+title: 'RabbitMQ 와 dotnet Worker Service'
 author: teamsmiley
 date: 2021-06-22
 tags: [code]
@@ -8,7 +8,7 @@ image: /files/covers/blog.jpg
 category: { program }
 ---
 
-# RabbitMQ 와 dotnet Worker Service Project
+# RabbitMQ 와 dotnet Worker Service
 
 rabbitmq를 쓸 일이 있어서 정리해 보았다. 여기서는 consumer만 만들어서 처리하는 과정을 정리
 
