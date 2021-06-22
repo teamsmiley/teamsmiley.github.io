@@ -36,6 +36,8 @@ dotnet add package RabbitMQ.Client --version 6.2.1
 
 ## Work 설정
 
+EmainSenderWorker.cs
+
 ```cs
 public class EmainSenderWorker : BackgroundService
 {
@@ -256,6 +258,17 @@ FROM mcr.microsoft.com/dotnet/runtime:5.0
 WORKDIR /app
 COPY --from=build-env /app/publish .
 ENTRYPOINT ["dotnet", "EmailSender.dll"]
+```
+
+## 여러개의 worker를 사용하고 싶다.
+program.cs
+```cs
+public static IHostBuilder CreateHostBuilder(string[] args) =>
+        Host.CreateDefaultBuilder(args).ConfigureServices((hostContext, services) =>
+                {
+                  services.AddHostedService<EmainSenderWorker>();
+                  services.AddHostedService<OtherWorker>();
+                });
 ```
 
 ## 참고 
