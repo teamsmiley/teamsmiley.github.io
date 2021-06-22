@@ -263,4 +263,6 @@ COPY --from=build-env /app/publish .
 ENTRYPOINT ["dotnet", "EmailSender.dll"]
 ```
 
-끝
+## 참고 
+
+https://www.rabbitmq.com/dotnet-api-guide.html#consuming-async
