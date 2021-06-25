@@ -44,14 +44,22 @@ category: { program }
 
 ![]({{ site_baseurl }}/assets/google-api/google-api-00.png)
 
-## 프로젝트 설정 클릭
+### 프로젝트 설정 클릭
 
 ![]({{ site_baseurl }}/assets/google-api/google-api-06.png)
 
-## 종료 클릭
+### 종료 클릭
 
 ![]({{ site_baseurl }}/assets/google-api/google-api-07.png)
 
 ![]({{ site_baseurl }}/assets/google-api/google-api-08.png)
 
 ![]({{ site_baseurl }}/assets/google-api/google-api-09.png)
+
+## 궁금한것
+
+하다보니 뭔가 api가 기본으로 설치된게 너무 많다..뭐를 쓰는건지도 모르고 정리가 잘 안되는 느낌이다.
+
+전체 프로젝트 리스트를 보면 구글 docs나 spredsheet에 쓰이는듯한 느낌적 느낌이 드는 프로젝트가 많이 있다 이게 뭘가?
+
+![]({{ site_baseurl }}/assets/google-api/2021-06-25-09-38-01.png)
