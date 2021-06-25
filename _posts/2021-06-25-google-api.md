@@ -40,7 +40,9 @@ category: { program }
 
 ### 프로젝트 선택
 
-![]({{ site_baseurl }}/assets/google-api/google-api-05.png)
+원하는 프로젝트를 선택한다.
+
+![]({{ site_baseurl }}/assets/google-api/google-api-00.png)
 
 ## 프로젝트 설정 클릭
 
