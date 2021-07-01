@@ -8,7 +8,7 @@ image: /files/covers/blog.jpg
 category: { program }
 ---
 
-# Postman OAuth2 login
+# Postman OAuth2 Login
 
 포스트맨으로 OAuth2 로그인을 해보자.
 
@@ -27,7 +27,7 @@ edit token configuration
 
 정보를 잘 넣어주며 된다. identity server는 다음처럼 넣어주면 된다.
 
-- Callback URL : https://auth.staging.xxxx.com/signin-callback
+- Callback URL : https://staging.xxxx.com/signin-callback
 
 - Auth URL : https://auth.staging.xxxx.net/connect/authorize
 
