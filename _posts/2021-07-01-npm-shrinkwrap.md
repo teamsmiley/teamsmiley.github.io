@@ -63,3 +63,5 @@ npm shrinkwrap
 ## todo
 
 그런데 프로젝트를 바꾼게 없는데 왜 안될가? 어디서 바뀌었을가? 현재는 capacitor 3을 쓰고 잇는것인가? 이상하네..
+
+<https://npmjs.org/doc/shrinkwrap.html>
