@@ -26,7 +26,12 @@ category: { program }
 
 검색을 해보니 npm shrinkwrap 가 보인다.
 
-일단 프로젝트에 npm-shrinkwrap.json 파일을 만들고 다음처럼 작성했다.
+```bash
+npm shrinkwrap
+```
+
+일단 프로젝트에 npm-shrinkwrap.json 파일이 생긴다.
+다음처럼 작성했다.
 
 ```json
 {
