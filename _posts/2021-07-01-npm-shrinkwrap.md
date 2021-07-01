@@ -45,7 +45,7 @@ category: { program }
 
 일단 해결 완료.
 
-## vscode에서 워닝
+## vscode에서 warning
 
 ![]({{ site_baseurl }}/assets/2021-07-01-npm-shrinkwrap/2021-07-01-07-49-07.png)
 
