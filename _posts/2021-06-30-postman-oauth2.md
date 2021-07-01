@@ -25,7 +25,7 @@ edit token configuration
 
 ![]({{ site_baseurl }}/assets/2021-06-30-postman-oauth2/2021-06-30-17-04-06.png)
 
-정보를 잘 넣어주며 된다. identity server는 다음처럼 넣어주면 된다.
+정보를 잘 넣어주며 된다. identity server는 다음처럼 넣어주면 된다. 본인의 설정에 맞게 넣어주자.
 
 - Callback URL : https://staging.xxxx.com/signin-callback
 
