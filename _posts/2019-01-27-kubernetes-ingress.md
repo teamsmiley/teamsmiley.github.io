@@ -1,16 +1,16 @@
 ---
 layout: post
-title: 'kubernetes ingress nginx' 
+title: 'kubernetes ingress nginx'
 author: teamsmiley
 date: 2019-01-27
 tags: [devops]
 image: /files/covers/blog.jpg
-category: {kubernetes}
+category: { kubernetes }
 ---
 
 # ingress-nginx
 
-하나의 아이피에 각각의 도메인마다 각자의 서비스로 보내주고 싶다. 구성은 다음 그림과 같다. 
+하나의 아이피에 각각의 도메인마다 각자의 서비스로 보내주고 싶다. 구성은 다음 그림과 같다.
 
 ![]({{site_baseurl}}/assets/ingress-0.png)
 
@@ -28,37 +28,38 @@ metadata:
     service-name: hello-node
 spec:
   containers:
-  - name: hello-node
-    image: asbubam/hello-node
+    - name: hello-node
+      image: asbubam/hello-node
 ---
 apiVersion: v1
-kind: Service 
+kind: Service
 metadata:
   name: hello-node
 spec:
   ports:
-  - port: 8080
-    targetPort: 8080
+    - port: 8080
+      targetPort: 8080
   selector:
     service-name: hello-node
 ```
 
-```
+```bash
 kubectl create -f hello-node.yml
 ```
 
-잘됬는지 체크 
+잘됬는지 체크
+
 ```bash
-kubectl get pods 
+kubectl get pods
 kubectl get svc
 ```
 
-현재까지 구성은 다음과 같다. 
+현재까지 구성은 다음과 같다.
 
 ![]({{site_baseurl}}/assets/ingress-1.png)
 
+## ingress 설치
 
-## ingress 설치 
 ```bash
 kubectl apply -f https://raw.githubusercontent.com/kubernetes/ingress-nginx/master/deploy/mandatory.yaml
 ```
@@ -67,19 +68,20 @@ kubectl apply -f https://raw.githubusercontent.com/kubernetes/ingress-nginx/mast
 
 metallb를 꼭 설치하시기바랍니다.
 
-* ingress-nginx 서비스는 namespace가 꼭 ingress-nginx 로 해야한다.
-* ingress-config에서는 연결하는 서비스에 namespace와 같은 곳에 ingress를 설치 해야한다. 
+- ingress-nginx 서비스는 namespace가 꼭 ingress-nginx 로 해야한다.
+- ingress-config에서는 연결하는 서비스에 namespace와 같은 곳에 ingress를 설치 해야한다.
 
-```
+```bash
 vi ingress-service.yml
 ```
+
 ```yml
 ---
 apiVersion: v1
 kind: Service
 metadata:
   name: ingress-service # 이부분 수정 하지 말자.
-  namespace: ingress-nginx 
+  namespace: ingress-nginx
   labels:
     app.kubernetes.io/name: ingress-nginx # 이부분 수정 하지 말자.
     app.kubernetes.io/part-of: ingress-nginx # 이부분 수정 하지 말자.
@@ -99,13 +101,15 @@ spec:
     app.kubernetes.io/name: ingress-nginx # 이부분 수정 하지 말자.
     app.kubernetes.io/part-of: ingress-nginx # 이부분 수정 하지 말자.
 ```
-```
+
+```bash
 kubectl create -f ingress-service.yml
 ```
 
-```
+```bash
 vi ingress-domain-config.yml
 ```
+
 ```yml
 ---
 apiVersion: extensions/v1beta1
@@ -117,38 +121,44 @@ metadata:
     nginx.ingress.kubernetes.io/rewrite-target: /
 spec:
   rules:
-  - host: lb.publishapi.com
-    http:
-      paths:
-      - backend:
-          serviceName: hello-node
-          servicePort: 8080
+    - host: lb.publishapi.com
+      http:
+        paths:
+          - backend:
+              serviceName: hello-node
+              servicePort: 8080
 ```
-```
+
+```bash
 kubectl create -f ingress-domain-config.yml
 ```
 
-```
+```shell
 vi /etc/hosts
 ```
-```
+
+```shell
 192.168.0.84 lb.publishapi.com
 ```
 
-curl http://192.168.0.84  
+`curl http://192.168.0.84`
 
 ```html
 <html>
-<head><title>404 Not Found</title></head>
-<body>
-<center><h1>404 Not Found</h1></center>
-<hr><center>nginx/1.15.8</center>
-</body>
+  <head>
+    <title>404 Not Found</title>
+  </head>
+  <body>
+    <center><h1>404 Not Found</h1></center>
+    <hr />
+    <center>nginx/1.15.8</center>
+  </body>
 </html>
 ```
 
-curl http://lb.publishapi.com 
-```
+curl http://lb.publishapi.com
+
+```text
 Hello World!
 ```
 
@@ -157,4 +167,3 @@ Hello World!
 ![]({{site_baseurl}}/assets/ingress-3.png)
 
 나머지는 ingress-domain-config.yml 에서 Ingress Rule 만 계속 추가하면 된다.
-
