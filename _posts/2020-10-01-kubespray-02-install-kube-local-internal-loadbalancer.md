@@ -1,6 +1,6 @@
 ---
 layout: post
-title: "kubespray - 02 install kube - local internal loadbalancer"
+title: 'kubespray - 02 install kube - local internal loadbalancer'
 author: teamsmiley
 date: 2020-10-01
 tags: [cicd]
@@ -105,7 +105,7 @@ virtualbox에서 메모리를 추가해주자. 1501 1025
 
 이제 다 된거같은데 확인해보자.
 
-```
+```sh
 mkdir ~/.kube
 scp root@minion1:/etc/kubernetes/admin.conf ~/.kube/config
 k get nodes
