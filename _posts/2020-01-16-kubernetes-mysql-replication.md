@@ -15,7 +15,7 @@ mysql을 쿠버네티스에 배포 연습
 1. statefulset 을 이용한 자동 배포
 1. 수동으로 master slave를 설정하는 배포
 
-## statefulset을 사용해서 배포를 하면 다음처럼 하면된다.
+## statefulset을 사용해서 배포를 하면 다음처럼 하면 된다.
 
 Run a Replicated Stateful Application
 
