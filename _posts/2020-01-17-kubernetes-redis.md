@@ -1,17 +1,17 @@
 ---
 layout: post
-title: 'kubernetes redis' 
+title: 'kubernetes redis'
 author: teamsmiley
 date: 2020-01-17
 tags: [kubernetes]
 image: /files/covers/blog.jpg
-category: {kuberentes}
+category: { kuberentes }
 ---
 
 redis을 쿠버네티스에 배포 연습
 다음과 같은 두가지 사용 패턴이 있다.
 
-1. 단독 서버로 redis를 사용하는경우 
+1. 단독 서버로 redis를 사용하는경우
 1. replicatioh을 사용하는 경우
 
 ## 단독 서버를 사용해보자.
@@ -58,7 +58,7 @@ spec:
     spec:
       containers:
         - name: redis
-          image: "bitnami/redis:latest"
+          image: 'bitnami/redis:latest'
           ports:
             - containerPort: 6379
           env:
@@ -75,6 +75,7 @@ spec:
 ```
 docker run -it --rm redis redis-cli -h 192.168.0.79 -a your-password
 ```
+
 ```
 set mykey myvalue
 > OK
@@ -82,7 +83,8 @@ get mykey
 > "myvalue"
 ```
 
-## replication 
+## replication
+
 1개의 마스터와 2개의 슬레이브로 구성
 
 vi redis.yml
@@ -142,7 +144,7 @@ spec:
     spec:
       containers:
         - name: redis-master
-          image: "bitnami/redis:latest"
+          image: 'bitnami/redis:latest'
           ports:
             - containerPort: 6379
           env:
@@ -171,7 +173,7 @@ spec:
     spec:
       containers:
         - name: redis-slave
-          image: "bitnami/redis:latest"
+          image: 'bitnami/redis:latest'
           ports:
             - containerPort: 6379
           env:
@@ -187,10 +189,9 @@ spec:
 
 k apply -f redis.yml
 
-서비스가 2개이다 master ,slave   slave는 2개의 파드가 번갈아가면서 대답한다.
+서비스가 2개이다 master ,slave slave는 2개의 파드가 번갈아가면서 대답한다.
 
 테스트해보자.
-
 
 ```bash
 docker run -it --rm redis redis-cli -h 192.168.0.100 -a your-password
@@ -203,7 +204,7 @@ get mykey
 > "myvalue"
 ```
 
-slave에서 체크 
+slave에서 체크
 
 ```bash
 docker run -it --rm redis redis-cli -h 192.168.0.101 -a your-password
@@ -217,4 +218,3 @@ keys *
 잘된다
 
 이제 write는 master에 read는 slave를 쓰면된다.
-
